@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Carousel</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .underline-hr {
+            border-top: 2px solid #000;
+            width: 100px;
+            margin: auto;
+        }
+        .OnHoverShow {
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        .card:hover .OnHoverShow {
+            opacity: 1;
+        }
+        .cardButton {
+            margin-bottom: 10px;
+        }
+        .stars {
+            color: gold;
+        }
+        .rating {
+            color: grey;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col text-center">
+                <div class="heading">
+                    <h1>Our Products</h1>
+                    <hr class="underline-hr">
+                </div>
+                <div class="gallery-menu d-flex justify-content-center">
+                    <a class="nav-link active" href="#" data-category="all">All</a>
+                    <a class="nav-link" href="#" data-category="womens">Women's</a>
+                    <a class="nav-link" href="#" data-category="mens">Men's</a>
+                    <a class="nav-link" href="#" data-category="kids">Kid's</a>
+                    <a class="nav-link" href="#" data-category="accessories">Accessories</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="productCarousel" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                <!-- All Products -->
+                <div class="carousel-item active" data-category="all">
+                    <div class="row">
+                        <div class="card border-0 p-2 col-md-3">
+                            <img class="card-img-top fthphaseimg" src="picture/Stylish leather jacket.png" alt="Card image cap">
+                            <div class="card-img-overlay d-flex flex-column justify-content-between OnHoverShow">
+                                <div>
+                                    <p class="offer text-center">30% Off</p>
+                                </div>
+                                <div class="bottom-button d-flex justify-content-center buttonMargin">
+                                    <a href="#" class="btn btn-outline-danger cardButton">Add to Cart</a>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-8 ">
+                                        <p class="card-text">Stylish Leather Jacket</p>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <i class="fas fa-circle dots"></i>
+                                        <i class="fas fa-circle dots"></i>
+                                        <i class="fas fa-circle dots"></i>
+                                    </div>
+                                </div>
+                                <p class="text-danger font-weight-bold">$34</p>
+                                <div class="text-left">
+                                    <i class="fa fa-star stars"></i>
+                                    <i class="fa fa-star stars"></i>
+                                    <i class="fa fa-star stars"></i>
+                                    <i class="rating">(ratings)</i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Women's Products -->
+                <div class="carousel-item" data-category="womens">
+                    <div class="row">
+                        <div class="card border-0 p-2 col-md-3">
+                            <img class="card-img-top fthphaseimg" src="picture/Stylish leather jacket.png" alt="Card image cap">
+                            <div class="card-img-overlay d-flex flex-column justify-content-between OnHoverShow">
+                                <div>
+                                    <p class="offer text-center">30% Off</p>
+                                </div>
+                                <div class="bottom-button d-flex justify-content-center buttonMargin">
+                                    <a href="#" class="btn btn-outline-danger cardButton">Shop Now</a>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-8 ">
+                                        <p class="card-text">Stylish Leather Jacket</p>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <i class="fas fa-circle dots"></i>
+                                        <i class="fas fa-circle dots"></i>
+                                        <i class="fas fa-circle dots"></i>
+                                    </div>
+                                </div>
+                                <p class="text-danger font-weight-bold">$34</p>
+                                <div class="text-left">
+                                    <i class="fa fa-star stars"></i>
+                                    <i class="fa fa-star stars"></i>
+                                    <i class="fa fa-star stars"></i>
+                                    <i class="rating">(ratings)</i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Men's Products -->
+                <div class="carousel-item" data-category="mens">
+                    <div class="row">
+                        <div class="card border-0 p-2 col-md-3">
+                            <img class="card-img-top fthphaseimg" src="picture/Stylish leather jacket.png" alt="Card image cap">
+                            <div class="card-img-overlay d-flex flex-column justify-content-between OnHoverShow">
+                                <div>
+                                    <p class="offer text-center">30% Off</p>
+                                </div>
+                                <div class="bottom-button d-flex justify-content-center buttonMargin">
+                                    <a href="#" class="btn btn-outline-danger cardButton">Shop Now</a>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-8 ">
+                                        <p class="card-text">Stylish Leather Jacket</p>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <i class="fas fa-circle dots"></i>
+                                        <i class="fas fa-circle dots"></i>
+                                        <i class="fas fa-circle dots"></i>
+                                    </div>
+                                </div>
+                                <p class="text-danger font-weight-bold">$34</p>
+                                <div class="text-left">
+                                    <i class="fa fa-star stars"></i>
+                                    <i class="fa fa-star stars"></i>
+                                    <i class="fa fa-star stars"></i>
+                                    <i class="rating">(ratings)</i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kid's Products -->
+                <div class="carousel-item" data-category="kids">
+                    <div class="row">
+                        <div class="card border-0 p-2 col-md-3">
+                            <img class="card-img-top fthphaseimg" src="picture/Stylish leather jacket.png" alt="Card image cap">
+                            <div class="card-img-overlay d-flex flex-column justify-content-between OnHoverShow">
+                                <div>
+                                    <p class="offer text-center">30% Off</p>
+                                </div>
+                                <div class="bottom-button d-flex justify-content-center buttonMargin">
+                                    <a href="#" class="btn btn-outline-danger cardButton">Shop Now</a>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-8 ">
+                                        <p class="card-text">Stylish Leather Jacket</p>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <i class="fas fa-circle dots"></i>
+                                        <i class="fas fa-circle dots"></i>
+                                        <i class="fas fa-circle dots"></i>
+                                    </div>
+                                </div>
+                                <p class="text-danger font-weight-bold">$34</p>
+                                <div class="text-left">
+                                    <i class="fa fa-star stars"></i>
+                                    <i class="fa fa-star stars"></i>
+                                    <i class="fa fa-star stars"></i>
+                                    <i class="rating">(ratings)</i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accessories Products -->
+                <div class="carousel-item" data-category="accessories">
+                    <div class="row">
+                        <div class="card border-0 p-2 col-md-3">
+                            <img class="card-img-top fthphaseimg" src="picture/Stylish leather jacket.png" alt="Card image cap">
+                            <div class="card-img-overlay d-flex flex-column justify-content-between OnHoverShow">
+                                <div>
+                                    <p class="offer text-center">30% Off</p>
+                                </div>
+                                <div class="bottom-button d-flex justify-content-center buttonMargin">
+                                    <a href="#" class="btn btn-outline-danger cardButton">Shop Now</a>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-8 ">
+                                        <p class="card-text">Stylish Leather Jacket</p>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <i class="fas fa-circle dots"></i>
+                                        <i class="fas fa-circle dots"></i>
+                                        <i class="fas fa-circle dots"></i>
+                                    </div>
+                                </div>
+                                <p class="text-danger font-weight-bold">$34</p>
+                                <div class="text-left">
+                                    <i class="fa fa-star stars"></i>
+                                    <i class="fa fa-star stars"></i>
+                                    <i class="fa fa-star stars"></i>
+                                    <i class="rating">(ratings)</i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#productCarousel" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#productCarousel" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.nav-link').on('click', function(e) {
+                e.preventDefault();
+                var category = $(this).data('category');
+                $('.nav-link').removeClass('active');
+                $(this).addClass('active');
+                
+                $('.carousel-item').each(function() {
+                    if (category === 'all') {
+                        $(this).addClass('active');
+                    } else {
+                        if ($(this).data('category') === category) {
+                            $(this).addClass('active');
+                        } else {
+                            $(this).removeClass('active');
+                        }
+                    }
+                });
+
+                // Restart the carousel to the first item
+                $('#productCarousel').carousel(0);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,806 @@
+.shopeoneH{
+    font-family: Roboto;
+    font-size: 36px;
+    font-weight: 500;
+    line-height: 54px;
+    text-align: left;
+    color: #FFFFFF;
+
+
+}
+
+.shopbackground-container {
+    background-image: url('../public/picture/shoppagehome.png');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    height: 100vh;
+    width: 100%;
+}
+
+.shopbackground-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2); 
+    z-index: 1;
+}
+
+.shoptwoh{
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: left;
+}
+
+.shoptwotxt{
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: left;
+    color: #EB6626;
+}
+
+.shoptogglerH{
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: left;
+
+}
+
+.shotitem{
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    text-align: left;
+    
+}
+
+.aboutbackground-container {
+    background-image: url("../public/picture/aboutus.jfif");
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    height: 100vh;
+    width: 100%;
+}
+
+.aboutbackground-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2); 
+    z-index: 1;
+}
+
+.aboutusCtext{
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: left;
+
+}
+
+        /* Container for the image with relative positioning */
+        .image-container {
+            position: relative;
+            width: 300px; /* Adjust as per your image size */
+            height: 300px; /* Adjust as per your image size */
+            overflow: hidden; /* Hides overflow from child elements */
+        }
+
+      
+        /* .vertical-bar {
+            position: absolute;
+            top: 0;
+            width: 25%; 
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8); 
+            z-index: 1; 
+            clip-path: polygon(0 0, 100% 0, 75% 100%, 0% 100%);
+            transition: all 0.3s ease; 
+        }
+
+       
+        .vertical-bar:hover {
+            width: 100%;
+        } */
+
+        /* Image styles */
+        .background-image-aboutus{   
+            z-index: 0; /* Ensure image is behind bars */
+            gap: 0px;
+            opacity: 0px;
+            width: 100%;
+            height: 346px;
+            gap: 0px;
+            opacity: 0px;
+
+
+        }
+
+.meetoutteamimg{
+    width: 312px;
+    height: 385px;
+    top: 1185px;
+    left: 60px;
+    gap: 0px;
+    opacity: 0px;
+
+}
+
+.meetoutteamh{
+    font-family: Roboto;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 23.44px;
+    text-align: left;
+
+}
+
+.meetoutteamt{
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 18.75px;
+    text-align: left;
+
+}
+
+.OVMh{
+    font-family: Roboto;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 23.44px;
+    text-align: left;
+    color: #EB6626;
+}
+.OVMt{
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: left;
+    color:  #515151;
+    
+
+}
+
+.blogimg{
+    width: 100%;
+    height: 435px;
+    object-fit: cover;
+    object-position: top;
+
+}
+
+.blogpa{
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 24px;
+    letter-spacing: 0.02em;
+    text-align: left;
+    color: #3C3C3C;
+    
+
+}
+
+.blogph{
+    font-family: Roboto;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 30px;
+    letter-spacing: 0.02em;
+    text-align: left;
+    color: #262626;
+}
+
+.blogpb{
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 24px;
+    text-align: left;
+    color: #3C3C3C;
+}
+
+.blogpc{
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 24px;
+    letter-spacing: 0.02em;
+    text-align: left;
+    color: #EB6626;
+}
+
+.blogrecentimg{
+    width: 57px;
+    height: 49px;
+    top: 975px;
+    left: 1069px;
+    gap: 0px;
+    opacity: 0px;
+
+}
+
+.blogrecent{
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    text-align: left;
+
+}
+
+.blogrecenth{
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19.2px;
+    text-align: left;
+
+}
+
+.blogrecentt{
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 24px;
+    text-align: left;
+    color: #9B9B9B;
+}
+
+.blogbrowseh{
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    text-align: left;
+
+}
+
+.contactush{
+    font-family: Inter;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 24.2px;
+    text-align: left;
+}
+.contactust{
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 22.4px;
+    text-align: left;
+}
+
+.contactusbtn{
+    background: #EB6626;
+    border: #EB6626;
+
+}
+
+.contactusbtn :hover{
+    background: #EB6626;
+    border: #EB6626;
+
+}
+.contactusicon{
+    width: 30px;
+    height: 30px;
+    background: #EB6626;
+    padding: 10px;
+    border-radius: 50%;
+    color: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.contactinfoh{
+    font-family: Roboto;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 27px;
+    text-align: left;
+
+}
+
+.contactinfon{
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 24px;
+    text-align: left;
+
+}
+
+.map-container {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+    max-width: 100%;
+    background: #ebebeb;
+  }
+  .map-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+.contactusbackground-container {
+    background-image: url('../public/picture/contactus.jpeg');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    height: 100vh;
+    width: 100%;
+}
+
+.contactusbackground-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2); 
+    z-index: 1;
+}
+
+.blogbackground-container {
+    background-image: url('../public/picture/blog.jpeg');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    height: 100vh;
+    width: 100%;
+}
+
+.blogbackground-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2); 
+    z-index: 1;
+}
+
+.productbackground-container {
+    background-image: url('../public/picture/product.jpeg');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    height: 100vh;
+    width: 100%;
+}
+
+.productbackground-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2); 
+    z-index: 1;
+}
+
+.productbtn{
+    width: 438px;
+    height: 42px;
+    gap: 0px;
+    opacity: 0px;
+    background: #EB6626;
+    color: #FFFFFF;
+}
+
+.product-details-image-list{
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    margin-top: 10px;
+}
+
+.product-details-image{
+    width: 80%;
+    height: 82%;
+}
+
+.product-details-info-h{
+    font-family: Roboto;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 36px;
+    text-align: left;
+}
+
+.product-details-info-attribute{
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: left;
+}
+
+.product-details-info-attribute-span{
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: left;
+    color: #9F9F9F;
+
+
+}
+
+.btn-group {
+    display: inline-flex;
+}
+
+.size-option {
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid #007bff;
+    cursor: pointer;
+    background-color: white;
+    color: #007bff;
+}
+
+.size-option.selected {
+    background-color: #007bff;
+    color: white;
+}
+
+.product-details-info-btn{
+    border: 1px solid #EB6626;
+    color:white;
+    width: 129px;
+    height: 30px;
+    background-color: #EB6626;
+}
+
+.quantity-selector {
+    display: inline-flex;
+    align-items: center;
+}
+
+.quantity-input {
+    width: 50px;
+    text-align: center;
+    margin: 0 5px;
+}
+
+.btn {
+    padding: 5px 10px;
+    border: 1px solid #EB6626;
+    color: #EB6626;
+    background-color: white;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #EB6626;
+    color: white;
+}
+
+.loginbackground-container {
+    background-image: url('../public/picture/register.jpeg');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    height: 100vh;
+    width: 100%;
+}
+
+.loginbackground-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2); 
+    z-index: 1;
+}
+
+.registration-form {
+    width: 80%;
+    margin: 0 auto;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+}
+
+.registration-form.updated {
+    width: 100%;
+}
+
+.registration-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.registration-form label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.registration-form input[type="text"],
+.registration-form input[type="email"],
+.registration-form input[type="password"],
+.registration-form input[type="number"],
+.registration-form textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.registration-form input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.registration-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #EB6626;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.registration-form button:hover {
+    background-color: #d55b20;
+}
+
+.register-heading-action{
+    font-family: Roboto;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 36px;
+    text-align: left;
+    color: #EB6626;
+}
+
+
+
+.login-heading{
+    font-family: Roboto;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 36px;
+    text-align: left;
+    color: #000;
+}
+
+.wishlist-color{
+    color: #EB6626;
+}
+.wishlist-cross{
+    color: red;
+    font-weight: 700;
+}
+.wishlist-items-pic{
+    width: 70px;
+height: 55px;
+}
+
+.checkoutbillinH{
+    font-family: Roboto;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 30px;
+    letter-spacing: 0.01em;
+    text-align: left;
+    color: #EB6626;
+
+
+}
+
+
+
+.placeorder-card{
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+
+}
+
+.checkout-card-h{
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 30px;
+    letter-spacing: 0.01em;
+    text-align: left;
+
+}
+
+.checkout-card-t{
+    font-family: Roboto;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0.01em;
+    text-align: left;
+}
+
+.checkout-card-t input{
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0.01em;
+    color: #4A4A4A;
+}
+
+.placeorder-checkout{
+    width: 80%;
+    height: 40px;
+    border-radius: 2px 0px 0px 0px;
+    border: 1px 0px 0px 0px;
+    background-color: #EB6626;
+}
+
+.cartbillinH{
+    font-family: Roboto;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 27px;
+    letter-spacing: 0.01em;
+    text-align: left;
+    color: #000000;
+}
+
+.placeorder-cart{
+    width: 200px;
+    height: 32px;
+    border-radius: 2px 0px 0px 0px;
+    background: #2F2F2F;
+    color:white;
+}
+
+.placeorder-cart:hover{
+    color:#2F2F2F;
+    background: white;
+}
+
+.cart-price{
+    color: black;
+}
+
+.card-update{
+    color:#2F2F2F;
+    background: white;
+}
+
+.card-update:hover{
+    background: #2F2F2F;
+    color:white;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+}
+
+.input-group .form-control {
+    flex: 1;
+}
+
+.input-group .btn {
+    border-radius: 0 2px 2px 0;
+}
+
+.cart-sent{
+    background: #262626;
+    color: #ccc;
+    border-color: #000000;
+}
+
+.cart-sent:hover{
+    color: #262626;
+    border-color: white;
+    background: #ccc;
+}
+
+.cart-bottom-one{
+    font-family: Roboto;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 27px;
+    letter-spacing: 0.01em;
+    text-align: left;
+}
+
+.cart-bottom-two{
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 22.4px;
+    text-align: left;
+
+}
+
+.popup-cart-icon{
+    width: 350px;
+    height: 450px;
+    background-color: #FFFFFF;
+}
+
+.blog-card-h{
+    font-family: Roboto;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 24px;
+    text-align: left;
+
+}
+
+.blog-details-gender{
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 24px;
+    letter-spacing: 0.02em;
+    text-align: left;
+    color: #3C3C3C;
+}
+
+.image-container {
+    position: relative;
+    width: 320px; /* Adjusted width to account for gaps */
+    height: 300px; /* Adjust as per your image size */
+    margin: auto;
+}
+
+.vertical-bar {
+    position: absolute;
+    top: 0;
+    width: 23%; /* Adjust width of each bar */
+    height: 100%;
+    background: url('../public/picture/aboutus.jfif') no-repeat center/cover; /* Use the same image for all bars */
+    z-index: 1; /* Ensure bars are above the image */
+    border-radius: 50px; /* Rounded corners */
+    overflow: hidden;
+}
+
+.vertical-bar:nth-child(1) { left: 0; background-position: 0; }
+.vertical-bar:nth-child(2) { left: 25%; background-position: 25%; }
+.vertical-bar:nth-child(3) { left: 50%; background-position: 50%; }
+.vertical-bar:nth-child(4) { left: 75%; background-position: 75%; }
+
+
+
+
+@media only screen and (max-width: 600px){
+.cartd-table{
+    max-height: 600px;
+}
+
+}

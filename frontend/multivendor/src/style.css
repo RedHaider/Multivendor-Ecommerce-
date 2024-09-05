@@ -1,0 +1,666 @@
+.colorset {
+    background: #f3f3f3;
+  }
+  
+  .topdiv {
+    height: 50px;
+    gap: 0px;
+    opacity: 0px;
+    background-color: #eb6626;
+  }
+  
+  .logo {
+    width: 135px;
+    height: 50px;
+    left: 60px;
+  }
+  
+  .icon-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px;
+  }
+  .icon {
+    font-size: 24px;
+    color: #6c757d; /* Adjust the color as needed */
+  }
+  .notification-badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: red;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 5px;
+    font-size: 10px;
+  }
+  
+  .top-section {
+    background: #f3f3f3;
+  }
+  
+  .category-color {
+    color: black;
+  }
+  
+  .category-color :hover {
+    color: black;
+  }
+  
+  .secondpaseblock {
+    width: 460.37px;
+    height: 444.7px;
+    border-radius: 0px 105px 0px 114px;
+    opacity: 0px;
+    background: #eb6626;
+  }
+  .secondpasepic {
+    transform: scale(1.2);
+    width: 100vw;
+    height: auto;
+  }
+  .second-phaseMain {
+    margin-top: 150px;
+  }
+  
+  .secondpaseheader {
+    width: 500px;
+    height: 70px;
+    font-family: Roboto;
+    font-size: 2.5rem; 
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    padding-right: 120px;
+  }
+  
+  .secondpaseletter {
+  
+    height: auto;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 400;
+    text-align: left;
+    font-size: 1rem; 
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+  }
+  
+  
+  .secondpasebutton {
+    width: 100%; 
+    max-width: 196px;
+    height: 56px;
+    gap: 0px;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    opacity: 0px;
+    background: #eb6626;
+    border-color: #eb6626;
+    color: white;
+  }
+  
+  .secondpasebuttonn {
+    width: 100%; 
+    max-width: 196px;
+    height: 56px;
+    top: 520px;
+    left: 63px;
+    gap: 0px;
+    border-radius: 4px;
+    opacity: 0px;
+    border-color: #eb6626;
+    color: #eb6626;
+  }
+  
+  .scondphaseleft {
+    margin-bottom: 150px;
+  }
+  
+  .Trdphaseicon {
+    width: 50px;
+    height: 50px;
+    margin-left: 100px;
+  }
+  
+  .Trdphasehd {
+    width: 200px;
+    height: 30px;
+    font-family: Roboto, sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 30px;
+    text-align: left;
+  }
+  
+  .Trdphasetxt {
+    width: 204px;
+    height: 48px;
+    font-family: Roboto, sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 20.8px;
+    text-align: left;
+  }
+  
+  @media (max-width: 992px) {
+    .Trdphaseicon {
+        margin-left: 0;
+    }
+  
+    .Trdphasetxt,
+    .Trdphasehd {
+      width: 100%;
+    }
+  
+    .Trdphasehd, .Trdphasetxt {
+        width: auto;
+    }
+  }
+  
+  .card-img-overlay {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .fourthphase{
+    margin: auto;
+  }
+  
+  .frthphasetitle {
+    width: 211px;
+    height: 30px;
+    font-family: Roboto;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 30px;
+    text-align: left;
+    color: #000000;
+  }
+  
+  .frthphasetext {
+    width: 149px;
+    height: 21px;
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 21px;
+    text-align: left;
+    color: #000000;
+  }
+  
+  .frthphaseimg {
+    width: 300px;
+    height: 255px;
+    object-fit: cover;
+    object-position: top;
+  
+  }
+  
+  .frthphaseimg1 {
+    width: 360px;
+    height: 525px;
+    object-fit: cover;
+    object-position: top;
+  }
+  
+  @media (max-width: 1200px) {
+    .frthphaseimg {
+      width: 220px;
+      object-fit: cover;
+      object-position: top;
+    
+    }
+    
+    .frthphaseimg1 {
+      width: 300px;
+      object-fit: cover;
+      object-position: top;
+    }
+  }
+  
+  @media (max-width: 992px) {
+  
+    .frthphaseimg1 {
+      width: 300px;
+      object-fit: cover;
+      object-position: top;
+    }
+    .frthphaseimg {
+      width: 300px;
+      object-fit: cover;
+      object-position: top;
+    
+    }
+  }
+  
+  .gallery-menu {
+    overflow-x: auto;
+    white-space: nowrap;
+    background-color: #f8f9fa;
+    padding: 10px 0;
+  }
+  .gallery-menu .nav-link {
+    padding: 10px 20px;
+    color: #333;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: left;
+  }
+  .gallery-menu .nav-link:hover {
+    color: #eb6626;
+  }
+  
+  .fthphaseimg {
+    width: 265px;
+    height: 200px;
+    object-fit: cover;
+    object-position: top;
+    box-shadow: 1px 1px 5px grey;
+  }
+  
+  .dots {
+    color: #333;
+    width: 15px;
+    height: 15px;
+  }
+  
+  .stars {
+    color: #fac302;
+  }
+  
+  .rating {
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 18px;
+    text-align: left;
+    color: #696969;
+  }
+  
+  .offer {
+    font-family: Roboto;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+    text-align: left;
+    width: 42px;
+    height: 18px;
+    color: #ffffff;
+    background: #eb6626;
+    width: 48px;
+    height: 23px;
+  }
+  
+  .buttonMargin {
+    margin-bottom: 140px;
+  }
+  .cardButton {
+    background-color: #eb6626;
+    color: #ffffff;
+  }
+  
+  .OnHoverShow {
+    transition: 0.5s ease;
+    opacity: 0;
+  }
+  
+  .containar:hover .OnHoverShow {
+    transition: 0.5s ease;
+    opacity: 1;
+  }
+  
+  .background-container {
+    background-image: url("../public/picture/6thphasebg.jfif");
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    height: 100vh;
+    width: 100%;
+  }
+  
+  .background-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+  
+  .content-container {
+    position: relative;
+    z-index: 2;
+  }
+  
+  .fthphaseh {
+    font-family: Roboto;
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 40px;
+    text-align: center;
+    color: #ffffff;
+  }
+  
+  .fthphasei {
+    width: 60px;
+    height: 60px;
+    background: #ffffff;
+    border-radius: 25px;
+  }
+  .carousel-item {
+    text-align: center;
+  }
+  .carousel-item img {
+    border-radius: 50%;
+  }
+  .carousel-caption {
+    bottom: 20px;
+  }
+  .carousel-control-prev,
+  .carousel-control-next {
+    width: 5%;
+  }
+  .thumbnail {
+    cursor: pointer;
+    margin: 5px;
+  }
+  .thumbnail img {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+  }
+  
+  .ethphasehch {
+    font-family: Roboto;
+    font-size: 36px;
+    padding-left: 40%;
+    padding-right: 40%;
+    font-weight: 400;
+    line-height: 36px;
+    text-align: center;
+    margin-top: 0;
+  }
+  
+  .ethphasetxt {
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: center;
+    padding-left: 30%;
+    padding-right: 30%;
+  }
+  
+  .ethphasename {
+    font-family: Roboto;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 20px;
+    text-align: center;
+    color: #000000;
+  }
+  
+  .ethphaseC {
+    font-family: Roboto;
+    font-size: 128px;
+    font-weight: 400;
+    text-align: center;
+    color: #eb6626;
+    margin-bottom: 0;
+    transform: scale(-1.5);
+  }
+  
+  .nphase {
+    margin-top: 100px;
+  }
+  
+  .footerWord {
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20.48px;
+    text-align: left;
+    color: #ffffff;
+  }
+  
+  .footerStyle {
+    background: #1a1818;
+    margin-bottom: 0px;
+  }
+  
+  .iconfooter {
+    font-size: 24px;
+    color: white; /* Adjust the color as needed */
+  }
+  
+  .footerheader {
+    font-family: Inter;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 24.2px;
+    text-align: left;
+  }
+  
+  .footerbutton {
+    background: #eb6626;
+    width: 250px;
+    height: 39px;
+    gap: 0px;
+    border-radius: 1px 0px 0px 0px;
+    opacity: 0px;
+    border: #000000;
+  }
+  
+  .footerWordlast {
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: left;
+    color: white;
+  }
+  
+  .footerlogo {
+    width: 50px;
+    height: 40px;
+  
+    gap: 0px;
+    opacity: 0px;
+  }
+  
+  .underline-hr {
+    border: 0;
+    height: 2px; /* Thickness of the underline */
+    width: 50%; /* Width of the underline relative to the heading */
+    background-color: #ff5733; /* Color of the underline */
+    margin-top: -2px; /* Adjust this value as needed to bring the hr closer to the heading */
+  }
+  .heading {
+    display: inline-block;
+    position: relative;
+  }
+  
+  .rotate-icon {
+    transition: transform 0.3s;
+  }
+  .rotate-icon.up {
+    transform: rotate(180deg);
+  }
+  
+  .popup-cart-icon {
+    width: 350px;
+    height: 450px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+  .popup-cart {
+    width: 70px;
+    height: 50px;
+  }
+  .popup-cart-description {
+    font-family: Roboto;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0.01em;
+    text-align: left;
+  }
+  .popup-cart-details {
+    font-family: Roboto;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0.01em;
+    text-align: left;
+    color: #9b9b9b;
+  }
+  
+  .popup-text-color {
+    color: #eb6626;
+  }
+  .popup-button-color {
+    width: 267px;
+    height: 34px;
+    border-radius: 2px 0px 0px 0px;
+    background: #eb6626;
+    border-color: #eb6626;
+    color: #ffffff;
+  }
+  
+  .popup-button-color-2 {
+    width: 267px;
+    height: 34px;
+    border-radius: 2px 0px 0px 0px;
+    border-color: #eb6626;
+    color: #eb6626;
+  }
+  
+  .popup-cart-icon {
+    position: absolute;
+    top: 50px; /* Adjust position as needed */
+    right: 10px; /* Adjust position as needed */
+    width: 300px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: none; /* Initially hidden */
+    z-index: 1000; /* Ensure it appears above other content */
+  }
+  
+  .popup-cart-icon.active {
+    display: block; /* Display when active */
+  }
+  
+  .search-bar {
+    display: none; /* Hide search bar by default */
+    position: absolute;
+    top: 70px; /* Adjust position as needed */
+    right: 20px; /* Adjust position as needed */
+    z-index: 1000; /* Ensure it appears above other content */
+  }
+  
+  .search-bar.active {
+    display: block; /* Display search bar when active */
+  }
+  
+  .yellow {
+    color: yellow;
+  }
+  
+  .black {
+    color: black;
+  }
+  
+  .white {
+    color: rgb(182, 181, 181);
+  }
+  .fthphaseimg {
+    max-width: 100%;
+   
+  }
+  
+  .card-body {
+    padding: 1rem; /* Adjust padding as needed */
+  }
+  
+  .text-danger {
+    white-space: nowrap; /* Prevent line wrapping */
+  }
+  
+  
+  
+  @media only screen and (max-width: 600px) {
+    .secondpaseblock {
+      width: 300px;
+      height: 240px;
+      
+    }
+    .secondpasepic {
+      transform: scale(1.5);
+      width: 200px;
+      bottom: 0px;
+      position: relative;
+      padding: auto;
+    }
+    .secondpaseheader {
+      font-size: 30px;
+      overflow-wrap: break-word;
+      width: 100%;
+      margin-bottom: 50px;
+    }
+    .secondpaseletter {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+    .secondpasebuttons {
+      margin-top: 60px;
+      display: flex;
+      justify-content: center;
+    }
+    .Trdphasetxt,
+    .Trdphasehd {
+      width: 100%;
+      text-align: center;
+    }
+    
+    .frtphasecard {
+      padding: 4px;
+    }
+    .frthphaseimg {
+      width: 300px;
+      margin: 2px auto;
+    }
+    .frthphaseimg1 {
+      width: 290px;
+      margin: 2px auto;
+      margin-left: 0px;
+    }
+    .fthphaseimg {
+      width: 290px;
+      margin: 2px auto;
+      margin-left: 0px;
+    }
+    .ethphasehch {
+      font-size: 30px;
+      padding-left: 0%;
+      padding-right: 0%;
+    }
+  
+    .ethphasetxt {
+      font-size: 14px;
+      font-weight: 400;
+      padding-left: 0%;
+      padding-right: 0%;
+    }
+  }
+  
