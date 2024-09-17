@@ -17,7 +17,7 @@ import Login from './components/login';
 import ProductDetails from './components/productdetails';
 import Register from './components/register';
 import Whishlist from './components/whishlist';
-
+import OrderTracking from './components/ordertracking';
 //bootstrap
 import 'bootstrap/dist/js/bootstrap.bundle.min'; // Includes Popper.js
 
@@ -28,27 +28,35 @@ import $ from 'jquery';
 import Popper from 'popper.js';
 import './style.css'
 import './style2.css'
+import './accordina.css'
 
 
 function App() {
   return (
-    <div className="App">
+    <Router>
+      <div className='App'>
       <Header/>
-      <Home/>
-      <Shop/>
-      <Blog/>
-      <AboutUs/>
-      {/* <Whishlist/> */}
-      {/* <Register/> */}
-      {/* <ProductDetails/> */}
-      {/* <Login/> */}
-      {/* <ContactUs/> */}
-      {/* <Checkout/> */}
-      {/* <BlogDetails/> */}
-      {/* <Cart/> */}
-      {/* <BlogDetails/> */}
+      <div className='content'>
+      <Routes>
+        <Route path='/' element={<Home/>}/>
+        <Route path='/shop' element={<Shop/>}/>
+        <Route path='/blog' element={<Blog/>}/>
+        <Route path='/Whishlist' element={<Whishlist/>}/>
+        <Route path='/about-us' element={<AboutUs/>}/>
+        <Route path='/productdetails' element={<ProductDetails/>}/>
+        <Route path='/contactus' element={<ContactUs/>}/>
+        <Route path='/blogdetails' element={<BlogDetails/>}/>
+        <Route path='/cart' element={<Cart/>}/>
+        <Route path='/checkout' element={<Checkout/>}/>
+        <Route path='/login' element={<Login/>}/>
+        <Route path='/register' element={<Register/>}/>
+        <Route path='/ordertracking' element={<OrderTracking/>}/>
+
+      </Routes>
+      </div>
       <Footer/>
-    </div>
+      </div>
+    </Router>
   );
 }
 

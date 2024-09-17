@@ -1,50 +1,60 @@
+import { Link, useNavigate } from 'react-router-dom';
+
 const Register = () => {
-    return ( 
-        <div>
-                <div class="loginbackground-container mb-5">
-        <div class="content-container d-flex flex-column align-items-center justify-content-center min-vh-100 text-center">
-            <h2 class="shopeoneH"> Home &gt; Register / Login</h2>
+  const navigate = useNavigate();
+
+  const handleRegistration = () => {
+    navigate('/register');
+  };
+
+  const handleLogin = () => {
+    navigate('/login');
+  };
+
+  return (
+    <div>
+      <div className="loginbackground-container mb-5">
+        <div className="content-container d-flex flex-column align-items-center justify-content-center min-vh-100 text-center">
+          <h2 className="shopeoneH"> Home &gt; Register / Login</h2>
         </div>
       </div>
 
-     {/* registration form */}
-
-     <div class="container">
-        <div class="row justify-content-center text-center">
-            <a href="login.html" class="mr-3 login-heading nav-link">Login</a>
-            <div class="heading">
-                <a href="register.html" class="register-heading-action nav-link">Register</a>
-                <hr class="underline-hr mx-auto"/>
-            </div>
+      <div className="container">
+        <div className="row justify-content-center text-center">
+          <Link to="/login" className="mr-3 login-heading nav-link">
+            Login
+          </Link>
+          <div className="heading">
+            <Link to="/register" className="register-heading-action nav-link">
+              Register
+            </Link>
+            <hr className="underline-hr mx-auto" />
+          </div>
         </div>
-    </div>
-    
+      </div>
 
+      <div className="container mb-5">
+        <form className="registration-form">
+          <h2>Register</h2>
+          <label htmlFor="username">Username *</label>
+          <input type="text" id="username" name="username" required />
 
-     {/* registration form ends */}
+          <label htmlFor="contact">Phone number or Email *</label>
+          <input type="text" id="contact" name="contact" required />
 
-    <div class="container mb-5">
-    <form class="registration-form">
-        <h2>Register</h2>
-        <label for="username">Username *</label>
-        <input type="text" id="username" name="username" required/>
+          <label htmlFor="password">Password *</label>
+          <input type="password" id="password" name="password" required />
 
-        <label for="contact">Phone number or Email *</label>
-        <input type="text" id="contact" name="contact" required/>
-
-        <label for="password">Password *</label>
-        <input type="password" id="password" name="password" required/>
-
-        <label>
-            <input type="checkbox" id="privacy" name="privacy" required/>
+          <label>
+            <input type="checkbox" id="privacy" name="privacy" required />
             I agree to the <a href="#">privacy policy</a>
-        </label>
+          </label>
 
-        <button type="submit">Register</button>
-    </form>
+          <button type="submit">Register</button>
+        </form>
+      </div>
     </div>
-        </div>
-     );
-}
- 
+  );
+};
+
 export default Register;

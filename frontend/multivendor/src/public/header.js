@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import TopBar from "./topBar";
 
 const Header = () => {
@@ -41,19 +42,29 @@ const Header = () => {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul className="navbar-nav mr-auto pl-5">
                     <li className="nav-item active" onclick="window.location.href='index.html'">
-                    <a className="nav-link" href="index.html">Home </a>
+                        <Link to="/">
+                        <a className="nav-link" >Home </a>
+                        </Link>
                     </li>
                     <li className="nav-item active" onclick="window.location.href='shop.html'">
-                        <a className="nav-link" href="shop.html">Shop </a>
+                        <Link to="shop">
+                        <a className="nav-link" >Shop </a>
+                        </Link>
                     </li>
                     <li className="nav-item active" onclick="window.location.href='aboutus.html'">
-                        <a className="nav-link" href="aboutus.html">About us</a>
+                        <Link to="about-us">
+                        <a className="nav-link" >About us</a>
+                        </Link>
                     </li>
                     <li className="nav-item active" onclick="window.location.href='blog.html'">
-                        <a className="nav-link" href="blog.html">Blog </a>
+                        <Link to="blog">
+                        <a className="nav-link" >Blog </a>
+                        </Link>
                     </li>
                     <li className="nav-item active" onclick="window.location.href='contactus.html'">
-                        <a className="nav-link" href="contactus.html">Contact us</a>
+                        <Link to="contactus">
+                        <a className="nav-link" >Contact us</a>
+                        </Link>
                     </li>
                 </ul>
                 <div className="icon-container">
@@ -63,12 +74,19 @@ const Header = () => {
                 
                     <div className="p-3">
                     <div className="search-bar" id="searchBar">
+                    
                         <input className="form-control" type="search" placeholder="Search" aria-label="Search"/>
+                    
                     </div>
                     <div style={{ position: 'relative', display: 'inline-block' }} >
+                    <Link to="/cart">
                          <i  className="fa fa-shopping-bag icon" id="cartIcon"></i>
+                    </Link>
                         <span className="notification-badge">1</span>
                     </div>
+
+                    {/* Popup cart */}
+
                     <div className="popup-cart-icon p-2" >
                         <div className="row">
                             <div className="col-4">
@@ -118,11 +136,15 @@ const Header = () => {
                         </div>
                     </div>
                 </div>         
-                <a className="nav-link" onclick="window.location.href='whishlist.html'">
+                <a className="nav-link" onclick="window.location.href='/Whishlist'">
+                     <Link to="Whishlist">
                     <i className="fa fa-heart icon p-2"></i>
+                    </Link>
                 </a>
-                <a className="nav-link" onclick="window.location.href='login.html'">
+                <a className="nav-link" onclick="window.location.href='login'">
+                    <Link to="login">
                     <i className="fa fa-user icon p-2"></i>
+                    </Link>
                 </a>
                 
                 </div>

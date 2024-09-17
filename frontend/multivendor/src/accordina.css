@@ -1,0 +1,71 @@
+/* Custom Accordion Styles */
+.custom-accordion .card {
+    border: none;
+    background: none;
+    margin-bottom: 15px;
+  }
+  
+  .custom-accordion .card-header {
+    padding: 0;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+  }
+  
+  .custom-accordion .btn {
+    display: block; /* Allow button text to wrap */
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 15px 20px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    font-weight: bold;
+    color: #333;
+    text-align: left;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    word-wrap: break-word; /* Ensure text wraps */
+    white-space: normal;   /* Allow text to break into multiple lines */
+  }
+  
+  .custom-accordion .btn.collapsed {
+    background-color: #fff;
+    box-shadow: none;
+    margin-bottom: 10px;
+  }
+  
+  .custom-accordion .btn::after {
+    content: '+';
+    font-size: 1.5rem;
+    color: #eb6626;
+    float: right; /* Keep the + icon aligned to the right */
+  }
+  
+  .custom-accordion .btn:not(.collapsed)::after {
+    content: '-';
+  }
+  
+  .custom-accordion .btn:hover {
+    text-decoration: none;
+    background-color: #f0f0f0;
+  }
+  
+  .custom-accordion .card-body {
+    background-color: #fff;
+    border-radius: 0 0 10px 10px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Media Query for Smaller Screens */
+  @media (max-width: 768px) {
+    .custom-accordion .btn {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+  
+    .custom-accordion .card-body {
+        padding: 15px;
+    }
+  }
+  
