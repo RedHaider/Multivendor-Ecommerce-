@@ -17,6 +17,9 @@ urlpatterns = [
     path('login/', login, name='login'),
     path('api/accounts/', include('accounts.urls')),
 
+    #form
+    path('account/', include('accounts.urls')),
+
     #submenu's for the the urls
     
     path('product_management/product-form', product_form, name='product_form'),
