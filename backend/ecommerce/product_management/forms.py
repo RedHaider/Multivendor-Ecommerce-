@@ -1,5 +1,6 @@
 from django import forms
 from .models import Banner, Slider, Size, Color, Brand, Category, SubCategory, Product, ProductImage, ProductAttribute , Review
+from django.forms import inlineformset_factory
 
 # Form for Category
 class CategoryForm(forms.ModelForm):
@@ -48,3 +49,33 @@ class BannerForm(forms.ModelForm):
     class Meta:
         model = Banner
         fields = ['banner_title', 'banner_url', 'banner_image']
+
+# Main product form
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ['name', 'description', 'price', 'purchased_price', 'category', 'subcategory', 'brand', 'stock_level', 'vendor', 'image']
+
+# Product variant form (size, color, image, quantity)
+class ProductAttributeForm(forms.ModelForm):
+    class Meta:
+        model = ProductAttribute
+        fields = ['color', 'size', 'image', 'quantity']
+
+# Product image form (for adding multiple images)
+class ProductImageForm(forms.ModelForm):
+    class Meta:
+        model = ProductImage
+        fields = ['photo_name']
+    
+# Formset for adding multiple product variants
+ProductAttributeFormSet = inlineformset_factory(
+    Product, ProductAttribute, form=ProductAttributeForm,
+    extra=1, can_delete=True
+)
+
+# Formset for adding multiple product images
+ProductImageFormSet = inlineformset_factory(
+    Product, ProductImage, form=ProductImageForm,
+    extra=1, can_delete=True
+)

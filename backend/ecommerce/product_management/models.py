@@ -92,6 +92,8 @@ class ProductAttribute(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='attributes')
     color = models.ForeignKey(Color, on_delete=models.CASCADE)
     size = models.ForeignKey(Size, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='product_varient_images/', blank=True,null=True)
+    quantity = models.PositiveIntegerField(default=1)
 
     def __str__(self):
         return f"{self.product.name} - {self.color.color_name} - {self.size.size_name}"

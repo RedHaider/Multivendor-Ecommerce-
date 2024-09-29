@@ -1,225 +1,178 @@
-
 {% extends 'base.html' %}
 
 {% load static %}
 
 {% block content %}
-        <div class="container">
-          <div class="page-inner">
-            <div class="page-header">
-              <h3 class="fw-bold mb-3">Add Product</h3>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="card">
-                  <div class="card-header d-flex justify-content-between">
-                    <h4 class="card-title">Add Product</h4>
-
-                    <a href="{% url 'product_management' %}" class="btn btn-danger btn-round ms-auto text-white" style="text-decoration: none;">
-                      Back
-                  </a>
-                  </div>
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col-md-6 col-lg-4">
-                        <div class="form-group form-inline">
-                          <label
-                            for="inlineinput"
-                            class="col-md-3 col-form-label"
-                            >Product Id</label
-                          >
-                          <div class=" p-0">
-                            <input
-                              type="text"
-                              class="form-control input-full"
-                              id="inlineinput"
-                              placeholder="Enter Input"
-                            />
-                          </div>
-                        </div>
-                          <div class="form-group form-inline">
-                            <label
-                              for="inlineinput"
-                              class="col-md-3 col-form-label"
-                              >Product Description</label
-                            >
-                            <div class=" p-0">
-                              <input
-                                type="text"
-                                class="form-control input-full"
-                                id="inlineinput"
-                                placeholder="Enter Input"
-                              />
-                            </div>
-                          </div>
-
-                          <div class="form-group form-inline">
-                            <label
-                              for="inlineinput"
-                              class="col-md-3 col-form-label"
-                              >Product Category</label
-                            >
-                            <div class=" p-0">
-                              <input
-                                type="text"
-                                class="form-control input-full"
-                                id="inlineinput"
-                                placeholder="Enter Input"
-                              />
-                            </div>
-                          </div>
-
-                          <div class="form-group form-inline">
-                            <label
-                              for="inlineinput"
-                              class="col-md-3 col-form-label"
-                              >Product Stock Level</label
-                            >
-                            <div class=" p-0">
-                              <input
-                                type="text"
-                                class="form-control input-full"
-                                id="inlineinput"
-                                placeholder="Enter Input"
-                              />
-                            </div>
-                          </div>
-
-                          <div class="form-group">
-                            <label for="exampleFormControlFile1"
-                              >Upload Product Image</label
-                            >
-                            <input
-                              type="file"
-                              class="form-control-file"
-                              id="exampleFormControlFile1"
-                            />
-                          </div>
-
-
-                      </div>
-                      <div class="col-md-6 ">
-                        <div class="form-group form-inline">
-                            <label
-                              for="inlineinput"
-                              class="col-md-3 col-form-label"
-                              >Product Name</label
-                            >
-                            <div class=" p-0">
-                              <input
-                                type="text"
-                                class="form-control input-full"
-                                id="inlineinput"
-                                placeholder="Enter Input"
-                              />
-                            </div>
-                          </div>
-                          <div class="form-group form-inline">
-                            <label
-                              for="inlineinput"
-                              class="col-md-3 col-form-label"
-                              >Product Price</label
-                            >
-                            <div class=" p-0">
-                              <input
-                                type="text"
-                                class="form-control input-full"
-                                id="inlineinput"
-                                placeholder="Enter Input"
-                                oninput="validateNumber(this)"
-                              />
-                            </div>
-                          </div>
-                          <div class="form-group form-inline">
-                            <label
-                              for="inlineinput"
-                              class="col-md-3 col-form-label"
-                              >Product brand</label
-                            >
-                            <div class=" p-0">
-                              <input
-                                type="text"
-                                class="form-control input-full"
-                                id="inlineinput"
-                                placeholder="Enter Input"
-                              />
-                            </div>
-                          </div>
-                          <div class="form-group form-inline">
-                            <label
-                              for="inlineinput"
-                              class="col-md-3 col-form-label"
-                              >Vendor ID</label
-                            >
-                            <div class=" p-0">
-                              <input
-                                type="text"
-                                class="form-control input-full"
-                                id="inlineinput"
-                                placeholder="Enter Input"
-                              />
-                            </div>
-                          </div>
-                          <div class="form-group">
-                            <label>In Stock</label><br />
-                            <div class="d-flex">
-                              <div class="form-check">
-                                <input
-                                  class="form-check-input"
-                                  type="radio"
-                                  name="flexRadioDefault"
-                                  id="flexRadioDefault1"
-                                />
-                                <label
-                                  class="form-check-label"
-                                  for="flexRadioDefault1"
-                                >
-                                  In Stock
-                                </label>
-                              </div>
-                              <div class="form-check">
-                                <input
-                                  class="form-check-input"
-                                  type="radio"
-                                  name="flexRadioDefault"
-                                  id="flexRadioDefault2"
-                                  checked
-                                />
-                                <label
-                                  class="form-check-label"
-                                  for="flexRadioDefault2"
-                                >
-                                  Out Of Stock
-                                </label>
-                              </div>
-                            </div>
-                          </div>
-                      </div>
-
-                    </div>
-                  </div>
-                  <div class="card-action">
-                    <button class="btn btn-success">Submit</button>
-                    <button class="btn btn-danger">Cancel</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+<div class="container">
+    <div class="page-inner">
+        <div class="page-header">
+            <h3 class="fw-bold mb-3">Add Product</h3>
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <h4 class="card-title">Add Product</h4>
+
+                        <a href="{% url 'product_management' %}" class="btn btn-danger btn-round ms-auto text-white" style="text-decoration: none;">
+                            Back
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <div class="row">
+                                <!-- Left Column -->
+                                <div class="col-md-6 col-lg-4">
+                                    <!-- Product Details -->
+                                    <div class="form-group form-inline">
+                                        <label for="inlineinput" class="col-md-3 col-form-label">Product Id</label>
+                                        <div class="p-0">
+                                          <input
+                                          type="url"
+                                          class="form-control input-full"
+                                          id="banner_url"
+                                          name="banner_url" 
+                                          placeholder="Enter Banner URL"
+                                          value="{{ product_form.name.value|default:'' }}"
+                                      />
+                                      {{ product_form.name.errors }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-inline">
+                                        <label for="inlineinput" class="col-md-3 col-form-label">Product Description</label>
+                                        <div class="p-0">
+                                            {{ product_form.description }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-inline">
+                                        <label for="inlineinput" class="col-md-3 col-form-label">Product Category</label>
+                                        <div class="p-0">
+                                            {{ product_form.category }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-inline">
+                                        <label for="inlineinput" class="col-md-3 col-form-label">Product Stock Level</label>
+                                        <div class="p-0">
+                                            {{ product_form.stock_level }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleFormControlFile1">Upload Product Image</label>
+                                        {{ product_form.image }}
+                                    </div>
+                                </div>
+
+                                <!-- Right Column -->
+                                <div class="col-md-6">
+                                    <div class="form-group form-inline">
+                                        <label for="inlineinput" class="col-md-3 col-form-label">Product Name</label>
+                                        <div class="p-0">
+                                            {{ product_form.name }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-inline">
+                                        <label for="inlineinput" class="col-md-3 col-form-label">Product Price</label>
+                                        <div class="p-0">
+                                            {{ product_form.price }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-inline">
+                                        <label for="inlineinput" class="col-md-3 col-form-label">Product Brand</label>
+                                        <div class="p-0">
+                                            {{ product_form.brand }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-inline">
+                                        <label for="inlineinput" class="col-md-3 col-form-label">Vendor ID</label>
+                                        <div class="p-0">
+                                            {{ product_form.vendor }}
+                                        </div>
+                                    </div>
+
+                                    <!-- Stock Availability -->
+                                    <div class="form-group">
+                                        <label>In Stock</label><br />
+                                        <div class="d-flex">
+                                            <div class="form-check">
+                                                {{ product_form.stock_status.as_radio }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Product Variants Section -->
+                            <h3>Product Variants</h3>
+                            {{ attribute_formset.management_form }}
+                            <div id="variant-formset">
+                                {% for form in attribute_formset %}
+                                <div class="variant-form-row">
+                                    {{ form.as_p }}
+                                    <a href="#" class="remove-form">Remove Variant</a>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <button type="button" id="add-variant" class="btn btn-primary">Add Another Variant</button>
+
+                            <!-- Product Images Section -->
+                            <h3>Product Images</h3>
+                            {{ image_formset.management_form }}
+                            <div id="image-formset">
+                                {% for form in image_formset %}
+                                <div class="image-form-row">
+                                    {{ form.as_p }}
+                                    <a href="#" class="remove-form">Remove Image</a>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <button type="button" id="add-image" class="btn btn-primary">Add Another Image</button>
+
+                            <!-- Submit Button -->
+                            <div class="card-action">
+                                <button type="submit" class="btn btn-success">Submit</button>
+                                <a href="{% url 'product_management' %}" class="btn btn-danger">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
- 
 {% block script %}
-    <script>
-        function validateNumber(input) {
-            // Allow only numbers and decimal points
-            input.value = input.value.replace(/[^0-9.]/g, '');
-            
-            // Prevent multiple decimal points
-            if ((input.value.match(/\./g) || []).length > 1) {
-                input.value = input.value.slice(0, -1);
-            }
-        }
-        </script>
+<script>
+    // Function to dynamically add/remove product variants and images
+
+    document.getElementById('add-variant').addEventListener('click', function(e) {
+        e.preventDefault();
+        let totalForms = document.querySelector('#id_attributes-TOTAL_FORMS');
+        let formCount = parseInt(totalForms.value);
+        let newForm = document.querySelector('.variant-form-row').cloneNode(true);
+        newForm.innerHTML = newForm.innerHTML.replace(/attributes-(\d+)-/g, 'attributes-' + formCount + '-');
+        totalForms.value = formCount + 1;
+        document.getElementById('variant-formset').appendChild(newForm);
+    });
+
+    document.getElementById('add-image').addEventListener('click', function(e) {
+        e.preventDefault();
+        let totalForms = document.querySelector('#id_images-TOTAL_FORMS');
+        let formCount = parseInt(totalForms.value);
+        let newForm = document.querySelector('.image-form-row').cloneNode(true);
+        newForm.innerHTML = newForm.innerHTML.replace(/images-(\d+)-/g, 'images-' + formCount + '-');
+        totalForms.value = formCount + 1;
+        document.getElementById('image-formset').appendChild(newForm);
+    });
+
+    // Handle form removal
+    document.querySelectorAll('.remove-form').forEach(function(removeBtn) {
+        removeBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            this.closest('.form-row').remove();
+        });
+    });
+</script>
 {% endblock %}

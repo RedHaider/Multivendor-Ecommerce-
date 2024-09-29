@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Banner, Slider, Size, Color, Brand, Category, SubCategory, Product, ProductImage, ProductAttribute , Review
-from .forms import BannerForm, SliderForm ,SizeForm , BrandForm , CategoryForm , SubCategoryForm, ReviewForm , ColorForm
+from .forms import BannerForm, SliderForm ,SizeForm , BrandForm , CategoryForm , SubCategoryForm, ReviewForm , ColorForm , ProductForm, ProductAttributeFormSet, ProductImageFormSet
 
 
 #Banner Crud Operations done
@@ -239,7 +239,6 @@ def size_form(request):
         form = SizeForm()
     return render(request, 'product_management/size-form.html', {'form': form})
 
-
 def size_edit(request, pk):
     size = get_object_or_404(Size, pk=pk)  # Ensure you use Size here
     if request.method == 'POST':
@@ -251,7 +250,6 @@ def size_edit(request, pk):
         form = SizeForm(instance=size)
     return render(request, 'product_management/size-edit.html', {'form': form, 'size': size}) 
 
-
 def size_delete(request, pk):
     size = get_object_or_404(Size, pk=pk)
     if request.method == 'POST':
@@ -260,4 +258,35 @@ def size_delete(request, pk):
     return render(request, 'product_management/size-list.html')
 
 
+def product_create(request):
+    if request.method == 'POST':
+        product_form = ProductForm(request.POST)
+        attribute_formset = ProductAttributeFormSet(request.POST)
+        image_formset = ProductImageFormSet(request.POST, request.FILES)
 
+        if product_form.is_valid() and attribute_formset.is_valid() and image_formset.is_valid():
+            # Save your product and associated forms
+            product = product_form.save()
+            attributes = attribute_formset.save(commit=False)
+            images = image_formset.save(commit=False)
+
+            for attribute in attributes:
+                attribute.product = product
+                attribute.save()
+
+            for image in images:
+                image.product = product
+                image.save()
+
+            return redirect('product_management')
+    else:
+        product_form = ProductForm()
+        attribute_formset = ProductAttributeFormSet(queryset=ProductAttribute.objects.none())
+        image_formset = ProductImageFormSet(queryset=ProductImage.objects.none())
+
+    context = {
+        'product_form': product_form,
+        'attribute_formset': attribute_formset,
+        'image_formset': image_formset,
+    }
+    return render(request, 'pages/product-form', context)
