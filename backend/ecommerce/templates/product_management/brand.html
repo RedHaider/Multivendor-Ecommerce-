@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="page-inner">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card p-3">
+                        <div class="page-header d-flex justify-content-between p-1">
+                            <h3 class="fw-bold mb-3">Brand List</h3>
+                            <a href="{% url 'brand-form' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
+                                Add Brand
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="multi-filter-select" class="display table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Brand ID</th>
+                                            <th>Brand Name</th>
+                                            <th>Brand Slug</th>
+                                            <th>Brand Image</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Brand ID</th>
+                                            <th>Brand Name</th>
+                                            <th>Brand Slug</th>
+                                            <th>Brand Image</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        <!-- Static Data for Frontend Display -->
+                                        <tr>
+                                            <td><a href="{% url 'brand-edit' %}" class="text-black">1</a></td>
+                                            <td>Nike</td>
+                                            <td>nike</td>
+                                            <td><img src="/static/images/nike.png" alt="Nike" width="50"></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'brand-edit' %}" class="text-black">2</a></td>
+                                            <td>Adidas</td>
+                                            <td>adidas</td>
+                                            <td><img src="/static/images/adidas.png" alt="Adidas" width="50"></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'brand-edit' %}" class="text-black">3</a></td>
+                                            <td>Puma</td>
+                                            <td>puma</td>
+                                            <td><img src="/static/images/puma.png" alt="Puma" width="50"></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'brand-edit' %}" class="text-black">4</a></td>
+                                            <td>Reebok</td>
+                                            <td>reebok</td>
+                                            <td><img src="/static/images/reebok.png" alt="Reebok" width="50"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+<script>
+    $(document).ready(function () {
+        // Initialize Datatable
+        $("#multi-filter-select").DataTable({
+            pageLength: 5,
+            initComplete: function () {
+                this.api()
+                    .columns()
+                    .every(function () {
+                        var column = this;
+                        var select = $(
+                            '<select class="form-select"><option value=""></option></select>'
+                        )
+                            .appendTo($(column.footer()).empty())
+                            .on("change", function () {
+                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                column
+                                    .search(val ? "^" + val + "$" : "", true, false)
+                                    .draw();
+                            });
+
+                        column.data().unique().sort().each(function (d, j) {
+                            select.append('<option value="' + d + '">' + d + "</option>");
+                        });
+                    });
+            },
+        });
+    });
+</script>
+{% endblock %}

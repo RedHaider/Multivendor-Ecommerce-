@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="page-inner">
+            <div class="page-header">
+                <h3 class="fw-bold mb-3">Add Banner</h3>
+            </div>
+            {% if user_form.errors or vendor_form.errors %}
+            <div class="alert alert-danger">
+                <ul>
+                    {% for field, errors in user_form.errors.items %}
+                        {% for error in errors %}
+                            <li>{{ field }}: {{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for field, errors in vendor_form.errors.items %}
+                        {% for error in errors %}
+                            <li>{{ field }}: {{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between">
+                            <h4 class="card-title">Add Banner </h4>
+                            <a href="{% url 'banner-list' %}" class="btn btn-danger btn-round ms-auto text-white" style="text-decoration: none;">
+                                Back
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-4">
+                                        <!-- Banner Title -->
+                                        <div class="form-group form-inline">
+                                            <label for="banner_title" class="col-md-3 col-form-label">Banner Title</label>
+                                            <div class="p-0">
+                                                <input
+                                                    type="text"
+                                                    class="form-control input-full"
+                                                    id="banner_title"
+                                                    name="banner_title" 
+                                                    placeholder="Enter Banner Title"
+                                                    value="{{ form.banner_title.value|default:''}}"
+                                                />
+                                                {{ form.banner_title.errors }}
+                                            </div>
+                                        </div>
+
+                                        <!-- Banner URL -->
+                                        <div class="form-group form-inline">
+                                            <label for="banner_url" class="col-md-3 col-form-label">Banner URL</label>
+                                            <div class="p-0">
+                                                <input
+                                                    type="url"
+                                                    class="form-control input-full"
+                                                    id="banner_url"
+                                                    name="banner_url" 
+                                                    placeholder="Enter Banner URL"
+                                                    value="{{ form.banner_url.value|default:'' }}"
+                                                />
+                                                {{ form.banner_url.errors }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <!-- Banner Image -->
+                                        <div class="form-group form-inline">
+                                            <label for="banner_image" class="col-md-3 col-form-label">Banner Image</label>
+                                            <div class="p-0">
+                                                <input
+                                                    type="file"
+                                                    class="form-control input-full"
+                                                    id="banner_image"
+                                                    name="banner_image" 
+                                                />
+                                                {{ form.banner_image.errors }}
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="card-action">
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                    <a href="{% url 'banner-list' %}" class="btn btn-danger">Cancel</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

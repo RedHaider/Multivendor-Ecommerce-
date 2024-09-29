@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="container">
+  <div class="page-inner">
+    <div class="page-header d-flex justify-content-between">
+      <h3 class="fw-bold mb-3">Product Details</h3>
+      <a href="{% url 'product_management' %}" class="btn btn-danger btn-round ms-auto text-white" style="text-decoration: none;">
+        Back
+      </a>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <h4 class="card-title mt-3 pb-3">Product Information</h4>
+            <p>Product ID: PROD0001234</p>
+            <p>Product Name: Product A</p>
+            <p>Category: Electronics</p>
+            <p>SKU: 123456789</p>
+            <p>Stock Status: In Stock</p>
+            <p>Price: $500</p>
+          </div>
+          <div class="col-md-6">
+            <h4 class="card-title mt-3 pb-3">Additional Details</h4>
+            <p>Manufacturer: ABC Corp.</p>
+            <p>Release Date: 09/05/2024</p>
+            <p>Warranty: 2 Years</p>
+            <div class="form-group">
+              <label for="statusSelect">Availability:</label>
+              <select class="form-select" id="statusSelect">
+                <option>Available</option>
+                <option>Out of Stock</option>
+                <option>Discontinued</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="card-header">
+          <div class="card-title">Product Specifications</div>
+        </div>
+        <div class="card-body">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">Specification</th>
+                <th scope="col">Details</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Weight</td>
+                <td>1.5kg</td>
+              </tr>
+              <tr>
+                <td>Dimensions</td>
+                <td>10 x 5 x 2 inches</td>
+              </tr>
+              <tr>
+                <td>Material</td>
+                <td>Aluminum</td>
+              </tr>
+              <tr>
+                <td>Battery Life</td>
+                <td>10 hours</td>
+              </tr>
+              <tr>
+                <td>Color</td>
+                <td>Black</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

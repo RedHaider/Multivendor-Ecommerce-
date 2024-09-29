@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="page-inner">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card p-3">
+                        <div class="page-header">
+                            <h3 class="fw-bold mb-3">Add Review</h3>
+                        </div>
+                        <div class="card-body">
+                            <form action="" method="post">
+                                <!-- CSRF token can be added here if using Django backend -->
+                                <!-- {% csrf_token %} -->
+
+                                <!-- Product Field -->
+                                <div class="form-group">
+                                    <label for="product">Product</label>
+                                    <input type="text" id="product" name="product" class="form-control" placeholder="Enter product name">
+                                </div>
+
+                                <!-- User Field -->
+                                <div class="form-group">
+                                    <label for="user">User</label>
+                                    <input type="text" id="user" name="user" class="form-control" placeholder="Enter user name">
+                                </div>
+
+                                <!-- Comment Field -->
+                                <div class="form-group">
+                                    <label for="comment">Comment</label>
+                                    <textarea id="comment" name="comment" class="form-control" placeholder="Enter review comment" rows="4"></textarea>
+                                </div>
+
+                                <!-- Rating Field -->
+                                <div class="form-group">
+                                    <label for="rating">Rating</label>
+                                    <select id="rating" name="rating" class="form-control">
+                                        <option value="" disabled selected>Select rating</option>
+                                        <option value="1">1 - Poor</option>
+                                        <option value="2">2 - Fair</option>
+                                        <option value="3">3 - Good</option>
+                                        <option value="4">4 - Very Good</option>
+                                        <option value="5">5 - Excellent</option>
+                                    </select>
+                                </div>
+
+                                <!-- Status Field -->
+                                <div class="form-group">
+                                    <label for="status">Status</label>
+                                    <select id="status" name="status" class="form-control">
+                                        <option value="" disabled selected>Select status</option>
+                                        <option value="pending">Pending</option>
+                                        <option value="approved">Approved</option>
+                                        <option value="rejected">Rejected</option>
+                                    </select>
+                                </div>
+
+                                <!-- Vendor Field -->
+                                <div class="form-group">
+                                    <label for="vendor">Vendor</label>
+                                    <input type="text" id="vendor" name="vendor" class="form-control" placeholder="Enter vendor name">
+                                </div>
+
+                                <!-- Submit Button -->
+                                <div class="form-group mt-3">
+                                    <button type="submit" class="btn btn-success btn-round text-white">Submit</button>
+                                    <a href="{% url 'review-list' %}" class="btn btn-secondary btn-round ms-2">Cancel</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

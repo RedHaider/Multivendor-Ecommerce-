@@ -1,9 +1,11 @@
 from django.shortcuts import render,  redirect
+from django.contrib.auth.decorators import login_required
 
-
+@login_required
 def dashboard(request):
     return render(request, 'index.html')
 
+@login_required
 def product_management(request):
     return render(request, 'product_management.html')
 
@@ -28,6 +30,11 @@ def registration(request):
 def login(request):
     return render(request, 'login.html')
 
+def vendor_register(request):
+    return render(request, 'vendor_registration.html')
+
+def vendor_login(request):
+    return render(request, 'vendor_login.html')
 
 #submenu
 def add_vendor(request):
@@ -53,3 +60,18 @@ def vendor_details(request):
 
 def vendor_profile(request):
     return render(request, 'pages/vendor-profile.html' )
+
+def product_details(request):
+    return render(request, 'pages/product-details.html')
+
+def product_edit(request):
+    return render(request, 'pages/product-edit.html')
+
+def coupon_edit(request):
+    return render(request, 'pages/coupon-edit.html')
+
+def vendor_edit(request):
+    return render(request, 'pages/vendor-edit.html')
+
+def commission_edit(request):
+    return render(request, 'pages/commission-edit.html')

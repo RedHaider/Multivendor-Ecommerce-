@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="page-inner">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card p-3">
+                        <div class="page-header d-flex justify-content-between p-1">
+                            <h3 class="fw-bold mb-3">Review List</h3>
+                            <a href="{% url 'review-form' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
+                                Add Review
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="multi-filter-select" class="display table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Review ID</th>
+                                            <th>Product</th>
+                                            <th>User</th>
+                                            <th>Comment</th>
+                                            <th>Rating</th>
+                                            <th>Status</th>
+                                            <th>Vendor</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Review ID</th>
+                                            <th>Product</th>
+                                            <th>User</th>
+                                            <th>Comment</th>
+                                            <th>Rating</th>
+                                            <th>Status</th>
+                                            <th>Vendor</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        <!-- Static Data for Frontend Display -->
+                                        <tr>
+                                            <td><a href="{% url 'review-edit' %}" class="text-black">1</a></td>
+                                            <td>Product A</td>
+                                            <td>John Doe</td>
+                                            <td>Great product!</td>
+                                            <td>5</td>
+                                            <td>Approved</td>
+                                            <td>Vendor X</td>
+                                            <td>
+                                                <a href="{% url 'review-edit' %}" class="btn btn-warning btn-sm">Edit</a>
+                                                <a href="{% url 'review-delete' %}" class="btn btn-danger btn-sm">Delete</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'review-edit' %}" class="text-black">2</a></td>
+                                            <td>Product B</td>
+                                            <td>Jane Doe</td>
+                                            <td>Not satisfied.</td>
+                                            <td>2</td>
+                                            <td>Pending</td>
+                                            <td>Vendor Y</td>
+                                            <td>
+                                                <a href="{% url 'review-edit' %}" class="btn btn-warning btn-sm">Edit</a>
+                                                <a href="{% url 'review-delete' %}" class="btn btn-danger btn-sm">Delete</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'review-edit' %}" class="text-black">3</a></td>
+                                            <td>Product C</td>
+                                            <td>Mike Ross</td>
+                                            <td>Good quality.</td>
+                                            <td>4</td>
+                                            <td>Approved</td>
+                                            <td>Vendor Z</td>
+                                            <td>
+                                                <a href="{% url 'review-edit' %}" class="btn btn-warning btn-sm">Edit</a>
+                                                <a href="{% url 'review-delete' %}" class="btn btn-danger btn-sm">Delete</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+<script>
+    $(document).ready(function () {
+        // Initialize Datatable
+        $("#multi-filter-select").DataTable({
+            pageLength: 5,
+            initComplete: function () {
+                this.api()
+                    .columns()
+                    .every(function () {
+                        var column = this;
+                        var select = $(
+                            '<select class="form-select"><option value=""></option></select>'
+                        )
+                            .appendTo($(column.footer()).empty())
+                            .on("change", function () {
+                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                column
+                                    .search(val ? "^" + val + "$" : "", true, false)
+                                    .draw();
+                            });
+
+                        column.data().unique().sort().each(function (d, j) {
+                            select.append('<option value="' + d + '">' + d + "</option>");
+                        });
+                    });
+            },
+        });
+    });
+</script>
+{% endblock %}

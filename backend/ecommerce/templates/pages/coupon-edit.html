@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+        <div class="container">
+          <div class="page-inner">
+            <div class="page-header">
+              <h3 class="fw-bold mb-3">Edit Coupon</h3>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-header d-flex justify-content-between">
+                    <h4 class="card-title">Edit Coupon Form</h4>
+                    <a href="{% url 'promotion_discount' %}" class="btn btn-danger btn-round ms-auto text-white" style="text-decoration: none;">
+                      Back
+                    </a>
+                  </div>
+                  <div class="card-body">
+                    <form >
+                      <div class="row">
+                        <div class="col-md-6 col-lg-4">
+                          <div class="form-group form-inline">
+                              <label
+                                for="vendorID"
+                                class="col-md-3 col-form-label"
+                                >Vendor ID</label>
+                              <div class=" p-0">
+                                <input
+                                  type="text"
+                                  class="form-control input-full"
+                                  id="vendorID"
+                                  name="vendor_id"
+                                  placeholder="Enter Vendor ID"
+                                />
+                              </div>
+                            </div>
+
+                            <div class="form-group form-inline">
+                              <label
+                                for="couponCode"
+                                class="col-md-3 col-form-label"
+                                >Coupon Code</label
+                              >
+                              <div class=" p-0">
+                                <input
+                                  type="text"
+                                  class="form-control input-full"
+                                  id="couponCode"
+                                  name="coupon_code"
+                                  placeholder="Enter Coupon Code"
+                                />
+                              </div>
+                            </div>
+
+                            <div class="form-group form-inline">
+                              <label for="couponValidity" class="col-md-3 col-form-label">Coupon Validity</label>
+                              <div class="p-0">
+                                <input
+                                  type="date"
+                                  class="form-control input-full"
+                                  id="couponValidity"
+                                  name="coupon_validity"
+                                  placeholder="Select Date"
+                                />
+                              </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+
+                            <div class="form-group form-inline">
+                              <label
+                                for="couponDiscount"
+                                class="col-md-3 col-form-label"
+                                >Coupon Discount</label
+                              >
+                              <div class=" p-0">
+                                <input
+                                  type="text"
+                                  class="form-control input-full"
+                                  id="couponDiscount"
+                                  name="coupon_discount"
+                                  placeholder="Enter Discount"
+                                  oninput="validateNumber(this)"
+                                />
+                              </div>
+                            </div>
+                            <div class="form-group form-inline">
+                              <label
+                                for="productBrand"
+                                class="col-md-3 col-form-label"
+                                >Product Brand</label
+                              >
+                              <div class=" p-0">
+                                <input
+                                  type="text"
+                                  class="form-control input-full"
+                                  id="productBrand"
+                                  name="product_brand"
+                                  placeholder="Enter Brand"
+                                />
+                              </div>
+                            </div>
+
+                            <div class="form-group">
+                              <label>Status</label><br />
+                              <div class="d-flex">
+                                <div class="form-check">
+                                  <input
+                                    class="form-check-input"
+                                    type="radio"
+                                    name="status"
+                                    id="statusActive"
+                                    value="active"
+                                  />
+                                  <label
+                                    class="form-check-label"
+                                    for="statusActive"
+                                  >
+                                    Active
+                                  </label>
+                                </div>
+                                <div class="form-check">
+                                  <input
+                                    class="form-check-input"
+                                    type="radio"
+                                    name="status"
+                                    id="statusInactive"
+                                    value="inactive"
+                                  />
+                                  <label
+                                    class="form-check-label"
+                                    for="statusInactive"
+                                  >
+                                    Deactive
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+
+                      </div>
+                      <div class="card-action">
+                        <button type="submit" class="btn btn-success">Save Changes</button>
+                        <a href="{% url 'promotion_discount' %}" class="btn btn-danger">Cancel</a>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+{% endblock %}
+
+
+{% block script %}
+    <script>
+        function validateNumber(input) {
+            // Allow only numbers and decimal points
+            input.value = input.value.replace(/[^0-9.]/g, '');
+            
+            // Prevent multiple decimal points
+            if ((input.value.match(/\./g) || []).length > 1) {
+                input.value = input.value.slice(0, -1);
+            }
+        }
+    </script>
+{% endblock %}

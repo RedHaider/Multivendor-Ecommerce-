@@ -15,16 +15,21 @@
 <body>
 
     <div class="container  mb-5">
-            <nav>
-              <a href="{% url 'dashboard' %}" class="logo">
+        <nav class="navbar navbar-expand-lg ">
+            <div class="container-fluid justify-content-between">
+              <!-- Left Side: Logo -->
+              <a href="{% url 'dashboard' %}" class="navbar-brand">
                 <img
                   src="{% static 'img/kaiadmin/EIT_logo.svg' %}"
                   alt="navbar brand"
-                  class="navbar-brand"
                   height="100"
                 />
               </a>
-            </nav>
+          
+              <!-- Right Side: Register Link -->
+              <a href="{% url 'login' %}" class="nav-link">Log In</a>
+            </div>
+          </nav> 
         <div class="card p-5">
         <h2 class="text-center">Vendor Registration</h2>
         

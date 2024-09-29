@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="page-inner">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card p-3">
+                        <div class="page-header d-flex justify-content-between p-1">
+                            <h3 class="fw-bold mb-3">Size List</h3>
+                            <a href="{% url 'size-form' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
+                                Add Size
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="size-table" class="display table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Size ID</th>
+                                            <th>Size Name</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Size ID</th>
+                                            <th>Size Name</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        <!-- Static Data for Frontend Display -->
+                                        <tr>
+                                            <td><a href="{% url 'size-edit' %}" class="text-black">1</a></td>
+                                            <td>Small</td>
+                                            <td>
+                                                <a href="{% url 'size-edit' %}" class="btn btn-warning btn-sm">Edit</a>
+                                                <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'size-edit' %}" class="text-black">2</a></td>
+                                            <td>Medium</td>
+                                            <td>
+                                                <a href="{% url 'size-edit' %}" class="btn btn-warning btn-sm">Edit</a>
+                                                <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'size-edit' %}" class="text-black">3</a></td>
+                                            <td>Large</td>
+                                            <td>
+                                                <a href="{% url 'size-edit' %}" class="btn btn-warning btn-sm">Edit</a>
+                                                <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+<script>
+    $(document).ready(function () {
+        // Initialize Datatable
+        $("#size-table").DataTable({
+            pageLength: 5,
+        });
+    });
+</script>
+{% endblock %}

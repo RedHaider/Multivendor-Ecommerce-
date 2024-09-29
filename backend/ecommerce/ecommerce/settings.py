@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'accounts',
+    'product_management',
     'rest_framework_simplejwt',
     'corsheaders',
     'widget_tweaks'
@@ -163,3 +164,13 @@ SIMPLE_JWT = {
     'SIGNING_KEY': SECRET_KEY,
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
+
+# Keep session data until the browser is closed (optional)
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # Set this to True if you want sessions to expire on browser close.
+
+# Session expiration period (optional)
+SESSION_COOKIE_AGE = 1209600  # 2 weeks, adjust as needed
+
+# Use Django's session-based authentication system
+SESSION_SAVE_EVERY_REQUEST = True  # This will update the session expiration time every time the user makes a request.
+

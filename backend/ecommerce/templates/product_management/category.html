@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="page-inner">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card p-3">
+                        <div class="page-header d-flex justify-content-between p-1">
+                            <h3 class="fw-bold mb-3">Category List</h3>
+                            <a href="{% url 'category-form' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
+                                Add Category
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="multi-filter-select" class="display table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Category ID</th>
+                                            <th>Category Name</th>
+                                            <th>Category Slug</th>
+                                            <th>Category Image</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Category ID</th>
+                                            <th>Category Name</th>
+                                            <th>Category Slug</th>
+                                            <th>Category Image</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        <!-- Static Data for Frontend Display -->
+                                        <tr>
+                                            <td><a href="{% url 'category-edit' %}" class="text-black">201</a></td>
+                                            <td>Electronics</td>
+                                            <td>electronics</td>
+                                            <td><img src="/static/images/category1.jpg" alt="Category 1" width="50"></td>
+                                            <td>Active</td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'category-edit' %}" class="text-black">202</a></td>
+                                            <td>Fashion</td>
+                                            <td>fashion</td>
+                                            <td><img src="/static/images/category2.jpg" alt="Category 2" width="50"></td>
+                                            <td>Active</td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'category-edit' %}" class="text-black">203</a></td>
+                                            <td>Home & Living</td>
+                                            <td>home-living</td>
+                                            <td><img src="/static/images/category3.jpg" alt="Category 3" width="50"></td>
+                                            <td>Inactive</td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'category-edit' %}" class="text-black">204</a></td>
+                                            <td>Sports</td>
+                                            <td>sports</td>
+                                            <td><img src="/static/images/category4.jpg" alt="Category 4" width="50"></td>
+                                            <td>Active</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+<script>
+    $(document).ready(function () {
+        // Initialize Datatable
+        $("#multi-filter-select").DataTable({
+            pageLength: 5,
+            initComplete: function () {
+                this.api()
+                    .columns()
+                    .every(function () {
+                        var column = this;
+                        var select = $(
+                            '<select class="form-select"><option value=""></option></select>'
+                        )
+                            .appendTo($(column.footer()).empty())
+                            .on("change", function () {
+                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                column
+                                    .search(val ? "^" + val + "$" : "", true, false)
+                                    .draw();
+                            });
+
+                        column.data().unique().sort().each(function (d, j) {
+                            select.append('<option value="' + d + '">' + d + "</option>");
+                        });
+                    });
+            },
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="page-inner">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card p-2">
+                        <div class="page-header d-flex justify-content-between p-1">
+                            <h3 class="fw-bold mb-3">Edit Brand</h3>
+                            <div>
+                            <a href="{% url 'brand-list' %}" class="btn btn-secondary btn-round ms-auto text-white" style="text-decoration: none;">
+                                Back
+                            </a>
+                            <a href="{% url 'brand-list' %}" class="btn btn-danger btn-round ms-auto text-white" style="text-decoration: none;">
+                                Delete
+                            </a>
+                           </div>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" enctype="multipart/form-data">
+                                <!-- Brand Name -->
+                                <div class="form-group form-inline mb-3">
+                                    <label for="brand_name" class="col-md-3 col-form-label">Brand Name</label>
+                                    <div class="col-md-9 p-0">
+                                        <input
+                                            type="text"
+                                            class="form-control input-full"
+                                            id="brand_name"
+                                            name="brand_name"
+                                            placeholder="Enter Brand Name"
+                                        />
+                                    </div>
+                                </div>
+
+                                <!-- Brand Slug -->
+                                <div class="form-group form-inline mb-3">
+                                    <label for="brand_slug" class="col-md-3 col-form-label">Brand Slug</label>
+                                    <div class="col-md-9 p-0">
+                                        <input
+                                            type="text"
+                                            class="form-control input-full"
+                                            id="brand_slug"
+                                            name="brand_slug"
+                                            placeholder="Enter Brand Slug"
+                                        />
+                                    </div>
+                                </div>
+
+                                <!-- Brand Image -->
+                                <div class="form-group form-inline mb-3">
+                                    <label for="brand_image" class="col-md-3 col-form-label">Brand Image</label>
+                                    <div class="col-md-9 p-0">
+                                        <input
+                                            type="file"
+                                            class="form-control input-full"
+                                            id="brand_image"
+                                            name="brand_image"
+                                        />
+                                    </div>
+                                </div>
+
+                                <!-- Status (Optional) -->
+                                <div class="form-group mb-3">
+                                    <label>Status</label><br />
+                                    <div class="d-flex">
+                                        <div class="form-check me-3">
+                                            <input
+                                                class="form-check-input"
+                                                type="radio"
+                                                name="status"
+                                                id="status_active"
+                                                value="Active"
+                                            />
+                                            <label class="form-check-label" for="status_active">
+                                                Active
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input
+                                                class="form-check-input"
+                                                type="radio"
+                                                name="status"
+                                                id="status_inactive"
+                                                value="Inactive"
+                                                checked
+                                            />
+                                            <label class="form-check-label" for="status_inactive">
+                                                Inactive
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Form Actions -->
+                                <div class="card-action d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-success me-2">Submit</button>
+                                    <a href="{% url 'brand-list' %}" class="btn btn-danger">Cancel</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        function validateInput(input) {
+            // Example: Simple input validation script
+            if (input.value.trim() === "") {
+                input.style.borderColor = "red";
+            } else {
+                input.style.borderColor = "";
+            }
+        }
+
+        // Add event listeners for validation if needed
+        document.getElementById('brand_name').addEventListener('input', function() {
+            validateInput(this);
+        });
+
+        document.getElementById('brand_slug').addEventListener('input', function() {
+            validateInput(this);
+        });
+    </script>
+{% endblock %}

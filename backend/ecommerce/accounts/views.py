@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 from .decorators import check_role
 from .models import  User
 from django.contrib import messages
+from .forms import CustomLoginForm
+from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
 
@@ -28,7 +30,7 @@ from .forms import UserRegistrationForm, VendorRegistrationForm
 
 
 
-
+#vendor Registration
 
 def vendor_registration_view(request):
     if request.method == 'POST':
@@ -66,3 +68,53 @@ def vendor_registration_view(request):
         vendor_form = VendorRegistrationForm()
 
     return render(request, 'vendor_registration.html', {'user_form': user_form, 'vendor_form': vendor_form})
+
+
+#Login
+def login_view(request):
+    if request.user.is_authenticated:
+        if request.user.role == 'vendor':
+            return redirect('dashboard') 
+        elif request.user.role == 'admin':
+            return redirect('dashboard')  # Replace with actual admin dashboard URL
+        else:
+            return redirect('login') # Block users without vendor or admin role
+
+    if request.method == 'POST':
+        form = CustomLoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            role = form.cleaned_data.get('role')
+
+            user = authenticate(request, username=username, password=password)
+
+            if user is not None:
+                if user.role == role:
+                    login(request, user)
+
+                    if role == 'vendor':
+                        return redirect('dashboard')
+                    elif role == 'admin':
+                        return redirect('dashboard')
+                    else: 
+                        return redirect('dashbaord')
+                else: 
+                    messages.error(request, "Incorrect role selected")
+            else:
+                messages.error(request, "Invalid username or Password")
+        else:
+            messages.error(request, "Invalid form submission")
+    else:
+        form = CustomLoginForm()
+    
+    return render(request, 'vendor_login.html', {"form":form})
+
+def logout_view(request):
+    # Log out the user by clearing their session
+    logout(request)
+    
+    # Redirect to the login page after logout
+    return redirect('login') 
+
+

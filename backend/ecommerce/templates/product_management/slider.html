@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="page-inner">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card p-3">
+                        <div class="page-header d-flex justify-content-between p-1">
+                            <h3 class="fw-bold mb-3">Slider List</h3>
+                            <a href="{% url 'slider-form' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
+                                Add Slider
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="slider-table" class="display table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Slider ID</th>
+                                            <th>Slider Title</th>
+                                            <th>Short Title</th>
+                                            <th>Slider Image</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Slider ID</th>
+                                            <th>Slider Title</th>
+                                            <th>Short Title</th>
+                                            <th>Slider Image</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        <!-- Static Data for Frontend Display -->
+                                        <tr>
+                                            <td><a href="{% url 'slider-edit' %}" class="text-black">1</a></td>
+                                            <td>Welcome to Our Store</td>
+                                            <td>Your One-Stop Shop</td>
+                                            <td><img src="/static/images/slider1.jpg" alt="Slider 1" width="50"></td>
+                                            <td>
+                                                <a href="{% url 'slider-edit' %}" class="btn btn-warning btn-sm">Edit</a>
+                                                <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'slider-edit' %}" class="text-black">2</a></td>
+                                            <td>Summer Sale</td>
+                                            <td>Get Up to 50% Off</td>
+                                            <td><img src="/static/images/slider2.jpg" alt="Slider 2" width="50"></td>
+                                            <td>
+                                                <a href="{% url 'slider-edit' %}" class="btn btn-warning btn-sm">Edit</a>
+                                                <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'slider-edit' %}" class="text-black">3</a></td>
+                                            <td>New Arrivals</td>
+                                            <td>Check Out the Latest Trends</td>
+                                            <td><img src="/static/images/slider3.jpg" alt="Slider 3" width="50"></td>
+                                            <td>
+                                                <a href="{% url 'slider-edit' %}" class="btn btn-warning btn-sm">Edit</a>
+                                                <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+<script>
+    $(document).ready(function () {
+        // Initialize Datatable
+        $("#slider-table").DataTable({
+            pageLength: 5,
+        });
+    });
+</script>
+{% endblock %}

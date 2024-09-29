@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="container">
+  <div class="page-inner">
+    <div class="page-header justify-content-between">
+      <h3 class="fw-bold mb-3">Edit Commission</h3>
+      <div>
+      <a href="{% url 'commission' %}" class="btn btn-danger btn-round ms-auto text-white" style="text-decoration: none;">
+        Back
+      </a>
+      <a href="" class="btn btn-danger btn-round ms-auto text-white" style="text-decoration: none;">
+        Delete
+      </a>
+    </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="row justify-content-center">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="form-group col-md-6 form-inline">
+              <label for="commission_id" class="col-md-3 col-form-label">Commission ID</label>
+              <div class="p-0">
+                <input
+                  type="text"
+                  class="form-control input-full"
+                  id="commission_id"
+                  placeholder="COM123"
+                  value="COM123"
+                  readonly
+                />
+              </div>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="vendor_id">Vendor ID</label>
+              <input
+                type="text"
+                class="form-control"
+                id="vendor_id"
+                placeholder="VEN456"
+                value="VEN456"
+                readonly
+              />
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="commission_rate">Commission Rate</label>
+              <input
+                type="text"
+                class="form-control"
+                id="commission_rate"
+                placeholder="10%"
+                value="10%"
+              />
+            </div>
+
+          </div>
+        </div>
+      </div>
+      
+      <div class="card-action">
+        <button class="btn btn-success">Save Changes</button>
+        <a href="#" class="btn btn-danger">Cancel</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,11 +1,13 @@
 #ecommerce/urls.py
 from django.contrib import admin
 from django.urls import path, include
-from .views import dashboard, product_management,order_management,sales_performance,promotion_discount,vendor_management,commission,registration, login , add_vendor, commission_form, commission_details, coupon_form, order_details, product_form, vendor_details, vendor_profile
+from .views import dashboard, product_management,order_management,sales_performance,promotion_discount,vendor_management,commission,registration, login , add_vendor, commission_form, commission_details, coupon_form, order_details, product_form, vendor_details, vendor_profile, product_edit ,product_details, coupon_edit ,commission_edit ,vendor_edit
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', dashboard, name='dashboard'),
+    path('dashboard/', dashboard, name='dashboard'),
     path('product_management/', product_management, name='product_management'),
     path('order-management/', order_management, name='order_management'),
     path('sales-performance/', sales_performance, name='sales_performance'),
@@ -18,7 +20,7 @@ urlpatterns = [
     path('api/accounts/', include('accounts.urls')),
 
     #form
-    path('account/', include('accounts.urls')),
+    path('', include('accounts.urls')),
 
     #submenu's for the the urls
     
@@ -31,4 +33,16 @@ urlpatterns = [
     path('commission/commission-form', commission_form, name='commission_form'),
     path('commission/commission-details', commission_details, name='commission_details'),
     path('registration/', registration, name='registration'),
+    path('product-details/', product_details, name='product-details'),
+    path('product-edit/', product_edit, name='product-edit'),
+    path('coupon-edit/', coupon_edit, name='coupon-edit'),
+    path('vendor-edit/', vendor_edit, name='vendor-edit'),
+    path('commission-edit/', commission_edit, name='commission-edit'),
+
+    path('product-management/',include('product_management.urls'))
+
 ]
+
+# Serving media files in development mode
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

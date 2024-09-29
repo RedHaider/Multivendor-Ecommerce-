@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="page-inner">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card p-3">
+                        <div class="page-header d-flex justify-content-between p-1">
+                            <h3 class="fw-bold mb-3">Sub-Category List</h3>
+                            <a href="{% url 'subcategory-form' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
+                                Add SubCategory
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="multi-filter-select" class="display table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>SubCategory ID</th>
+                                            <th>SubCategory Name</th>
+                                            <th>SubCategory Slug</th>
+                                            <th>Category</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>SubCategory ID</th>
+                                            <th>SubCategory Name</th>
+                                            <th>SubCategory Slug</th>
+                                            <th>Category</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        <!-- Static Data for Frontend Display -->
+                                        <tr>
+                                            <td><a href="{% url 'subcategory-edit' %}" class="text-black">1</a></td>
+                                            <td>Smartphones</td>
+                                            <td>smartphones</td>
+                                            <td>Electronics</td>
+                                            <td>Active</td>
+                                            <td>
+                                                <a href="{% url 'subcategory-edit' %}" class="btn btn-primary btn-sm">Edit</a>
+                                                <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'subcategory-edit' %}" class="text-black">2</a></td>
+                                            <td>Men's Clothing</td>
+                                            <td>mens-clothing</td>
+                                            <td>Clothing</td>
+                                            <td>Active</td>
+                                            <td>
+                                                <a href="{% url 'subcategory-edit' %}" class="btn btn-primary btn-sm">Edit</a>
+                                                <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{% url 'subcategory-edit' %}" class="text-black">3</a></td>
+                                            <td>Washing Machines</td>
+                                            <td>washing-machines</td>
+                                            <td>Home Appliances</td>
+                                            <td>Active</td>
+                                            <td>
+                                                <a href="{% url 'subcategory-edit' %}" class="btn btn-primary btn-sm">Edit</a>
+                                                <a href="#" class="btn btn-danger btn-sm mt-1">Delete</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+<script>
+    $(document).ready(function () {
+        // Initialize Datatable
+        $("#multi-filter-select").DataTable({
+            pageLength: 5,
+            initComplete: function () {
+                this.api()
+                    .columns()
+                    .every(function () {
+                        var column = this;
+                        var select = $(
+                            '<select class="form-select"><option value=""></option></select>'
+                        )
+                            .appendTo($(column.footer()).empty())
+                            .on("change", function () {
+                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                column
+                                    .search(val ? "^" + val + "$" : "", true, false)
+                                    .draw();
+                            });
+
+                        column.data().unique().sort().each(function (d, j) {
+                            select.append('<option value="' + d + '">' + d + "</option>");
+                        });
+                    });
+            },
+        });
+    });
+</script>
+{% endblock %}

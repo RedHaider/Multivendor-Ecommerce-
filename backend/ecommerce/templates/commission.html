@@ -8,7 +8,9 @@
                 <div class="card">
                   <div class="page-header d-flex justify-content-between p-1">
                     <h3 class="fw-bold mb-3">Commission List</h3>
-                    <button class="btn btn-success btn-round ms-auto" onclick="window.location.href='pages/commision-form.html'">Add Commission</button>
+                    <a href="{% url 'commission_form' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
+                      Add Commission
+                  </a>
                   </div>
                   <div class="card-body">
                     <div class="table-responsive">
@@ -37,8 +39,8 @@
                           </tr>
                         </tfoot>
                         <tbody>
-                            <tr onclick="window.location.href='pages/commission-details.html'">
-                                <td>101</td>
+                            <tr >
+                                <td><a href="{% url 'commission-edit' %}" class="text-black">101</a></td>
                                 <td>2001</td>
                                 <td>ABC Electronics</td>
                                 <td>5%</td>

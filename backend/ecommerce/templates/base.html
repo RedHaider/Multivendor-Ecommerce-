@@ -89,9 +89,6 @@
                       <a href="{% url 'dashboard' %}">
                         <span class="sub-item">Dashboard</span>
                       </a>
-                      <a href="{% url 'product_management' %}">
-                        <span class="sub-item">Product Management</span>
-                      </a>
                       <a href="{% url 'order_management' %}">
                         <span class="sub-item">Order Management</span>
                       </a>
@@ -117,6 +114,200 @@
                   </ul>
                 </div>
               </li>
+                    <!-- Product Management Dropdown -->
+              <li class="nav-item">
+                <a
+                  data-bs-toggle="collapse"
+                  href="#productManagement"
+                  class="collapsed"
+                  aria-expanded="false"
+                >
+                  <i class="fas fa-boxes"></i>
+                  <p>Product Management</p>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse" id="productManagement">
+                  <ul class="nav nav-collapse">
+                    <li>
+                      <a href="{% url 'product_management' %}">
+                        <span class="sub-item">Product List</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <span class="sub-item">Add Product</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{% url 'category-list' %}">
+                        <span class="sub-item">Category </span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{% url 'subcategory-list' %}">
+                        <span class="sub-item">Sub-Category </span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{% url 'brand-list' %}">
+                        <span class="sub-item">Brand </span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{% url 'color-list' %}">
+                        <span class="sub-item">Color </span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{% url 'size-list' %}">
+                        <span class="sub-item">Size </span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{% url 'slider-list' %}">
+                        <span class="sub-item">Slider </span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{% url 'banner-list' %}">
+                        <span class="sub-item">Banner </span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{% url 'review-list' %}">
+                        <span class="sub-item">Review </span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+
+                            <!-- Order Management Dropdown -->
+              <li class="nav-item">
+                <a
+                  data-bs-toggle="collapse"
+                  href="#orderManagement"
+                  class="collapsed"
+                  aria-expanded="false"
+                >
+                  <i class="fas fa-shopping-cart"></i>
+                  <p>Order Management</p>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse" id="orderManagement">
+                  <ul class="nav nav-collapse">
+                    <li>
+                      <a href="#">
+                        <span class="sub-item">Orders</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <span class="sub-item">Returns</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+
+              <!-- Vendor Management Dropdown -->
+              <li class="nav-item">
+                <a
+                  data-bs-toggle="collapse"
+                  href="#vendorManagement"
+                  class="collapsed"
+                  aria-expanded="false"
+                >
+                  <i class="fas fa-users"></i>
+                  <p>Vendor Management</p>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse" id="vendorManagement">
+                  <ul class="nav nav-collapse">
+                    <li>
+                      <a href="#">
+                        <span class="sub-item">Vendor List</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <span class="sub-item">Add Vendor</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+
+                            <!-- Sales & Performance Dropdown -->
+              <li class="nav-item">
+                <a
+                  data-bs-toggle="collapse"
+                  href="#salesPerformance"
+                  class="collapsed"
+                  aria-expanded="false"
+                >
+                  <i class="fas fa-chart-line"></i>
+                  <p>Sales & Performance</p>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse" id="salesPerformance">
+                  <ul class="nav nav-collapse">
+                    <li>
+                      <a href="#">
+                        <span class="sub-item">Sales Report</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <span class="sub-item">Performance Analysis</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+
+                            <!-- Promotion & Discount Dropdown -->
+              <li class="nav-item">
+                <a
+                  data-bs-toggle="collapse"
+                  href="#promotionDiscount"
+                  class="collapsed"
+                  aria-expanded="false"
+                >
+                  <i class="fas fa-tags"></i>
+                  <p>Promotion & Discount</p>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse" id="promotionDiscount">
+                  <ul class="nav nav-collapse">
+                    <li>
+                      <a href="#">
+                        <span class="sub-item">Create Promotion</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <span class="sub-item">Discount List</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+
+                    <!-- Registration & Login Links (No Dropdown) -->
+              <li class="nav-item">
+                <a href="#">
+                  <i class="fas fa-user-plus"></i>
+                  <p>Registration</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#">
+                  <i class="fas fa-sign-in-alt"></i>
+                  <p>Login</p>
+                </a>
+              </li>
+
             </ul>
           </div>
         </div>
@@ -444,7 +635,7 @@
                     </div>
                   </div>
                 </li>
-
+              {% if user.is_authenticated %}
                 <li class="nav-item topbar-user dropdown hidden-caret">
                   <a
                     class="dropdown-toggle profile-pic"
@@ -454,14 +645,14 @@
                   >
                     <div class="avatar-sm">
                       <img
-                        src="{% static '/img/profile.jpg' %}"
+                        src="{{ user.photo.url }}"
                         alt="..."
                         class="avatar-img rounded-circle"
                       />
                     </div>
                     <span class="profile-username">
                       <span class="op-7">Hi,</span>
-                      <span class="fw-bold">Hizrian</span>
+                      <span class="fw-bold">{{ user.last_name }}</span>
                     </span>
                   </a>
                   <ul class="dropdown-menu dropdown-user animated fadeIn">
@@ -470,14 +661,14 @@
                         <div class="user-box">
                           <div class="avatar-lg">
                             <img
-                              src="{% static '/img/profile.jpg' %}"
+                              src="{{ user.photo.url }}"
                               alt="image profile"
                               class="avatar-img rounded"
                             />
                           </div>
                           <div class="u-text">
-                            <h4>Hizrian</h4>
-                            <p class="text-muted">hello@example.com</p>
+                            <h4>{{ user.first_name }} {{ user.last_name }}</h4>
+                            <p class="text-muted">{{ user.email }}</p>
                             <a
                               href="profile.html"
                               class="btn btn-xs btn-secondary btn-sm"
@@ -488,17 +679,18 @@
                       </li>
                       <li>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">My Profile</a>
+                        <a class="dropdown-item" href="{% url 'vendor_profile' %}">My Profile</a>
                         <a class="dropdown-item" href="#">My Balance</a>
                         <a class="dropdown-item" href="#">Inbox</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#">Account Setting</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Logout</a>
+                        <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
                       </li>
                     </div>
                   </ul>
                 </li>
+              {% endif %}
               </ul>
             </div>
           </nav>
@@ -539,200 +731,7 @@
         </footer>
       </div>
 
-      <!-- Custom template | don't include it in your project! -->
-      <div class="custom-template">
-        <div class="title">Settings</div>
-        <div class="custom-content">
-          <div class="switcher">
-            <div class="switch-block">
-              <h4>Logo Header</h4>
-              <div class="btnSwitch">
-                <button
-                  type="button"
-                  class="selected changeLogoHeaderColor"
-                  data-color="dark"
-                ></button>
-                <button
-                  type="button"
-                  class="selected changeLogoHeaderColor"
-                  data-color="blue"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="purple"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="light-blue"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="green"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="orange"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="red"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="white"
-                ></button>
-                <br />
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="dark2"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="blue2"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="purple2"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="light-blue2"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="green2"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="orange2"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="red2"
-                ></button>
-              </div>
-            </div>
-            <div class="switch-block">
-              <h4>Navbar Header</h4>
-              <div class="btnSwitch">
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="dark"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="blue"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="purple"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="light-blue"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="green"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="orange"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="red"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="white"
-                ></button>
-                <br />
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="dark2"
-                ></button>
-                <button
-                  type="button"
-                  class="selected changeTopBarColor"
-                  data-color="blue2"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="purple2"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="light-blue2"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="green2"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="orange2"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="red2"
-                ></button>
-              </div>
-            </div>
-            <div class="switch-block">
-              <h4>Sidebar</h4>
-              <div class="btnSwitch">
-                <button
-                  type="button"
-                  class="selected changeSideBarColor"
-                  data-color="white"
-                ></button>
-                <button
-                  type="button"
-                  class="changeSideBarColor"
-                  data-color="dark"
-                ></button>
-                <button
-                  type="button"
-                  class="changeSideBarColor"
-                  data-color="dark2"
-                ></button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="custom-toggle">
-          <i class="icon-settings"></i>
-        </div>
-      </div>
-      <!-- End Custom template -->
+
     </div>
     <!--   Core JS Files   -->
     <script src="{% static 'js/core/jquery-3.7.1.min.js' %}"></script>
@@ -772,6 +771,18 @@
 
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
     <script src="{% static 'js/setting-demo2.js' %}"></script>
+    <script>
+      // Check if user is authenticated using Django's session cookie
+      function isUserAuthenticated() {
+          // Check if the session cookie exists (you can also use custom logic here)
+          return document.cookie.includes('sessionid');
+      }
+  
+      // If the user is authenticated, redirect to dashboard
+      if (isUserAuthenticated()) {
+          window.location.href = '/dashboard/';
+      }
+  </script>
     
 
       {% block script %}
