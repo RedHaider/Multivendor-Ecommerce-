@@ -12,33 +12,45 @@
                             <a href="{% url 'category-list' %}" class="btn btn-secondary btn-round ms-auto text-white" style="text-decoration: none;">
                                 Back
                             </a>
-                            <a href="#" class="btn btn-danger btn-round ms-auto text-white" style="text-decoration: none;">
-                                Delete
-                            </a>
                             </div>
                         </div>
+                        {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <ul>
+                                {% for field, errors in form.errors.items %}
+                                    {% for error in errors %}
+                                        <li>{{ field }}: {{ error }}</li>
+                                    {% endfor %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
                         <div class="card-body">
                             <form method="POST" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 <div class="mb-3">
                                     <label for="category_name" class="form-label">Category Name</label>
-                                    <input type="text" class="form-control" id="category_name" name="category_name" placeholder="Enter category name" value="Electronics" required>
+                                    <input type="text" class="form-control" id="category_name" name="category_name" placeholder="Enter category name"                                      
+                                    value="{{ form.category_name.value|default:''}}"
+                                    required
+                                    >
+                                    {{ form.category_name.errors }}
                                 </div>
                                 <div class="mb-3">
                                     <label for="category_slug" class="form-label">Category Slug</label>
-                                    <input type="text" class="form-control" id="category_slug" name="category_slug" placeholder="Enter category slug" value="electronics" required>
+                                    <input type="text" class="form-control" id="category_slug" name="category_slug" placeholder="Enter category slug"
+                                     value="{{ form.category_slug.value|default:''}}"
+                                     required
+                                     >
+                                     {{ form.category_image.errors }}
                                 </div>
                                 <div class="mb-3">
                                     <label for="category_image" class="form-label">Category Image</label>
-                                    <input type="file" class="form-control" id="category_image" name="category_image">
+                                    <input type="file" class="form-control" id="category_image" 
+                                    name="category_image"
+                                    >
+                                    {{ form.category_image.errors }}
                                     <small class="form-text text-muted">Upload an image for the category.</small>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="status" class="form-label">Status</label>
-                                    <select class="form-select" id="status" name="status">
-                                        <option value="active" selected>Active</option>
-                                        <option value="inactive">Inactive</option>
-                                    </select>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Save</button>
                                 <a href="{% url 'category-list' %}" class="btn btn-secondary">Cancel</a>

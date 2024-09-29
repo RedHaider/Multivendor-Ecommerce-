@@ -32,47 +32,29 @@
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        <!-- Static Data for Frontend Display -->
+                                        {% for color in color %}
                                         <tr>
-                                            <td><a href="{% url 'color-edit' %}" class="text-black">1</a></td>
-                                            <td>Red</td>
-                                            <td>#FF0000</td>
+                                            <td>{{ color.id }}</td>
+                                            <td>{{ color.color_name }}</td>
+                                            <td>{{ color.color_code }}</td>
                                             <td>
-                                                <a href="{% url 'color-edit' %}" class="btn btn-warning btn-sm">Edit</a>
-                                                <a href=" #" class="btn btn-danger btn-sm">Delete</a>
+                                                <a href="{% url 'color-edit' color.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                                                <form method="POST" action="{% url 'color-delete' color.pk %}" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this banner?');" >
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                                </form>
                                             </td>
                                         </tr>
+                                        {% empty %}
                                         <tr>
-                                            <td><a href="{% url 'color-edit' %}" class="text-black">2</a></td>
-                                            <td>Green</td>
-                                            <td>#00FF00</td>
-                                            <td>
-                                                <a href="{% url 'color-edit' %}" class="btn btn-warning btn-sm">Edit</a>
-                                                <a href=" #" class="btn btn-danger btn-sm">Delete</a>
-                                            </td>
+                                            <td colspan="4">No colors found.</td>
                                         </tr>
-                                        <tr>
-                                            <td><a href="{% url 'color-edit' %}" class="text-black">3</a></td>
-                                            <td>Blue</td>
-                                            <td>#0000FF</td>
-                                            <td>
-                                                <a href="{% url 'color-edit' %}" class="btn btn-warning btn-sm">Edit</a>
-                                                <a href=" #" class="btn btn-danger btn-sm">Delete</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><a href="{% url 'color-edit' %}" class="text-black">4</a></td>
-                                            <td>Yellow</td>
-                                            <td>#FFFF00</td>
-                                            <td>
-                                                <a href="{% url 'color-edit' %}" class="btn btn-warning btn-sm">Edit</a>
-                                                <a href=" #" class="btn btn-danger btn-sm">Delete</a>
-                                            </td>
-                                        </tr>
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
             </div>

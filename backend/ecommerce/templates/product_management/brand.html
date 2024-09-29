@@ -21,6 +21,7 @@
                                             <th>Brand Name</th>
                                             <th>Brand Slug</th>
                                             <th>Brand Image</th>
+                                            <th>Actions</th> <!-- Add column for actions (edit, delete) -->
                                         </tr>
                                     </thead>
                                     <tfoot>
@@ -29,38 +30,30 @@
                                             <th>Brand Name</th>
                                             <th>Brand Slug</th>
                                             <th>Brand Image</th>
+                                            <th>Actions</th> <!-- Add column for actions (edit, delete) -->
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        <!-- Static Data for Frontend Display -->
+                                        {% for brand in brands %}  <!-- Loop through the 'brands' context data -->
                                         <tr>
-                                            <td><a href="{% url 'brand-edit' %}" class="text-black">1</a></td>
-                                            <td>Nike</td>
-                                            <td>nike</td>
-                                            <td><img src="/static/images/nike.png" alt="Nike" width="50"></td>
+                                            <td><a href="{% url 'brand-edit' brand.pk %}" class="text-black">{{ brand.pk }}</a></td>
+                                            <td>{{ brand.brand_name }}</td>
+                                            <td>{{ brand.brand_slug }}</td>
+                                            <td><img src="{{ brand.brand_image.url }}" alt="{{ brand.brand_name }}" width="50"></td> 
+                                            <td>
+                                                <a href="{% url 'brand-edit' brand.pk %}" class="btn btn-warning">Edit</a>
+                                                <form action="{% url 'brand-delete' brand.pk %}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this banner?');">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                                </form>
+                                            </td>
                                         </tr>
-                                        <tr>
-                                            <td><a href="{% url 'brand-edit' %}" class="text-black">2</a></td>
-                                            <td>Adidas</td>
-                                            <td>adidas</td>
-                                            <td><img src="/static/images/adidas.png" alt="Adidas" width="50"></td>
-                                        </tr>
-                                        <tr>
-                                            <td><a href="{% url 'brand-edit' %}" class="text-black">3</a></td>
-                                            <td>Puma</td>
-                                            <td>puma</td>
-                                            <td><img src="/static/images/puma.png" alt="Puma" width="50"></td>
-                                        </tr>
-                                        <tr>
-                                            <td><a href="{% url 'brand-edit' %}" class="text-black">4</a></td>
-                                            <td>Reebok</td>
-                                            <td>reebok</td>
-                                            <td><img src="/static/images/reebok.png" alt="Reebok" width="50"></td>
-                                        </tr>
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
             </div>

@@ -12,12 +12,20 @@
                         <div class="card-body">
                             <form action="" method="post">
                                 <!-- CSRF token can be added here if using Django backend -->
-                                <!-- {% csrf_token %} -->
+                                {% csrf_token %}
 
                                 <!-- Size Name Field -->
                                 <div class="form-group">
                                     <label for="size_name">Size Name</label>
-                                    <input type="text" id="size_name" name="size_name" class="form-control" placeholder="Enter size name" required>
+                                    <input type="text" 
+                                    id="size_name" 
+                                    name="size_name" 
+                                    class="form-control" 
+                                    placeholder="Enter size name" 
+                                    value="{{ form.size_name.value|default:size.size_name }}"
+                                    required
+                                    >
+                                    {{ form.size_name.errors }}
                                 </div>
 
                                 <!-- Submit Button -->

@@ -14,16 +14,33 @@
                                 {% csrf_token %}
                                 <div class="mb-3">
                                     <label for="slider_title" class="form-label">Slider Title</label>
-                                    <input type="text" class="form-control" id="slider_title" name="slider_title" required>
+                                    <input type="text" class="form-control" 
+                                    id="slider_title" 
+                                    name="slider_title" 
+                                    value="{{ form.slider_title.value|default:''}}"
+                                    required
+                                    >
                                 </div>
                                 <div class="mb-3">
                                     <label for="short_title" class="form-label">Short Title</label>
-                                    <input type="text" class="form-control" id="short_title" name="short_title" required>
+                                    <input type="text" class="form-control" 
+                                    id="short_title" 
+                                    name="short_title" 
+                                    value="{{ form.short_title.value|default:''}}"
+                                    required
+                                    >
                                 </div>
                                 <div class="mb-3">
                                     <label for="slider_image" class="form-label">Slider Image</label>
-                                    <input type="file" class="form-control" id="slider_image" name="slider_image" accept="image/*" required>
+                                    <input
+                                    type="file"
+                                    class="form-control input-full"
+                                    id="slider_image"
+                                    name="slider_image" 
+                                />
+                                {{ form.slider_image.errors }}
                                 </div>
+
                                 <div class="d-flex justify-content-end">
                                     <button type="submit" class="btn btn-success">Save Slider</button>
                                     <a href="{% url 'slider-list' %}" class="btn btn-secondary ms-2">Cancel</a>

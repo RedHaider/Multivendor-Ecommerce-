@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import banner_list, banner_edit , banner_form, banner_delete, brand_list, brand_form , brand_edit, category_edit, category_form, category_list, color_edit, color_form, color_list, review_edit , review_form ,review_list ,size_edit ,size_form, size_list ,slider_edit, slider_form, slider_list, subcategory_edit ,subcategory_form ,subcategory_list
+from .views import banner_list, banner_edit , banner_form, banner_delete, brand_list, brand_form , brand_edit, category_edit, category_form, category_list, color_edit, color_form, color_list, review_edit , review_form ,review_list ,size_edit ,size_form, size_list ,slider_edit, slider_form, slider_list, brand_delete, subcategory_edit ,subcategory_form ,subcategory_list, category_delete  , color_delete , size_delete, subcategory_delete, slider_delete
 
 urlpatterns = [
     #banner
@@ -9,19 +9,23 @@ urlpatterns = [
     path('banner/delete/<int:pk>/', banner_delete, name='banner-delete'),
 
     #brand
-    path('brand/', brand_list, name='brand-list'),
-    path('brand-edit/', brand_edit, name='brand-edit'),
-    path('brand-form/', brand_form, name='brand-form'),
+    path('brand/list/', brand_list, name='brand-list'),
+    path('brand/create/', brand_form, name='brand-form'),
+    path('brand/edit/<int:pk>/', brand_edit, name='brand-edit'),
+    path('brand/delete/<int:pk>/', brand_delete, name='brand-delete'),
+
 
     #category
-    path('category/', category_list, name='category-list'),
-    path('category-edit/', category_edit, name='category-edit'),
-    path('category-form/', category_form, name='category-form'),
+    path('category/list/', category_list, name='category-list'),
+    path('category/create/', category_form, name='category-form'),
+    path('category/edit/<int:pk>/', category_edit, name='category-edit'),
+    path('category/delete/<int:pk>/', category_delete, name='category-delete'),
 
     #color
-    path('color/', color_list, name='color-list'),
-    path('color-edit/', color_edit, name='color-edit'),
-    path('color-form/', color_form, name='color-form'),
+    path('color/list/', color_list, name='color-list'),
+    path('color/create/', color_form, name='color-form'),
+    path('color/edit/<int:pk>/', color_edit, name='color-edit'),
+    path('color/delete/<int:pk>/', color_delete, name='color-delete'),
 
     #review
     path('review/', review_list, name='review-list'),
@@ -29,19 +33,22 @@ urlpatterns = [
     path('review-form/', review_form, name='review-form'),
 
     #size
-    path('size/', size_list, name='size-list'),
-    path('size-edit/', size_edit, name='size-edit'),
-    path('size-form/', size_form, name='size-form'),
+    path('size/list/', size_list, name='size-list'),
+    path('size/create/', size_form, name='size-form'),
+    path('size/edit/<int:pk>/', size_edit, name='size-edit'),
+    path('size/delete/<int:pk>/', size_delete, name='size-delete'),
 
     #slider
     path('slider/', slider_list, name='slider-list'),
-    path('slider-edit/', slider_edit, name='slider-edit'),
-    path('slider-form/', slider_form, name='slider-form'),
+    path('slider/create', slider_form, name='slider-form'),
+    path('slider/edit/<int:pk>', slider_edit, name='slider-edit'),
+    path('slider/delete/<int:pk>', slider_delete, name='slider-delete'),
 
     #subcategory
-    path('subcategory/', subcategory_list, name='subcategory-list'),
-    path('subcategory-edit/', subcategory_edit, name='subcategory-edit'),
-    path('subcategory-form/', subcategory_form, name='subcategory-form'),
+    path('subcategories/', subcategory_list, name='subcategory-list'),
+    path('subcategories/create/', subcategory_form, name='subcategory-form'),
+    path('subcategories/edit/<int:pk>/', subcategory_edit, name='subcategory-edit'),
+    path('subcategories/delete/<int:pk>/', subcategory_delete, name='subcategory-delete'),
 
 
 ]
