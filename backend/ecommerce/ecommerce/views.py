@@ -52,8 +52,7 @@ def coupon_form(request):
 def order_details(request):
     return render(request, 'pages/order-details.html' )
 
-def product_form(request):
-    return render(request, 'pages/product-form.html' )
+
 
 def vendor_details(request):
     return render(request, 'pages/vendor-details.html' )
@@ -61,11 +60,8 @@ def vendor_details(request):
 def vendor_profile(request):
     return render(request, 'pages/vendor-profile.html' )
 
-def product_details(request):
-    return render(request, 'pages/product-details.html')
 
-def product_edit(request):
-    return render(request, 'pages/product-edit.html')
+
 
 def coupon_edit(request):
     return render(request, 'pages/coupon-edit.html')

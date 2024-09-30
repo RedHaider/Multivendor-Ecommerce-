@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Banner, Slider, Size, Color, Brand, Category, SubCategory, Product, ProductImage, ProductAttribute , Review
+from .models import Vendor, Banner, Slider, Size, Color, Brand, Category, SubCategory, Product, ProductImage, ProductAttribute , Review
 from .forms import BannerForm, SliderForm ,SizeForm , BrandForm , CategoryForm , SubCategoryForm, ReviewForm , ColorForm , ProductForm, ProductAttributeFormSet, ProductImageFormSet
 
 
@@ -258,35 +258,78 @@ def size_delete(request, pk):
     return render(request, 'product_management/size-list.html')
 
 
-def product_create(request):
+#size Crud Operations done
+def product_list(request):
+    products = Product.objects.all()
+    return render(request, 'product_management.html', {'products':products})
+
+
+def product_form(request):
+    print('Entering product_form view')
+    
+    # Fetch the vendor associated with the logged-in user
+    vendor = get_object_or_404(Vendor, user=request.user)
+    
     if request.method == 'POST':
-        product_form = ProductForm(request.POST)
-        attribute_formset = ProductAttributeFormSet(request.POST)
-        image_formset = ProductImageFormSet(request.POST, request.FILES)
+        product_form = ProductForm(request.POST, request.FILES)
+        
+        # Pass 'instance=None' for formsets as no Product exists yet
+        attribute_formset = ProductAttributeFormSet(request.POST, instance=None)
+        image_formset = ProductImageFormSet(request.POST, request.FILES, instance=None)
 
         if product_form.is_valid() and attribute_formset.is_valid() and image_formset.is_valid():
-            # Save your product and associated forms
-            product = product_form.save()
-            attributes = attribute_formset.save(commit=False)
-            images = image_formset.save(commit=False)
+            print('Form is valid')
 
+            # Create a product instance but don't save it yet
+            product = product_form.save(commit=False)  # Do not save to the database yet
+            product.user = request.user  # Set the user who is adding the product
+            product.vendor = vendor  # Set the vendor based on the logged-in use
+            
+            
+            product.save()  # Now save the product with the user
+            
+            # Set the product instance in the formsets before saving
+            attributes = attribute_formset.save(commit=False)
             for attribute in attributes:
                 attribute.product = product
                 attribute.save()
 
+            # Save product images
+            images = image_formset.save(commit=False)
             for image in images:
                 image.product = product
                 image.save()
 
-            return redirect('product_management')
+            return redirect('product_management')  # Redirect to your product management page
+
     else:
         product_form = ProductForm()
-        attribute_formset = ProductAttributeFormSet(queryset=ProductAttribute.objects.none())
-        image_formset = ProductImageFormSet(queryset=ProductImage.objects.none())
+        # Formsets need 'instance=None' or they might not render correctly
+        attribute_formset = ProductAttributeFormSet(queryset=ProductAttribute.objects.none(), instance=None)
+        image_formset = ProductImageFormSet(queryset=ProductImage.objects.none(), instance=None)
 
     context = {
         'product_form': product_form,
         'attribute_formset': attribute_formset,
         'image_formset': image_formset,
     }
-    return render(request, 'pages/product-form', context)
+
+    print(product_form.errors)
+    print(attribute_formset.errors)
+    print(image_formset.errors)
+
+    return render(request, 'pages/product-form.html', context)
+
+
+def product_detail(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+
+    # Fetch related attributes and images if needed
+    attributes = product.attributes.all()  # Fetching related product attributes
+    images = product.images.all()          # Fetching related product images
+
+    return render(request, 'pages/product-details.html', {
+        'product': product,
+        'attributes': attributes,
+        'images': images,
+    })

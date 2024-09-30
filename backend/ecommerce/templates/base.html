@@ -129,12 +129,12 @@
                 <div class="collapse" id="productManagement">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="{% url 'product_management' %}">
+                      <a href="{% url 'product-list' %}">
                         <span class="sub-item">Product List</span>
                       </a>
                     </li>
                     <li>
-                      <a href="#">
+                      <a href="{% url 'product-form' %}">
                         <span class="sub-item">Add Product</span>
                       </a>
                     </li>
@@ -319,13 +319,13 @@
           <div class="main-header-logo">
             <!-- Logo Header -->
             <div class="logo-header" data-background-color="dark">
-              <a href="index.html" class="logo">
+              <!-- <a href="index.html" class="logo">
                 <img
                   src="{% static '/img/kaiadmin/logo_light.svg"}
                   alt="navbar brand"
                   class="navbar-brand"
                 />
-              </a>
+              </a> -->
               <div class="nav-toggle">
                 <button class="btn btn-toggle toggle-sidebar">
                   <i class="gg-menu-right"></i>

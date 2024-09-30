@@ -54,7 +54,7 @@ class BannerForm(forms.ModelForm):
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['name', 'description', 'price', 'purchased_price', 'category', 'subcategory', 'brand', 'stock_level', 'vendor', 'image']
+        fields = ['name', 'description', 'price', 'purchased_price', 'category', 'subcategory', 'brand', 'stock_level',  'image']
 
 # Product variant form (size, color, image, quantity)
 class ProductAttributeForm(forms.ModelForm):
@@ -68,14 +68,16 @@ class ProductImageForm(forms.ModelForm):
         model = ProductImage
         fields = ['photo_name']
     
-# Formset for adding multiple product variants
+# Formset for product attributes
 ProductAttributeFormSet = inlineformset_factory(
-    Product, ProductAttribute, form=ProductAttributeForm,
+    Product, ProductAttribute,
+    form=ProductAttributeForm,
     extra=1, can_delete=True
 )
 
-# Formset for adding multiple product images
+# Formset for product images
 ProductImageFormSet = inlineformset_factory(
-    Product, ProductImage, form=ProductImageForm,
+    Product, ProductImage,
+    form=ProductImageForm,
     extra=1, can_delete=True
 )

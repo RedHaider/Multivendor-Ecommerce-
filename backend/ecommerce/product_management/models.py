@@ -69,6 +69,7 @@ class Product(models.Model):
     image = models.ImageField(upload_to='product_images/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    in_stock = models.BooleanField(default=True)  # New in_stock field
 
     def generate_product_id(self):
         last_product = Product.objects.order_by('-id').first()

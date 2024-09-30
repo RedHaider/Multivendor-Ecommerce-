@@ -16,23 +16,38 @@
         <div class="row">
           <div class="col-md-6">
             <h4 class="card-title mt-3 pb-3">Product Information</h4>
-            <p>Product ID: PROD0001234</p>
-            <p>Product Name: Product A</p>
-            <p>Category: Electronics</p>
-            <p>SKU: 123456789</p>
-            <p>Stock Status: In Stock</p>
-            <p>Price: $500</p>
+            <p>Product ID: {{ product.product_id }}</p>
+            <p>Product Name: {{ product.name }}</p>
+            <p>
+              Category: 
+              {% if product.category.category_name %}  
+              {{ product.category.category_name }}
+              {% else %}
+                 N/A
+              {% endif %}
+            </p>
+            <p>SKU: {{ product.sku }}</p>
+            <p>Stock Status: 
+              {% if product.in_stock %}In Stock{% else %} Out of Stock{% endif %}
+            </p>
+            <p>Price: ${{ product.price }}</p>
           </div>
+          
           <div class="col-md-6">
             <h4 class="card-title mt-3 pb-3">Additional Details</h4>
-            <p>Manufacturer: ABC Corp.</p>
-            <p>Release Date: 09/05/2024</p>
-            <p>Warranty: 2 Years</p>
+            <p>Manufacturer: 
+              {% if product.brand.brand_name %}  
+              {{ product.brand.brand_name }}
+              {% else %}
+                 N/A
+              {% endif %}
+            </p>
+            <p>Release Date: {{ product.created_at.date }}</p>
             <div class="form-group">
               <label for="statusSelect">Availability:</label>
               <select class="form-select" id="statusSelect">
-                <option>Available</option>
-                <option>Out of Stock</option>
+                <option {% if product.in_stock %}selected{% endif %}>Available</option>
+                <option {% if not product.in_stock %}selected{% endif %}>Out of Stock</option>
                 <option>Discontinued</option>
               </select>
             </div>
@@ -49,28 +64,6 @@
                 <th scope="col">Details</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>Weight</td>
-                <td>1.5kg</td>
-              </tr>
-              <tr>
-                <td>Dimensions</td>
-                <td>10 x 5 x 2 inches</td>
-              </tr>
-              <tr>
-                <td>Material</td>
-                <td>Aluminum</td>
-              </tr>
-              <tr>
-                <td>Battery Life</td>
-                <td>10 hours</td>
-              </tr>
-              <tr>
-                <td>Color</td>
-                <td>Black</td>
-              </tr>
-            </tbody>
           </table>
         </div>
       </div>

@@ -1,7 +1,7 @@
 #ecommerce/urls.py
 from django.contrib import admin
 from django.urls import path, include
-from .views import dashboard, product_management,order_management,sales_performance,promotion_discount,vendor_management,commission,registration, login , add_vendor, commission_form, commission_details, coupon_form, order_details, product_form, vendor_details, vendor_profile, product_edit ,product_details, coupon_edit ,commission_edit ,vendor_edit
+from .views import dashboard, product_management,order_management,sales_performance,promotion_discount,vendor_management,commission,registration, login , add_vendor, commission_form, commission_details, coupon_form, order_details, vendor_details, vendor_profile , coupon_edit ,commission_edit ,vendor_edit
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -24,7 +24,7 @@ urlpatterns = [
 
     #submenu's for the the urls
     
-    path('product_management/product-form', product_form, name='product_form'),
+
     path('order-management/order-details', order_details, name='order_details'),
     path('sales-performance/', sales_performance, name='sales_performance'),
     path('promotion-discount/coupon-form', coupon_form, name='coupon_form'),
@@ -33,8 +33,6 @@ urlpatterns = [
     path('commission/commission-form', commission_form, name='commission_form'),
     path('commission/commission-details', commission_details, name='commission_details'),
     path('registration/', registration, name='registration'),
-    path('product-details/', product_details, name='product-details'),
-    path('product-edit/', product_edit, name='product-edit'),
     path('coupon-edit/', coupon_edit, name='coupon-edit'),
     path('vendor-edit/', vendor_edit, name='vendor-edit'),
     path('commission-edit/', commission_edit, name='commission-edit'),

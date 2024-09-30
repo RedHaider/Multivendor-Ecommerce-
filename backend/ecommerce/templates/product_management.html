@@ -9,503 +9,59 @@
                 <div class="card">
                   <div class="card-header d-flex justify-content-between">
                     <h4 class="card-title">Product List</h4>
-                    <a href="{% url 'product_form' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
+                    <a href="{% url 'product-form' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
                       Add Product
                   </a>
                     
                   </div>
                   <div class="card-body">
                     <div class="table-responsive">
-                      <table
-                        id="multi-filter-select"
-                        class="display table table-striped table-hover"
-                      >
-                        <thead>
-                          <tr>
-                            <th>Product ID</th>
-                            <th>Name</th>
-                            <th>Category</th>
-                            <th>Stock</th>
-                            <th>Price</th>
-                            <th>Details</th>
-                          </tr>
-                        </thead>
-                        <tfoot>
-                          <tr>
-                            <th>Product ID</th>
-                            <th>Name</th>
-                            <th>Category</th>
-                            <th>Stock</th>
-                            <th>Price</th>
-                          </tr>
-                        </tfoot>
-                        <tbody>
-                            <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-edit' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td><a href="{% url 'product-details' %}" class="text-black"> PROD0001234 </a></td>
-                                <td>Wireless Headphones</td>
-                                <td>Electronics</td>
-                                <td>120</td>
-                                <td>$150</td>
-                                <td><a href="{% url 'product-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                                  Edit
-                              </a>
-                                </td>
-                              </tr>
-                        </tbody>
-                      </table>
+                        <table id="multi-filter-select" class="display table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Product ID</th>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Stock</th>
+                                    <th>Price</th>
+                                    <th>Details</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Product ID</th>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Stock</th>
+                                    <th>Price</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                {% for product in products %}
+                                <tr>
+                                    <td>
+                                        <a href="{% url 'product-detail' product.id  %}" class="text-black">{{ product.product_id }}</a>
+                                    </td>
+                                    <td>{{ product.name }}</td>
+                                    <td>{{ product.category.category_name }}</td>
+                                    <td>{{ product.stock_level }}</td>
+                                    <td>${{ product.price }}</td>
+                                    <td>
+                                        <a href="" class="btn btn-success btn-round text-white" style="text-decoration: none;">
+                                            Edit
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="6">No products available.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
-                  </div>
+                </div>
+                
                 </div>
               </div>
 
