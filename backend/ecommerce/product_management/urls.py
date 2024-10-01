@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import banner_list, banner_edit , banner_form, banner_delete, brand_list, brand_form , brand_edit, category_edit, category_form, category_list, color_edit, color_form, color_list, review_edit , review_form ,review_list ,size_edit ,size_form, size_list ,slider_edit, slider_form, slider_list, brand_delete, subcategory_edit ,subcategory_form ,subcategory_list, category_delete  , color_delete , size_delete, subcategory_delete, slider_delete , product_form,product_list,product_detail
+from .views import banner_list, banner_edit , banner_form, banner_delete, brand_list, brand_form , brand_edit, category_edit, category_form, category_list, color_edit, color_form, color_list, review_edit , review_form ,review_list ,size_edit ,size_form, size_list ,slider_edit, slider_form, slider_list, brand_delete, subcategory_edit ,subcategory_form ,subcategory_list, category_delete  , color_delete , size_delete, subcategory_delete, slider_delete , product_form,product_detail, product_edit, product_list , product_delete
 
 urlpatterns = [
     #banner
@@ -54,8 +54,8 @@ urlpatterns = [
     path('product/', product_list, name='product-list'),
     path('product/create/', product_form, name='product-form'),
     path('product/details/<int:pk>', product_detail, name='product-detail'),
-    # path('product/edit/<int:pk>/', product_edit, name='product-edit'),
-    # path('product/delete/<int:pk>/', product_delete, name='product-delete'),
+    path('product/edit/<int:pk>/', product_edit, name='product-edit'),
+    path('product/delete/<int:pk>/', product_delete, name='product-delete'),
 
 
 ]

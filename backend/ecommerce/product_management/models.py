@@ -69,6 +69,7 @@ class Product(models.Model):
     image = models.ImageField(upload_to='product_images/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    sku = models.CharField(max_length=255, null=True, blank=True)  # New field
     in_stock = models.BooleanField(default=True)  # New in_stock field
 
     def generate_product_id(self):

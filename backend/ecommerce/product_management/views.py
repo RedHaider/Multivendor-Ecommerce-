@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 from .models import Vendor, Banner, Slider, Size, Color, Brand, Category, SubCategory, Product, ProductImage, ProductAttribute , Review
 from .forms import BannerForm, SliderForm ,SizeForm , BrandForm , CategoryForm , SubCategoryForm, ReviewForm , ColorForm , ProductForm, ProductAttributeFormSet, ProductImageFormSet
 
@@ -274,7 +275,7 @@ def product_form(request):
         product_form = ProductForm(request.POST, request.FILES)
         
         # Pass 'instance=None' for formsets as no Product exists yet
-        attribute_formset = ProductAttributeFormSet(request.POST, instance=None)
+        attribute_formset = ProductAttributeFormSet(request.POST, request.FILES , instance=None)
         image_formset = ProductImageFormSet(request.POST, request.FILES, instance=None)
 
         if product_form.is_valid() and attribute_formset.is_valid() and image_formset.is_valid():
@@ -300,7 +301,7 @@ def product_form(request):
                 image.product = product
                 image.save()
 
-            return redirect('product_management')  # Redirect to your product management page
+            return redirect('product-list')  # Redirect to your product management page
 
     else:
         product_form = ProductForm()
@@ -333,3 +334,49 @@ def product_detail(request, pk):
         'attributes': attributes,
         'images': images,
     })
+
+def product_edit(request, pk):
+    product = get_object_or_404(Product, id=pk, vendor__user=request.user)
+    vendor = get_object_or_404(Vendor, user= request.user)
+
+    if request.method == 'POST':
+        product_form = ProductForm(request.POST, request.FILES, instance=product)
+        attribute_formset = ProductAttributeFormSet(request.POST, request.FILES, instance=product)
+        image_formset = ProductImageFormSet(request.POST, request.FILES, instance=product)
+
+        if product_form.is_valid() and attribute_formset.is_valid() and image_formset.is_valid():
+            product = product_form.save(commit=False)
+            product.vendor = vendor
+            product.save()
+            
+            attribute_formset.save()
+            image_formset.save()
+
+            return redirect('product-list')
+    
+    else:
+        product_form = ProductForm(instance=product)
+        attribute_formset = ProductAttributeFormSet(instance=product)
+        image_formset = ProductImageFormSet(instance=product)
+    
+    context = {
+        'product_form' : product_form,
+        'attribute_formset': attribute_formset,
+        'image_formset': image_formset,
+        'product':product,
+        }
+    
+    return render(request, 'pages/product-edit.html', context)
+
+def product_delete(request, pk):
+    # Fetch the product based on the primary key (id)
+    product = get_object_or_404(Product, id=pk)
+
+    # Ensure that only the product owner (vendor) can delete the product
+    if request.user == product.vendor.user:
+        product.delete()  # Delete the product
+        messages.success(request, "Product deleted successfully!")
+    else:
+        messages.error(request, "You are not authorized to delete this product.")
+
+    return redirect('product-list')  # Redirect back to the product list

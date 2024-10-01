@@ -54,7 +54,7 @@ class BannerForm(forms.ModelForm):
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['name', 'description', 'price', 'purchased_price', 'category', 'subcategory', 'brand', 'stock_level',  'image']
+        fields = ['name', 'description', 'price', 'purchased_price', 'category', 'subcategory', 'brand', 'stock_level',  'image', 'sku']
 
 # Product variant form (size, color, image, quantity)
 class ProductAttributeForm(forms.ModelForm):
