@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Edit Order</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Order Form Section -->
+        <h4>Order Details</h4>
+        <div class="card p-3 mb-3">
+            {{ order_form.as_p }}
+        </div>
+
+        <!-- Order Items (Formset) Section -->
+        <h4>Order Items</h4>
+        <div class="card p-3 mb-3" id="order-items-section">
+            {{ order_formset.management_form }}  <!-- Important for formsets -->
+
+            <div id="order-items-forms">
+                {% for form in order_formset %}
+                    <div class="form-inline mb-3 order-item-form" data-form-index="{{ forloop.counter0 }}">
+                        {{ form.as_p }}
+                        <button type="button" class="btn btn-danger remove-form-btn">Remove</button>
+                    </div>
+                {% endfor %}
+            </div>
+            <button type="button" class="btn btn-primary" id="add-order-item-btn">Add Item</button>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-success">Update Order</button>
+    </form>
+</div>
+{% endblock %}
+
+
+{% block script %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var formIndex = parseInt('{{ order_formset.total_form_count }}', 10);
+
+    // Function to calculate subtotal for each item
+    function calculateSubtotal(formElement) {
+        const priceField = formElement.querySelector('[name$="price"]');
+        const quantityField = formElement.querySelector('[name$="quantity"]');
+        const subtotalField = formElement.querySelector('[name$="subtotal"]');
+        const price = parseFloat(priceField.value) || 0;
+        const quantity = parseInt(quantityField.value) || 0;
+        const subtotal = price * quantity;
+        subtotalField.value = subtotal.toFixed(2);
+    }
+
+    // Function to calculate the total amount for the order
+    function calculateTotalAmount() {
+        let totalAmount = 0;
+        document.querySelectorAll('.order-item-form').forEach(function(form) {
+            const subtotalField = form.querySelector('[name$="subtotal"]');
+            const subtotal = parseFloat(subtotalField.value) || 0;
+            totalAmount += subtotal;
+        });
+        document.querySelector('[name="total_amount"]').value = totalAmount.toFixed(2);
+    }
+
+    // Attach event listeners to price and quantity fields
+    function attachCalculationHandlers(formElement) {
+        const priceField = formElement.querySelector('[name$="price"]');
+        const quantityField = formElement.querySelector('[name$="quantity"]');
+
+        priceField.addEventListener('input', function() {
+            calculateSubtotal(formElement);
+            calculateTotalAmount();
+        });
+
+        quantityField.addEventListener('input', function() {
+            calculateSubtotal(formElement);
+            calculateTotalAmount();
+        });
+    }
+
+    // Attach remove button handler to remove form
+    function attachRemoveHandler(formElement) {
+        formElement.querySelector('.remove-form-btn').addEventListener('click', function() {
+            formElement.remove();
+            formIndex--;
+            document.getElementById('id_orderitems-TOTAL_FORMS').value = formIndex; // Update management form
+            calculateTotalAmount(); // Recalculate total when an item is removed
+        });
+    }
+
+    // Attach calculation and remove button handlers for existing forms
+    document.querySelectorAll('.order-item-form').forEach(function(form) {
+        attachCalculationHandlers(form);
+        attachRemoveHandler(form);
+    });
+
+    // Add a new form when 'Add Item' is clicked
+    document.getElementById('add-order-item-btn').addEventListener('click', function() {
+        var orderItemsForms = document.getElementById('order-items-forms');
+        var newForm = document.querySelector('.order-item-form:first-child').cloneNode(true);
+
+        // Reset form field values and update name and id attributes
+        newForm.querySelectorAll('input, select').forEach(function(input) {
+            input.name = input.name.replace(/-\d+-/, '-' + formIndex + '-');
+            input.id = input.id.replace(/-\d+-/, '-' + formIndex + '-');
+            input.value = ''; // Reset the value for the new form
+            input.classList.remove('is-invalid'); // Ensure that any error class or state is also reset
+        });
+
+        // Append the new form to the form list
+        orderItemsForms.appendChild(newForm);
+
+        // Update form index
+        formIndex++;
+        document.getElementById('id_orderitems-TOTAL_FORMS').value = formIndex; // Update management form
+
+        // Reattach the calculation and remove button event handlers for the new form
+        attachCalculationHandlers(newForm);
+        attachRemoveHandler(newForm);
+
+        // Immediately calculate subtotal and total amount for the new form
+        calculateSubtotal(newForm);
+        calculateTotalAmount();
+    });
+});
+</script>
+{% endblock %}

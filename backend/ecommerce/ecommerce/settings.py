@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'accounts',
     'product_management',
+    'order_management',
     'rest_framework_simplejwt',
     'corsheaders',
     'widget_tweaks'

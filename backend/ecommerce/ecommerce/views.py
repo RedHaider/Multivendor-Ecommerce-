@@ -9,9 +9,6 @@ def dashboard(request):
 def product_management(request):
     return render(request, 'product_management.html')
 
-def order_management(request):
-    return render(request, 'order_management.html')
-
 def sales_performance(request):
     return render(request, 'sales_performance_analysis.html')
 
@@ -48,9 +45,6 @@ def commission_details(request):
 
 def coupon_form(request):
     return render(request, 'pages/coupon-form.html' )
-
-def order_details(request):
-    return render(request, 'pages/order-details.html' )
 
 
 

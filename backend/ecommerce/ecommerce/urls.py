@@ -1,7 +1,7 @@
 #ecommerce/urls.py
 from django.contrib import admin
 from django.urls import path, include
-from .views import dashboard, product_management,order_management,sales_performance,promotion_discount,vendor_management,commission,registration, login , add_vendor, commission_form, commission_details, coupon_form, order_details, vendor_details, vendor_profile , coupon_edit ,commission_edit ,vendor_edit
+from .views import dashboard, product_management,sales_performance,promotion_discount,vendor_management,commission,registration, login , add_vendor, commission_form, commission_details, coupon_form,  vendor_details, vendor_profile , coupon_edit ,commission_edit ,vendor_edit
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -9,7 +9,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('dashboard/', dashboard, name='dashboard'),
     path('product_management/', product_management, name='product_management'),
-    path('order-management/', order_management, name='order_management'),
     path('sales-performance/', sales_performance, name='sales_performance'),
     path('promotion-discount/', promotion_discount, name='promotion_discount'),
     path('vendor-management/', vendor_management, name='vendor_management'),
@@ -22,10 +21,6 @@ urlpatterns = [
     #form
     path('', include('accounts.urls')),
 
-    #submenu's for the the urls
-    
-
-    path('order-management/order-details', order_details, name='order_details'),
     path('sales-performance/', sales_performance, name='sales_performance'),
     path('promotion-discount/coupon-form', coupon_form, name='coupon_form'),
     path('vendor-management/add-vendor', add_vendor, name='add_vendor'),
@@ -37,7 +32,8 @@ urlpatterns = [
     path('vendor-edit/', vendor_edit, name='vendor-edit'),
     path('commission-edit/', commission_edit, name='commission-edit'),
 
-    path('product-management/',include('product_management.urls'))
+    path('product-management/',include('product_management.urls')),
+    path('order-management/', include('order_management.urls')),
 
 ]
 
