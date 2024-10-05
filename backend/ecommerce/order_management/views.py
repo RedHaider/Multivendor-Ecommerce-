@@ -136,50 +136,106 @@ def order_delete(request, pk ):
 
     return render(request, 'order_management/order_form.html', context)
 
+#Cart handling
 
 def cart_list(request):
-    cart = Cart.Objects.all()
+    cart = Cart.objects.all()
     context = {
         'cart': cart,
     }
     return render(request, 'order_management/cart.html', context)
 
-def cart_form(request, pk):
-    if request.method == 'POST':
-        cart_form = CartForm(request.POST , request.FILES)
 
+
+
+def cart_form(request):
+
+    if request.method == 'POST':
+        cart_form = CartForm(request.POST, request.FILES)
+        print("POST Data:", request.POST) 
         if cart_form.is_valid():
-            print("the form is valid")
-            
+            print('Form is valid')
             cart = cart_form.save(commit=False)
             cart.save()
 
             cart_formset = CartFormset(request.POST, request.FILES, instance=cart)
 
             if cart_formset.is_valid():
+                print("ITEMSSSSSSSSSSSSSS SAVINNNNNNNNNNNNNNNNNNNNNNNNNNN")
                 cart_items = cart_formset.save(commit=False)
                 for cart_item in cart_items:
-                    cart_item.cart_id = cart
+                    cart_item.cart = cart
+                    cart_item.save()
+                
+                cart_formset.save()
+                cart.calculate_total_amount()  # Server-side total calculation
+                return redirect('cart-list')
+
+    else:
+        cart_form = CartForm()
+        cart_formset = CartFormset(queryset=CartItems.objects.none() ,instance=None)
+
+    context = {
+        'cart_form': cart_form,
+        'cart_formset': cart_formset
+    }
+
+    return render(request, 'order_management/cart-form.html', context)
+
+
+def cart_edit(request, pk):
+    cart = get_object_or_404(Cart, pk=pk)
+    if request.method == "POST":
+        cart_form = CartForm(request.POST, instance=cart)
+
+        if cart_form.is_valid():
+            print('cart form valid')
+            cart = cart_form.save(commit=False)
+            cart.save()
+
+            cart_formset = CartFormset(request.POST, request.FILES , instance=cart)
+
+            if cart_formset.is_valid():
+                cart_items = cart_formset.save(commit=False)
+                for cart_item in cart_items:
+                    cart_item.cart =  cart
                     cart_item.save()
                 cart_formset.save()
-                return redirect('')
-    
-    else: 
-        cart_form = CartForm()
-        cart_formset = CartFormset(queryset=OrderItems.objects.none(), instance= None)
+
+                return redirect('cart-list')
+    else:
+        cart_form = CartForm(instance=cart)
+        cart_formset = CartFormset(instance=cart)
     
     context = {
         'cart_form' : cart_form,
-        'cart_formset' : cart_formset
+        'cart_formset': cart_formset,
+        'cart' : cart
     }
 
-    return render(request, '', context)
+    return render(request,'order_management/cart-edit.html', context)
 
+def cart_delete(request, pk):
+    cart = get_object_or_404(Cart, pk=pk)
 
-##edit and delete is left 
-##url is left 
-##ui is left 
+    if request.method == "POST":
+        cart.delete()
+        
+        return redirect('cart-list')
+    context = {
+        'cart': cart
+    }
 
+    return render(request,'order_management/cart-form.html' , context )
 
+def cart_detail(request, pk):
+    cart = get_object_or_404(Cart, pk=pk)
 
+    # Fetch related attributes and images if needed
+    cartitems = cart.cartitems.all()       # Fetching related product images
+    context = {
+        'cart': cart,
+        'cartitem': cartitems,
+      }
 
+    return render(request, 'order_management/cart-details.html', context)

@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="container">
+  <div class="page-inner">
+    <div class="page-header d-flex justify-content-between">
+      <h3 class="fw-bold mb-3">Cart Details</h3>
+      <a href="{% url 'cart-list'  %}" class="btn btn-danger btn-round ms-auto text-white" style="text-decoration: none;">
+        Back
+      </a>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <h4 class="card-title mt-3 pb-3">Cart Information</h4>
+            <p>Cart ID: {{ cart.id }}</p>
+            <p>Customer:  {{ cart.customer_id }}
+            </p>
+          </div>
+          
+          <div class="col-md-6">
+            <h4 class="card-title mt-3 pb-3">Pricing Details</h4>
+            <p>Total Price: {{ cart.total_amount }}</p>
+          </div>
+        </div>
+        
+        <h4 class="card-title mt-3 pb-3">Cart Items</h4>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">Cart Name</th>
+              <th scope="col">Product ID</th>
+              <th scope="col">Product Variant Id</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Price</th>
+              <th scope="col">Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for cartitem in cartitem %}
+            <tr>
+              <td>{{ cartitem.cart }}</td>
+              <td>{{ cartitem.product_id.name }}</td>
+              <td>{{ cartitem.product_variant_id }}</td>
+              <td>{{ cartitem.quantity }}</td>
+              <td>${{ cartitem.price }}</td>
+              <td>${{ cartitem.subtotal }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        
+        <h4 class="card-title mt-3 pb-3">Cart Discounts</h4>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">Discount Type</th>
+              <th scope="col">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for discount in discounts %}
+            <tr>
+              <td>{{ discount.type }}</td>
+              <td>${{ discount.amount }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

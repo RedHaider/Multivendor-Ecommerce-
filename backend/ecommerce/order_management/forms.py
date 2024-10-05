@@ -33,10 +33,12 @@ class CartForm(forms.ModelForm):
 class CartItemsForm(forms.ModelForm):
     class Meta:
         model = CartItems
-        fields = ['product_id', 'product_varient_id','quantity','price']
+        fields = ['product_id', 'product_variant_id', 'quantity', 'price', 'subtotal']
 
+# Use CartItemsForm in the inlineformset_factory
 CartFormset = inlineformset_factory(
-    Cart , CartItems, 
-    form = CartItems,
-    extra=1, can_delete=True
+    Cart, CartItems, 
+    form=CartItemsForm,  # Use the CartItemsForm instead of CartItems
+    extra=1, 
+    can_delete=True
 )

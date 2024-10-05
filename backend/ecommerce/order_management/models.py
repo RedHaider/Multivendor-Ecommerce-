@@ -156,20 +156,26 @@ class Cart(models.Model):
 
     def __str__(self):
         return f'Cart {self.cart_id} for Customer {self.customer_id.username}'
+    
+
 
 
 class CartItems(models.Model):
-    cart_id = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='cartitems')
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
     product_variant_id = models.ForeignKey(ProductAttribute, on_delete=models.CASCADE)  # Assuming you have variants
     quantity = models.IntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
+    subtotal = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)  # Add this field if you want to store subtotal
 
     def save(self, *args, **kwargs):
         self.subtotal = self.quantity * self.price
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f'CartItem {self.product_id.name} in Cart {self.cart_id.cart_id}'
+        return f'CI {self.cart.cart_id} CT:  {self.product_id} PR: {self.product_id}'
 
-
+    class Meta:
+        verbose_name = 'Cart Item'
+        verbose_name_plural = 'Cart Item'
+        ordering = ['-id']
