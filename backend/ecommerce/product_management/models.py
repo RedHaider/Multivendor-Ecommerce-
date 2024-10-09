@@ -7,8 +7,15 @@ from django.contrib.auth import get_user_model  # Import get_user_model
 
 User = get_user_model()  # Retrieve the user model
 
+class ProductType(models.Model):
+    product_type_name = models.CharField(max_length=255)
+    product_type_slug = models.SlugField(max_length=255)
+    product_type_image = models.ImageField(upload_to='category_images/', blank=True,null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 class Category(models.Model):
+    product_type = models.ForeignKey(ProductType, on_delete= models.CASCADE, related_name = 'product_type')
     category_name = models.CharField(max_length=255)
     category_slug = models.SlugField(max_length=255)
     category_image = models.ImageField(upload_to='category_images/', blank=True,null=True)
@@ -62,6 +69,8 @@ class Product(models.Model):
     purchased_price = models.DecimalField(max_digits=10, decimal_places=2 )
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     subcategory = models.ForeignKey(SubCategory, on_delete=models.SET_NULL, null=True)
+    product_type = models.ForeignKey(ProductType, on_delete=models.SET_NULL, null=True)
+
     brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True)
     stock_level = models.IntegerField(default=0)
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
@@ -90,6 +99,9 @@ class Product(models.Model):
         return self.name
 
 # Product Attributes (Colors, Sizes)
+
+
+
 class ProductAttribute(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='attributes')
     color = models.ForeignKey(Color, on_delete=models.CASCADE)

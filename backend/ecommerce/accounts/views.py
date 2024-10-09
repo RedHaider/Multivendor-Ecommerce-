@@ -6,6 +6,11 @@ from .models import  User
 from django.contrib import messages
 from .forms import CustomLoginForm
 from django.contrib.auth import authenticate, login, logout
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework_simplejwt.tokens import RefreshToken
+from .serializers import RegisterSerializer
 
 # Create your views here.
 
@@ -118,3 +123,36 @@ def logout_view(request):
     return redirect('login') 
 
 
+class RegisterView(APIView):
+    def post(self, request):
+        serializer = RegisterSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "User registered successfully"}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class LoginView(APIView):
+    def post(self, request):
+        email = request.data.get('email')
+        password = request.data.get('password')
+
+        # Authenticate the user
+        user = authenticate(request, email=email, password=password)
+
+        # Check if the user exists and has a customer role
+        if user is not None:
+            if user.role == 'customer':
+                # Generate refresh and access tokens
+                refresh = RefreshToken.for_user(user)
+                return Response({
+                    'refresh': str(refresh),
+                    'access': str(refresh.access_token),
+                    'role': user.role,
+                    'user_id': user.id,
+                }, status=status.HTTP_200_OK)
+            else:
+                # Return an error if the role is not customer
+                return Response({"error": "User is not a customer"}, status=status.HTTP_403_FORBIDDEN)
+
+        # Return error if authentication fails
+        return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)

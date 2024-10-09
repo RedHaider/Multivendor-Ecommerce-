@@ -1,50 +1,60 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import axios from 'axios';
+import { AuthContext } from '../utils/authContext'; // Import your AuthContext
+
 const Login = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { login } = useContext(AuthContext); // Get the login function from AuthContext
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
   const [error, setError] = useState('');
 
-  const handleLogin = async (e) => {
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-  
+
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/accounts/login/', {
-        email,
-        password,
-      });
-  
+      const response = await axios.post('http://127.0.0.1:8000/customer_login/', formData);
       const { access, refresh, role, user_id } = response.data;
-  
-      // Store tokens and user info in localStorage
-      localStorage.setItem('accessToken', access);
+
+      // Use the login function from AuthContext to set the access token
+      login(access);
+
+      // Store tokens and user information in localStorage
       localStorage.setItem('refreshToken', refresh);
       localStorage.setItem('role', role);
       localStorage.setItem('userId', user_id);
-  
+
       // Redirect based on role
-      if (role === 'admin') {
-        window.location.href = 'http://127.0.0.1:8000/api/accounts/admin/dashboard/'; // Django-based
-      } else if (role === 'vendor') {
-        window.location.href = 'http://127.0.0.1:8000/api/accounts/vendor/dashboard/'; // Django-based
-      } else if (role === 'customer') {
-        navigate('/'); // React-based home page
+      if (role === 'customer') {
+        navigate('/'); // Redirect to homepage for customers
       } else {
-        navigate('/home'); // Default home page
+        navigate('/home'); // Redirect to home for other roles
       }
     } catch (err) {
-      setError('Invalid credentials or server error');
-    }
+      if (err.response && err.response.data) {
+        setError(err.response.data.detail || 'Invalid credentials or server error');
+      } else {
+        setError('Something went wrong. Please try again later.');
+      }
+    }    
   };
   
   return (
     <div>
       <div className="loginbackground-container mb-5">
         <div className="content-container d-flex flex-column align-items-center justify-content-center min-vh-100 text-center">
-          <h2 className="shopeoneH"> Home &gt; Register / Login</h2>
+          <h2 className="shopeoneH"> Home &gt; Login</h2>
         </div>
       </div>
 
@@ -63,33 +73,32 @@ const Login = () => {
       </div>
 
       <div className="container mb-5">
-      <form className="registration-form" onSubmit={handleLogin}>
         <h2>Login</h2>
         {error && <p style={{ color: 'red' }}>{error}</p>}
+        <form className="registration-form" onSubmit={handleSubmit}>
+          <label htmlFor="email">Email *</label>
+          <input 
+            type="email" 
+            name="email" 
+            placeholder="Email" 
+            onChange={handleChange} 
+            value={formData.email}  
+            required 
+          />
 
-        <label htmlFor="email">Email *</label>
-        <input
-          type="text"
-          id="email"
-          name="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+          <label htmlFor="password">Password *</label>
+          <input 
+            type="password" 
+            name="password" 
+            placeholder="Password" 
+            onChange={handleChange} 
+            value={formData.password}  
+            required 
+          />
 
-        <label htmlFor="password">Password *</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-
-        <button type="submit">Login</button>
-      </form>
-    </div>
+          <button type="submit">Login</button>
+        </form>
+      </div>
     </div>
   );
 };

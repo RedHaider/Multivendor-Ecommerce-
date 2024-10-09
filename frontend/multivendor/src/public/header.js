@@ -1,9 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import TopBar from "./topBar";
+import { AuthContext } from '../utils/authContext';
+
 
 const Header = () => {
 
+    const { isLoggedIn } = useContext(AuthContext);
 
     return ( 
         <div className="colorset">
@@ -41,27 +44,27 @@ const Header = () => {
             
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul className="navbar-nav mr-auto pl-5">
-                    <li className="nav-item active" onclick="window.location.href='index.html'">
-                        <Link to="/">
+                    <li className="nav-item active" >
+                        <Link to="/ ">
                         <a className="nav-link" >Home </a>
                         </Link>
                     </li>
-                    <li className="nav-item active" onclick="window.location.href='shop.html'">
+                    <li className="nav-item active" >
                         <Link to="shop">
                         <a className="nav-link" >Shop </a>
                         </Link>
                     </li>
-                    <li className="nav-item active" onclick="window.location.href='aboutus.html'">
+                    <li className="nav-item active" >
                         <Link to="about-us">
                         <a className="nav-link" >About us</a>
                         </Link>
                     </li>
-                    <li className="nav-item active" onclick="window.location.href='blog.html'">
+                    <li className="nav-item active">
                         <Link to="blog">
                         <a className="nav-link" >Blog </a>
                         </Link>
                     </li>
-                    <li className="nav-item active" onclick="window.location.href='contactus.html'">
+                    <li className="nav-item active" >
                         <Link to="contactus">
                         <a className="nav-link" >Contact us</a>
                         </Link>
@@ -78,70 +81,26 @@ const Header = () => {
                         <input className="form-control" type="search" placeholder="Search" aria-label="Search"/>
                     
                     </div>
-                    <div style={{ position: 'relative', display: 'inline-block' }} >
-                    <Link to="/cart">
-                         <i  className="fa fa-shopping-bag icon" id="cartIcon"></i>
-                    </Link>
-                        <span className="notification-badge">1</span>
-                    </div>
+                    {
+                        isLoggedIn ? (
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                <div style={{ position: 'relative', display: 'inline-block', marginRight: '20px' }}>
+                                    <Link to="/cart">
+                                        <i className="fa fa-shopping-bag icon" id="cartIcon"></i>
+                                    </Link>
+                                    <span className="notification-badge">1</span>
+                                </div>
+                                <div style={{ display: 'inline-block' }}>
+                                    <Link to="Whishlist" className="nav-link">
+                                        <i className="fa fa-heart icon p-2"></i>
+                                    </Link>
+                                </div>
+                            </div>
 
-                    {/* Popup cart */}
-
-                    <div className="popup-cart-icon p-2" >
-                        <div className="row">
-                            <div className="col-4">
-                                <img src="picture/popup-cart.png" className="popup-cart" alt="cart list" />
-                            </div>
-                            <div className="col-6">
-                                <p className="popup-cart-description">Pink Tops with Pencil skirt</p>
-                                <p className="popup-cart-details">1 X <span>$54.00</span></p>
-                            </div>
-                            <div className="col-2">X</div>
-                        </div>
-                        <div className="row">
-                            <div className="col-4">
-                                <img src="picture/popup-cart.png" className="popup-cart" alt="cart list" />
-                            </div>
-                            <div className="col-6">
-                                <p className="popup-cart-description">Pink Tops with Pencil skirt</p>
-                                <p className="popup-cart-details">1 X <span>$54.00</span></p>
-                            </div>
-                            <div className="col-2">X</div>
-                        </div>
-                        <hr />
-                        <div className="row">
-                            <div className="col-6 pl-4">
-                                <p>Subtotal:</p>
-                            </div>
-                            <div className="col-6 text-right pr-4">
-                                <p>$88.00</p>
-                            </div>
-                        </div>
-                        <hr />
-                        <div className="row justify-content-center mb-2">
-                            <button 
-                                className="popup-button-color" 
-                                onClick={() => window.location.href='cart.html'}
-                            >
-                                View Cart
-                            </button>
-                        </div>
-                        <div className="row justify-content-center">
-                            <button 
-                                className="popup-button-color-2" 
-                                onClick={() => window.location.href='checkout.html'}
-                            >
-                                Check Out
-                            </button>
-                        </div>
-                    </div>
-                </div>         
-                <a className="nav-link" onclick="window.location.href='/Whishlist'">
-                     <Link to="Whishlist">
-                    <i className="fa fa-heart icon p-2"></i>
-                    </Link>
-                </a>
-                <a className="nav-link" onclick="window.location.href='login'">
+                        ) : null
+                    }
+                </div>  
+                <a className="nav-link">
                     <Link to="login">
                     <i className="fa fa-user icon p-2"></i>
                     </Link>

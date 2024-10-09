@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import banner_list, banner_edit , banner_form, banner_delete, brand_list, brand_form , brand_edit, category_edit, category_form, category_list, color_edit, color_form, color_list, review_edit , review_form ,review_list ,size_edit ,size_form, size_list ,slider_edit, slider_form, slider_list, brand_delete, subcategory_edit ,subcategory_form ,subcategory_list, category_delete  , color_delete , size_delete, subcategory_delete, slider_delete , product_form,product_detail, product_edit, product_list , product_delete
+from .views import banner_list, banner_edit , banner_form, banner_delete, brand_list, brand_form , brand_edit, category_edit, category_form, category_list, color_edit, color_form, color_list, review_edit , review_form ,review_list ,size_edit ,size_form, size_list ,slider_edit, slider_form, slider_list, brand_delete, subcategory_edit ,subcategory_form ,subcategory_list, category_delete  , color_delete , size_delete, subcategory_delete, slider_delete , product_form, product_detail, product_edit, product_list , product_delete, product_type_list, product_type_form, product_type_edit, product_type_delete
 
 urlpatterns = [
     #banner
@@ -57,6 +57,10 @@ urlpatterns = [
     path('product/edit/<int:pk>/', product_edit, name='product-edit'),
     path('product/delete/<int:pk>/', product_delete, name='product-delete'),
 
+    path('product-type/list/', product_type_list, name='product-type-list'),
+    path('product-type/create/', product_type_form, name='product-type-form'),
+    path('product-type/edit/<int:pk>/', product_type_edit, name='product-type-edit'),
+    path('product-type/delete/<int:pk>/', product_type_delete, name='product-type-delete'),
 
 ]
 

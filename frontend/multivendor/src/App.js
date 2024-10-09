@@ -18,6 +18,8 @@ import ProductDetails from './components/productdetails';
 import Register from './components/register';
 import Whishlist from './components/whishlist';
 import OrderTracking from './components/ordertracking';
+import PrivateRoute from './utils/privateroute';
+import { AuthProvider } from './utils/authContext';
 //bootstrap
 import 'bootstrap/dist/js/bootstrap.bundle.min'; // Includes Popper.js
 
@@ -33,30 +35,35 @@ import './accordina.css'
 
 function App() {
   return (
+    <AuthProvider>
     <Router>
       <div className='App'>
       <Header/>
       <div className='content'>
       <Routes>
+        {/* open even without registration */}
         <Route path='/' element={<Home/>}/>
         <Route path='/shop' element={<Shop/>}/>
         <Route path='/blog' element={<Blog/>}/>
-        <Route path='/Whishlist' element={<Whishlist/>}/>
         <Route path='/about-us' element={<AboutUs/>}/>
-        <Route path='/productdetails' element={<ProductDetails/>}/>
         <Route path='/contactus' element={<ContactUs/>}/>
         <Route path='/blogdetails' element={<BlogDetails/>}/>
-        <Route path='/cart' element={<Cart/>}/>
-        <Route path='/checkout' element={<Checkout/>}/>
         <Route path='/login' element={<Login/>}/>
         <Route path='/register' element={<Register/>}/>
-        <Route path='/ordertracking' element={<OrderTracking/>}/>
+
+        {/* open only if you registered */}
+        <Route path='/Whishlist' element={<PrivateRoute><Whishlist/></PrivateRoute>}/>
+        <Route path='/productdetails' element={<PrivateRoute><ProductDetails/></PrivateRoute>}/>
+        <Route path='/cart' element={<PrivateRoute><Cart/></PrivateRoute>}/>
+        <Route path='/checkout' element={<PrivateRoute><Checkout/></PrivateRoute>}/>
+        <Route path='/ordertracking' element={<PrivateRoute><OrderTracking/></PrivateRoute>}/>
 
       </Routes>
       </div>
       <Footer/>
       </div>
     </Router>
+    </AuthProvider>
   );
 }
 

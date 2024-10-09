@@ -63,8 +63,6 @@ class Customer(models.Model):
             self.name = f"{self.user.first_name} {self.user.last_name}"
         if not self.address:
             self.address = self.user.address
-        if not created_at:
-            created_at = self.user.created_at
         super().save(*args, **kwargs)
 
     

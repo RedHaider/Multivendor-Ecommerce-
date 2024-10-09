@@ -32,12 +32,10 @@
                  N/A
               {% endif %}
             </p>
-            <p>Stock Status: 
-              {% if product.in_stock %}In Stock{% else %} Out of Stock{% endif %}
-            </p>
-            <p>Total Quantity:  {{ product.stock_level }}
-            </p>
+            <p>Stock Status: {% if product.in_stock %}In Stock{% else %} Out of Stock{% endif %}</p>
+            <p>Total Quantity:  {{ product.stock_level }}</p>
             <p>Price: ${{ product.price }}</p>
+            <p>Product Type: ${{ product.product_type  }}</p>
             <p>Release Date: {{ product.created_at.date }}</p>
             <p>
               Category: 

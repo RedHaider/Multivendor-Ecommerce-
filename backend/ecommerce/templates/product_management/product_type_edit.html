@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="page-inner">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card p-3">
+                        <div class="card-header d-flex justify-content-between">
+                            <h4 class="fw-bold">Edit Product Type</h4>
+                            <div>
+                                <a href="{% url 'product-type-list' %}" class="btn btn-secondary btn-round ms-auto text-white" style="text-decoration: none;">
+                                    Back
+                                </a>
+                                <a href="#" class="btn btn-danger btn-round ms-auto text-white" style="text-decoration: none;">
+                                    Delete
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="product_type_name" class="form-label">Product Type Name</label>
+                                    <input type="text" class="form-control" id="product_type_name" 
+                                    name="product_type_name"
+                                    placeholder="Enter product type name"
+                                    value="{{ form.product_type_name.value|default:product_type.product_type_name }}"
+                                    required
+                                    >
+                                    {{ form.product_type_name.errors }}
+                                </div>
+                                <div class="mb-3">
+                                    <label for="product_type_slug" class="form-label">Product Type Slug</label>
+                                    <input type="text" class="form-control" id="product_type_slug" 
+                                    name="product_type_slug" 
+                                    placeholder="Enter product type slug" 
+                                    value="{{ form.product_type_slug.value|default:product_type.product_type_slug }}"
+                                    required
+                                    >
+                                    {{ form.product_type_slug.errors }}
+                                </div>
+                                <div class="mb-3">
+                                    <label for="product_type_image" class="form-label">Product Type Image</label>
+                                    <input type="file" 
+                                    class="form-control" 
+                                    id="product_type_image" 
+                                    name="product_type_image"
+                                    >
+                                    {{ form.product_type_image.errors }}
+                                    <small class="form-text text-muted">Upload an image for the product type.</small>
+                                    {% if product_type.product_type_image %}
+                                        <img src="{{ product_type.product_type_image.url }}" class="img-thumbnail mt-3" width="150">
+                                    {% endif %}
+                                </div>
+                                <button type="submit" class="btn btn-primary">Save</button>
+                                <a href="{% url 'product-type-list' %}" class="btn btn-secondary">Cancel</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

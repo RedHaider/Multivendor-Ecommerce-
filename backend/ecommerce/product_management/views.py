@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from .models import Vendor, Banner, Slider, Size, Color, Brand, Category, SubCategory, Product, ProductImage, ProductAttribute , Review
-from .forms import BannerForm, SliderForm ,SizeForm , BrandForm , CategoryForm , SubCategoryForm, ReviewForm , ColorForm , ProductForm, ProductAttributeFormSet, ProductImageFormSet
+from .models import Vendor, Banner, Slider, Size, Color, Brand, Category, SubCategory, Product, ProductImage, ProductAttribute , Review , ProductType
+from .forms import BannerForm, SliderForm ,SizeForm , BrandForm , CategoryForm , SubCategoryForm, ReviewForm , ColorForm , ProductForm, ProductAttributeFormSet, ProductImageFormSet , ProductTypeForm
 
 
 #Banner Crud Operations done
@@ -380,3 +380,41 @@ def product_delete(request, pk):
         messages.error(request, "You are not authorized to delete this product.")
 
     return redirect('product-list')  # Redirect back to the product list
+
+# List all product types
+def product_type_list(request):
+    product_types = ProductType.objects.all()
+    return render(request, 'product_management/product_type_list.html', {'product_types': product_types})
+
+# Create a new product type
+def product_type_form(request):
+    if request.method == 'POST':
+        form = ProductTypeForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('product-type-list')  # Redirect to the list after saving
+    else:
+        form = ProductTypeForm()
+    return render(request, 'product_management/product_type_form.html', {'form': form})
+
+# Edit an existing product type
+def product_type_edit(request, pk):
+    product_type = get_object_or_404(ProductType, pk=pk)
+    if request.method == 'POST':
+        form = ProductTypeForm(request.POST, request.FILES, instance=product_type)
+        if form.is_valid():
+            form.save()
+            return redirect('product-type-list')
+    else:
+        form = ProductTypeForm(instance=product_type)
+    return render(request, 'product_management/product_type_edit.html', {'form': form, 'product_type': product_type})
+
+# Delete a product type
+
+
+def product_type_delete(request, pk):
+    product_type = get_object_or_404(ProductType, pk=pk)
+    if request.method == 'POST':
+        product_type.delete()
+        return redirect('product-type-list')
+    return render(request, 'product_management/product_type_list.html', {'product_type':product_type})

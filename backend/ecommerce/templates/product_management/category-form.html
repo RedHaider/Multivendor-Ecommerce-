@@ -28,6 +28,22 @@
                         <div class="card-body">
                             <form method="POST" enctype="multipart/form-data">
                                 {% csrf_token %}
+                                <div class="form-group form-inline">
+                                    <label for="product_type" class="col-form-label">Product Type:</label>
+                                    <select 
+                                        class="form-control input-full" 
+                                        id="product_type" 
+                                        name="product_type"
+                                    >
+                                        <option value="">Select a Product Type</option>
+                                        {% for product_type in form.product_type.field.queryset %}
+                                            <option value="{{ product_type.id }}" {% if product_type.id == form.product_type.value %}selected{% endif %}>
+                                                {{ product_type.product_type_name }}  <!-- Corrected this line -->
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                    {{ form.product_type.errors }}
+                                </div>
                                 <div class="mb-3">
                                     <label for="category_name" class="form-label">Category Name</label>
                                     <input type="text" class="form-control" id="category_name" name="category_name" placeholder="Enter category name"                                      
