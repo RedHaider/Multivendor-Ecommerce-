@@ -1,11 +1,14 @@
 const Whishlist = () => {
     return ( 
     <div>
-            <div class="loginbackground-container mb-5">
-        <div class="content-container d-flex flex-column align-items-center justify-content-center min-vh-100 text-center">
-            <h2 class="shopeoneH"> Home &gt; Shop &gt; WishList</h2>
+        <div className="row justify-content-center mb-2">
+                <div className="col text-center">
+                <div className="heading">
+                    <h1>Wish List</h1>
+                    <hr className="underline-hr"/>
+                </div>
+                </div>
         </div>
-      </div>
 
 
       {/* wish List */}

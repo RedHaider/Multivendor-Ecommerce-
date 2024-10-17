@@ -2,21 +2,16 @@ const AboutUs = () => {
     return ( 
         <div>
             {/* shop 1 */}
-            <div className="aboutbackground-container">
-                <div className="content-container d-flex flex-column align-items-center justify-content-center min-vh-100 text-center">
-                    <h2 className="shopeoneH">Home &gt; About Us</h2>
-                </div>
-                </div>
-                  {/* shop 2 */}
-                  <div className="container mb-5">
-          <div className="row justify-content-center">
-            <div className="col text-center">
+            <div className="row justify-content-center mb-2">
+                <div className="col text-center">
                 <div className="heading">
-                    <h1>Why Choose Us</h1>
+                    <h1>About Us</h1>
                     <hr className="underline-hr"/>
                 </div>
-            </div>
+                </div>
            </div>
+                  {/* shop 2 */}
+                  <div className="container mb-5">
           
            <div className="row">
               <div className="col-lg-6">

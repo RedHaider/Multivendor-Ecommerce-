@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import banner_list, banner_edit , banner_form, banner_delete, brand_list, brand_form , brand_edit, category_edit, category_form, category_list, color_edit, color_form, color_list, review_edit , review_form ,review_list ,size_edit ,size_form, size_list ,slider_edit, slider_form, slider_list, brand_delete, subcategory_edit ,subcategory_form ,subcategory_list, category_delete  , color_delete , size_delete, subcategory_delete, slider_delete , product_form, product_detail, product_edit, product_list , product_delete, product_type_list, product_type_form, product_type_edit, product_type_delete
+from .views import banner_list, banner_edit , banner_form, banner_delete, brand_list, brand_form , brand_edit, category_edit, category_form, category_list, color_edit, color_form, color_list, review_edit , review_form ,review_list ,size_edit ,size_form, size_list ,slider_edit, slider_form, slider_list, brand_delete, subcategory_edit ,subcategory_form ,subcategory_list, category_delete  , color_delete , size_delete, subcategory_delete, slider_delete , product_form, product_detail, product_edit, product_list , product_delete, product_type_list, product_type_form, product_type_edit, product_type_delete , ProductListView ,CategoryView , ProductTypeView
 
 urlpatterns = [
     #banner
@@ -62,5 +62,13 @@ urlpatterns = [
     path('product-type/edit/<int:pk>/', product_type_edit, name='product-type-edit'),
     path('product-type/delete/<int:pk>/', product_type_delete, name='product-type-delete'),
 
+
+    ################################################ API ###############################
+
+    path('api/products/', ProductListView, name='api-product-list' ),
+    path('api/category/', CategoryView, name='api-category-list' ),
+    path('api/product-type/', ProductTypeView, name='api-product-type-list' )
+
 ]
 
+ 

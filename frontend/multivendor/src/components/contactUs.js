@@ -1,11 +1,14 @@
 const ContactUs = () => {
     return ( 
         <div>
-    <div className="contactusbackground-container">
-        <div className="content-container d-flex flex-column align-items-center justify-content-center min-vh-100 text-center">
-            <h2 className="shopeoneH">Home &gt; Contact Us</h2>
+        <div className="row justify-content-center mb-2">
+                <div className="col text-center">
+                <div className="heading">
+                    <h1>Contact Us</h1>
+                    <hr className="underline-hr"/>
+                </div>
+                </div>
         </div>
-      </div>
     <div className="container mb-5 mt-5">
         <div className="row">
             <div className="col-md-6">

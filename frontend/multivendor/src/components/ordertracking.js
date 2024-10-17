@@ -1,6 +1,14 @@
 const OrderTracking = () => {
     return ( 
         <div>
+           <div className="row justify-content-center mb-2">
+            <div className="col text-center">
+            <div className="heading">
+                <h1>Order Tracking</h1>
+                <hr className="underline-hr"/>
+            </div>
+            </div>
+          </div>
             <div className="container">
                 <div className="row">
                     <div className="col-md-4 odertrack-first-colum">

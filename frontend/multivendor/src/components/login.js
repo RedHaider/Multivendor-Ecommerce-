@@ -52,11 +52,14 @@ const Login = () => {
   
   return (
     <div>
-      <div className="loginbackground-container mb-5">
-        <div className="content-container d-flex flex-column align-items-center justify-content-center min-vh-100 text-center">
-          <h2 className="shopeoneH"> Home &gt; Login</h2>
+        <div className="row justify-content-center mb-2">
+                <div className="col text-center">
+                <div className="heading">
+                    <h1>Login</h1>
+                    <hr className="underline-hr"/>
+                </div>
+                </div>
         </div>
-      </div>
 
       <div className="container">
         <div className="row justify-content-center text-center">

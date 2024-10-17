@@ -1,0 +1,29 @@
+      <div className="row">
+        {[
+          { title: 'Stylish leather jacket', price: '$34', ratings: 6, discount: '30% OFF', img: 'https://via.placeholder.com/200x200', ratingStars: 4 },
+          { title: 'Premium Perfume', price: '$34', ratings: 8, img: 'https://via.placeholder.com/200x200', ratingStars: 4 },
+          { title: 'Leather Handbag', price: '$34', ratings: 10, img: 'https://via.placeholder.com/200x200', ratingStars: 4 },
+          { title: 'Luxury White Sweater', price: '$34', ratings: 4, img: 'https://via.placeholder.com/200x200', ratingStars: 3 },
+          { title: 'Leather Backpack', price: '$34', ratings: 9, img: 'https://via.placeholder.com/200x200', ratingStars: 4 },
+          { title: 'Stylish T-Shirt', price: '$34', ratings: 12, img: 'https://via.placeholder.com/200x200', ratingStars: 4 },
+          { title: 'Diamond with Gold', price: '$34', ratings: 5, discount: '15% OFF', img: 'https://via.placeholder.com/200x200', ratingStars: 5 },
+          { title: 'Cotton Shirt', price: '$34', ratings: 6, img: 'https://via.placeholder.com/200x200', ratingStars: 4 }
+        ].map((product, index) => (
+          <div className="col-md-3 col-sm-6" key={index}>
+            <div className="product-card">
+              {product.discount && <span className="product-discount-badge">{product.discount}</span>}
+              <img src={product.img} alt={product.title} />
+              <h5>{product.title}</h5>
+              <p>{product.price}</p>
+              <button className="product-add-to-cart-btn">Add to Cart</button>
+              <p>
+                <span className="text-warning">
+                  {'★'.repeat(product.ratingStars)}
+                  {'☆'.repeat(5 - product.ratingStars)}
+                </span>{' '}
+                ({product.ratings} Ratings)
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>

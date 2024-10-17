@@ -31,6 +31,10 @@ import Popper from 'popper.js';
 import './style.css'
 import './style2.css'
 import './accordina.css'
+import TermsAndCondition from './components/TermsConditons';
+import ReturnAndRefund from './components/ReturnAndRefund';
+import VendorProfile from './components/VendorProfile';
+import MyProfile from './components/MyProfile';
 
 
 function App() {
@@ -50,6 +54,12 @@ function App() {
         <Route path='/blogdetails' element={<BlogDetails/>}/>
         <Route path='/login' element={<Login/>}/>
         <Route path='/register' element={<Register/>}/>
+        <Route path='/termsandcondition' element={<TermsAndCondition/>}/>
+        <Route path='/returnpolicy' element={<ReturnAndRefund/>}/>
+        <Route path='/vednorprofile' element={<VendorProfile/>}/>
+        <Route path='/myprofile' element={<MyProfile/>}/>
+        
+      
 
         {/* open only if you registered */}
         <Route path='/Whishlist' element={<PrivateRoute><Whishlist/></PrivateRoute>}/>

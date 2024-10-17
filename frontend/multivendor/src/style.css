@@ -778,3 +778,164 @@
   background-color: #333;
   z-index: -1;
 }
+
+
+/* rectification */
+
+.card-img-overlay-hero {
+  background: rgba(0, 0, 0, 0.4); /* Transparent dark overlay */
+  color: white;
+}
+.discount-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: white;
+  color: black;
+  border-radius: 5%;
+  padding: 10px;
+  font-size: 14px;
+}
+.add-to-cart-btn {
+  background-color: #FF5722;
+  color: grey;
+  border: none;
+  width: 150px;
+  margin-top: 10px;
+}
+.add-to-cart-btn:hover {
+  background-color: #E64A19;
+}
+.dherekete {
+  background-color: white;
+  color: black;
+  width: 20%;
+  padding: 5px;
+  border-radius: 5%;
+  margin-left: -22px;
+}
+.card-img {
+  object-fit: cover; /* Makes the image cover the entire area */
+  width: 100%;
+  height: 400px; /* Set a fixed height for the banner */
+}
+.card {
+  border: none; /* Remove border around the card */
+}
+
+
+.promo-section {
+  background: linear-gradient(90deg, rgba(227,61,79,1) 0%, rgba(247,247,247,1) 100%);
+  border-radius: 30px;
+  padding: 20px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.promo-section img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 15px;
+}
+.promo-details {
+  text-align: right;
+}
+.promo-details h2 {
+  font-size: 2rem;
+  color: black;
+}
+.promo-details p {
+  color: black;
+}
+.generate-button {
+  background-color: #B40034;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 10px 20px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+.generate-button:hover {
+  background-color: #8c0029;
+}
+
+.category-title {
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: bold;
+  font-size: 24px;
+}
+.category-card img {
+  width: 100%;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+.category-card {
+  text-align: center;
+  padding: 10px;
+  border: 1px solid #eee;
+  margin-bottom: 20px;
+}
+.category-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.category-card p {
+  font-weight: bold;
+}
+
+.product-card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+  margin-bottom: 20px;
+  position: relative;
+  transition: transform 0.3s;
+}
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.product-discount-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #FF5722;
+  color: white;
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 5px;
+}
+.product-card img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+.product-add-to-cart-btn {
+  background-color: #FF5722;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 12px;
+  margin-top: 10px;
+}
+.product-add-to-cart-btn:hover {
+  background-color: #E64A19;
+}
+.load-more-btn {
+  background-color: #FF5722;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin-top: 20px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+

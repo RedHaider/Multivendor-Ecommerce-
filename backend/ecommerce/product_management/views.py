@@ -2,6 +2,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import Vendor, Banner, Slider, Size, Color, Brand, Category, SubCategory, Product, ProductImage, ProductAttribute , Review , ProductType
 from .forms import BannerForm, SliderForm ,SizeForm , BrandForm , CategoryForm , SubCategoryForm, ReviewForm , ColorForm , ProductForm, ProductAttributeFormSet, ProductImageFormSet , ProductTypeForm
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .serializers import ProductSerializer , CategorySerializer , ProductTypeSerializer
+from rest_framework import status
 
 
 #Banner Crud Operations done
@@ -418,3 +422,76 @@ def product_type_delete(request, pk):
         product_type.delete()
         return redirect('product-type-list')
     return render(request, 'product_management/product_type_list.html', {'product_type':product_type})
+
+
+# ---------------------------------------------------------------------- API
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status  # Import status codes
+from .models import Product
+from .serializers import ProductSerializer
+
+@api_view(['GET', 'POST'])  # Handles both GET and POST requests
+def ProductListView(request):
+    
+    # Handle GET request
+    if request.method == 'GET':
+        products = Product.objects.all()  # Fetch all products
+        
+        if products.exists():
+            serializer = ProductSerializer(products, many=True)  # Serialize products
+            return Response(serializer.data, status=status.HTTP_200_OK)  # Return 200 OK
+        else:
+            # No products found
+            return Response({"detail": "No products found."}, status=status.HTTP_404_NOT_FOUND)
+
+    # Handle POST request
+    elif request.method == 'POST':
+        # Create a new product
+        serializer = ProductSerializer(data=request.data)  # Deserialize the incoming data
+        if serializer.is_valid():
+            serializer.save()  # Save the new product if data is valid
+            return Response(serializer.data, status=status.HTTP_201_CREATED)  # Return 201 Created
+        else:
+            # Invalid data; return 400 Bad Request
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+@api_view(['GET', 'POST'])  # Handles both GET and POST requests
+def CategoryView(request):
+    if request.method == 'GET':
+        category = Category.objects.all()
+
+        if category.exists():
+            # Correctly pass the queryset to the serializer and use many=True
+            serializer = CategorySerializer(category, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({"details": "No Category Found"}, status=status.HTTP_404_NOT_FOUND)
+    
+    elif request.method == 'POST':
+        serializer = CategorySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET', 'POST'])  # Handles both GET and POST requests
+def ProductTypeView(request):
+    if request.method == 'GET':
+        product_type = ProductType.objects.all()
+
+        if product_type.exists():
+            # Correctly pass the queryset to the serializer and use many=True
+            serializer = ProductTypeSerializer(product_type, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({"details": "No Category Found"}, status=status.HTTP_404_NOT_FOUND)
+    
+    elif request.method == 'POST':
+        serializer = ProductTypeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

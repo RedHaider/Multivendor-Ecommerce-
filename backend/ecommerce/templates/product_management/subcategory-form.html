@@ -27,16 +27,7 @@
                                     >
                                     {{ form.subcategory_name.errors }}
                                 </div>
-                                <div class="mb-3">
-                                    <label for="subcategory_slug" class="form-label">SubCategory Slug</label>
-                                    <input type="text" class="form-control" 
-                                    id="subcategory_slug" 
-                                    name="subcategory_slug" 
-                                    value="{{ form.subcategory_slug.value|default:'' }}"
-                                    required
-                                    >
-                                    {{ form.subcategory_slug.errors }}
-                                </div>
+
                                 <div class="d-flex justify-content-end">
                                     <button type="submit" class="btn btn-success">Save SubCategory</button>
                                     <a href="{% url 'subcategory-list' %}" class="btn btn-secondary ms-2">Cancel</a>

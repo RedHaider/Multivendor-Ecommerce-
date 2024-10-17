@@ -17,7 +17,7 @@ class CategoryForm(forms.ModelForm):
 class SubCategoryForm(forms.ModelForm):
     class Meta:
         model = SubCategory
-        fields = ['category', 'subcategory_name', 'subcategory_slug']
+        fields = ['category', 'subcategory_name']
 
 # Form for Brand
 class BrandForm(forms.ModelForm):

@@ -1,0 +1,42 @@
+/* Styling for step numbers and step content */
+.step {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .step-number {
+    background-color: #ff7f00;
+    color: white;
+    font-weight: bold;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-right: 15px;
+  }
+  
+  .step-content {
+    font-size: 16px;
+  }
+  
+  .right-box {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 15px;
+    font-size: 14px;
+    height: 100%;
+  }
+  
+  .nav-tabs .nav-link.active {
+    background-color: #ff7f00;
+    color: white;
+  }
+  
+  .nav-tabs .nav-link {
+    color: black;
+    font-weight: bold;
+  }
+  

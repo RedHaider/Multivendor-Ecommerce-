@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings  # Import settings
 from accounts.models import Vendor 
 from django.contrib.auth import get_user_model  # Import get_user_model
+from django.utils.text import slugify
 # Create your models here.
 
 
@@ -31,6 +32,12 @@ class SubCategory(models.Model):
     subcategory_slug = models.SlugField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        # Automatically generate slug from subcategory_name if not provided
+        if not self.subcategory_slug:
+            self.subcategory_slug = slugify(self.subcategory_name)
+        super(SubCategory, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.subcategory_name
