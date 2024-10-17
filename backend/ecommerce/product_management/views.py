@@ -4,7 +4,7 @@ from .models import Vendor, Banner, Slider, Size, Color, Brand, Category, SubCat
 from .forms import BannerForm, SliderForm ,SizeForm , BrandForm , CategoryForm , SubCategoryForm, ReviewForm , ColorForm , ProductForm, ProductAttributeFormSet, ProductImageFormSet , ProductTypeForm
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .serializers import ProductSerializer , CategorySerializer , ProductTypeSerializer
+
 from rest_framework import status
 
 
@@ -424,12 +424,13 @@ def product_type_delete(request, pk):
     return render(request, 'product_management/product_type_list.html', {'product_type':product_type})
 
 
-# ---------------------------------------------------------------------- API
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework import status  # Import status codes
-from .models import Product
-from .serializers import ProductSerializer
+############################################################################
+############################################################################
+############################ API ###########################################
+############################################################################
+############################################################################
+
+from .serializers import ProductSerializer , CategorySerializer , ProductTypeSerializer , BrandSerializer
 
 @api_view(['GET', 'POST'])  # Handles both GET and POST requests
 def ProductListView(request):
@@ -490,6 +491,26 @@ def ProductTypeView(request):
     
     elif request.method == 'POST':
         serializer = ProductTypeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'POST'])
+def BrandView(request):
+    if request.method == 'GET':
+        brand = Brand.objects.all()
+
+        if brand.exists():
+            serializer = BrandSerializer(brand, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({"details": "No Brand Found"}, status=status.HTTP_404_NOT_FOUND)
+
+    elif request.method == 'POST':
+        serializer = BrandSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

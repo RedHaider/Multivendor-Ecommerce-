@@ -1,10 +1,45 @@
 import SearchBar from "../utils/SearchBar";
 import PriceRangeFilter from "../utils/pricerangefilter";
+import React, {useState, useEffect} from "react";
+import config from "../config";
+import axios from "axios";
 
 const Shop = () => {
+
+    const [products, setProducts] = useState();
+    const [loading, setLoading] =useState(true);
+    const [error, setError] = useState(null);
+    const [visibleCount, setVisibleCount] =useState(8);
+
+    useEffect(()=> {
+        axios.get(`${config.API_BASE_URL}/product-management/api/products/`)
+        .then((response)=>{
+            setProducts(response.data);
+            setLoading(false);
+        })
+        .catch((error) => {
+            setError('Failed to fetch Products');
+            setLoading(false);
+        })
+    },[])
+
+    const loadMore = () => {
+        setVisibleCount((prevCount)=> prevCount+8)
+    }
+    if (loading) return <div>Loading...</div>
+    if (error) return <div>{error}</div>
+
     return ( 
     <div>
         <div class="container mt-5">
+        <div className="row justify-content-center mb-2">
+                <div className="col text-center">
+                <div className="heading">
+                    <h1>Shop</h1>
+                    <hr className="underline-hr"/>
+                </div>
+                </div>
+        </div>
      
         <div class="row">
         <div class="col-lg-3">
@@ -109,119 +144,43 @@ const Shop = () => {
          </div>
         </div>
         <div class="col-lg-9 m-0 p-0">
-        <div className="row justify-content-center mb-2">
-                <div className="col text-center">
-                <div className="heading">
-                    <h1>Shop</h1>
-                    <hr className="underline-hr"/>
-                </div>
-                </div>
-        </div>
+
         <div className="row mb-5  justify-content-center">
         <SearchBar />
         </div>
 
         <div class="row">
-        <div class="col-md-3 col-sm-6">
-            <div class="product-card">
-                <span class="product-discount-badge">30% OFF</span>
-                <img src="https://via.placeholder.com/200x200" alt="Stylish leather jacket"/>
-                <h5>Stylish leather jacket</h5>
-                <p>$34</p>
-                <button class="product-add-to-cart-btn">Add to Cart</button>
-                <p><span class="text-warning">&#9733;&#9733;&#9733;&#9733;&#9734;</span> (6 Ratings)</p>
-            </div>
+            {products.slice(0,visibleCount).map((product)=>(
+                <div className="col-md-3 col-sm-6" key={product.id}>
+                    <div className="product-card">
+                    
+                    {/* Display main product image */}
+                    <img 
+                        src={`${config.API_BASE_URL}${product.image}`} 
+                        alt={product.name} 
+                        className="product-image" 
+                    />
+                    
+                    <h5>
+                    {product.name && product.name.length > 12
+                        ? `${product.name.slice(0, 12)}...` 
+                        : product.name}
+                        </h5>
+                    <p>Price: ${product.price}</p>
+                    
+                    <p>In Stock: {product.stock_level}</p>
+                    
+                    <button className="product-add-to-cart-btn">Add to Cart</button>
+                    </div>
+                </div>
+            ))}
+
+            {visibleCount < products.length && (
+                <button className="load-more-btn" onClick={loadMore} >Load More</button>
+            )}
         </div>
-        <div class="col-md-3 col-sm-6">
-            <div class="product-card">
-                <img src="https://via.placeholder.com/200x200" alt="Premium Perfume"/>
-                <h5>Premium Perfume</h5>
-                <p>$34</p>
-                <button class="product-add-to-cart-btn">Add to Cart</button>
-                <p><span class="text-warning">&#9733;&#9733;&#9733;&#9733;&#9734;</span> (8 Ratings)</p>
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-6">
-            <div class="product-card">
-                <img src="https://via.placeholder.com/200x200" alt="Leather Handbag"/>
-                <h5>Leather Handbag</h5>
-                <p>$34</p>
-                <button class="product-add-to-cart-btn">Add to Cart</button>
-                <p><span class="text-warning">&#9733;&#9733;&#9733;&#9733;&#9734;</span> (10 Ratings)</p>
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-6">
-            <div class="product-card">
-                <img src="https://via.placeholder.com/200x200" alt="Luxury White Sweater"/>
-                <h5>Luxury White Sweater</h5>
-                <p>$34</p>
-                <button class="product-add-to-cart-btn">Add to Cart</button>
-                <p><span class="text-warning">&#9733;&#9733;&#9733;&#9734;&#9734;</span> (4 Ratings)</p>
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-6">
-            <div class="product-card">
-                <img src="https://via.placeholder.com/200x200" alt="Leather Backpack"/>
-                <h5>Leather Backpack</h5>
-                <p>$34</p>
-                <button class="product-add-to-cart-btn">Add to Cart</button>
-                <p><span class="text-warning">&#9733;&#9733;&#9733;&#9733;&#9734;</span> (9 Ratings)</p>
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-6">
-            <div class="product-card">
-                <img src="https://via.placeholder.com/200x200" alt="Stylish T-Shirt"/>
-                <h5>Stylish T-Shirt</h5>
-                <p>$34</p>
-                <button class="product-add-to-cart-btn">Add to Cart</button>
-                <p><span class="text-warning">&#9733;&#9733;&#9733;&#9733;&#9734;</span> (12 Ratings)</p>
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-6">
-            <div class="product-card">
-                <span class="product-discount-badge">15% OFF</span>
-                <img src="https://via.placeholder.com/200x200" alt="Diamond with Gold"/>
-                <h5>Diamond with Gold</h5>
-                <p>$34</p>
-                <button class="product-add-to-cart-btn">Add to Cart</button>
-                <p><span class="text-warning">&#9733;&#9733;&#9733;&#9733;&#9733;</span> (5 Ratings)</p>
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-6">
-            <div class="product-card">
-                <img src="https://via.placeholder.com/200x200" alt="Cotton Shirt"/>
-                <h5>Cotton Shirt</h5>
-                <p>$34</p>
-                <button class="product-add-to-cart-btn">Add to Cart</button>
-                <p><span class="text-warning">&#9733;&#9733;&#9733;&#9733;&#9734;</span> (6 Ratings)</p>
-            </div>
-        </div>
-    </div>
 
 
-          
-
-
-       <div class="row m-0 p-0 justify-content-center">
-        <nav aria-label="...">
-          <ul class="pagination">
-            <li class="page-item disabled">
-              <span class="page-link">Previous</span>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item active">
-              <span class="page-link">
-                2
-                <span class="sr-only">(current)</span>
-              </span>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-              <a class="page-link " href="#">Next</a>
-            </li>
-          </ul>
-        </nav>
-       </div>
 
        {/* shop 2 phase end*/}
         </div>
