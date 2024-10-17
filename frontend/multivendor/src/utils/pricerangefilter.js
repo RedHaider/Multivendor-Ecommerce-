@@ -1,26 +1,20 @@
 import React, { useState } from "react";
-import "../style/priceRangeFilter.css"; // Assuming you're using a separate CSS file
+import "../style/priceRangeFilter.css"; 
 
-const PriceRangeFilter = () => {
-  // State to manage price range
+const PriceRangeFilter = ({ onPriceChange }) => {
   const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(800);
+  const [maxPrice, setMaxPrice] = useState(10000);
 
-  // Function to handle input field changes
   const handleInputChange = (e) => {
     const { id, value } = e.target;
     if (id === "min-price") {
-      if (parseInt(value) >= maxPrice) {
-        setMinPrice(maxPrice - 1); // Ensure minPrice is always less than maxPrice
-      } else {
-        setMinPrice(parseInt(value));
-      }
+      const newMinPrice = parseInt(value);
+      setMinPrice(newMinPrice);
+      onPriceChange(newMinPrice, maxPrice); // Pass the new price range
     } else if (id === "max-price") {
-      if (parseInt(value) <= minPrice) {
-        setMaxPrice(minPrice + 1); // Ensure maxPrice is always greater than minPrice
-      } else {
-        setMaxPrice(parseInt(value));
-      }
+      const newMaxPrice = parseInt(value);
+      setMaxPrice(newMaxPrice);
+      onPriceChange(minPrice, newMaxPrice); // Pass the new price range
     }
   };
 

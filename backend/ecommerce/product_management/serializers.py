@@ -47,4 +47,4 @@ class BrandSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Brand
-        field = '__all__'
+        fields = '__all__'
