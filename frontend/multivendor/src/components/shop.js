@@ -3,19 +3,28 @@ import PriceRangeFilter from "../utils/pricerangefilter";
 import React, { useState, useEffect } from "react";
 import config from "../config";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 const Shop = () => {
   const [products, setProducts] = useState([]); // Initialize as an empty array
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
+  const [productType, setProductType] = useState([]);
+  const [subCategory, setSubCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [visibleCount, setVisibleCount] = useState(8);
 
+
   // State to manage the filter
   const [selectCategory, setSelectCategory] = useState([]);
   const [selectedBrand, setSelectedBrand] = useState([]);
+  const [selectProductType, setSelectProductType] = useState([]);
+  const [selectSubCategory, setSelectSubCategory] = useState([]);
   const [priceRange, setPriceRange] = useState({ min: 0, max: 10000 });
+
+  //new added
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -46,18 +55,46 @@ const Shop = () => {
       }
     };
 
+    const fetchProductTypes = async () => {
+      try {
+        const product_typeRes = await axios.get(`${config.API_BASE_URL}/product-management/api/product-type/`)
+        setProductType(productType.data);
+      } catch (error) {
+        console.error("Failed to fetch product type")
+      }
+    }
+
+    const fetchSubCategory = async () => {
+      try{
+        const subCategoryRest = await axios.get(`${config.API_BASE_URL}/product-management/api/sub-category/`)
+        setSubCategories(subCategoryRest.data)
+      } catch (error){
+        console.error("Failed to fetch subcategory")
+      }
+    }
+
     fetchProducts();
     fetchBrands();
     fetchCategories();
+    fetchProductTypes();
+    fetchSubCategory();
   }, []);
+
+  const navigate = useNavigate(); 
+  const handleProductClick = (productId) => {
+    navigate(`/productdetails/${productId}`);
+  };
 
   // Handle category filter
   const handleCategoryChange = (e) => {
     const value = e.target.value;
+    
     setSelectCategory((prevSelected) =>
       prevSelected.includes(value) ? prevSelected.filter((cat) => cat !== value) : [...prevSelected, value]
     );
   };
+
+
 
   // Handle brand filter changes
   const handleBrandChange = (e) => {
@@ -67,18 +104,46 @@ const Shop = () => {
     );
   };
 
+  const handleProductTypeChange = (e) => {
+    const value = e.target.value;
+    setSelectProductType((prevSelected) =>
+     prevSelected.includes(value) ? prevSelected.filter((type) => type !== value) : [...prevSelected, value]
+    )
+  };
+
+  const handleSubCategoryChange = (e) => {
+    const value = e.target.value;
+    setSelectSubCategory((prevSelected) => 
+     prevSelected.includes(value) ? prevSelected.filter((sub) => sub !== value) : [...prevSelected, value]
+    )
+  };
+
   const handlePriceChange = (min, max) => {
     setPriceRange({ min, max });
   };
 
-  // Apply filters (client-side filtering)
+  //Handle search input change
+  const  handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  }; 
+
+ //filter sections
   const filteredProducts = products
     .filter((product) => {
-      // Assuming product.category and product.brand are IDs, update these checks accordingly if they're names
-      if (selectCategory.length && !selectCategory.includes(product.category)) return false;
-      if (selectedBrand.length && !selectedBrand.includes(product.brand)) return false;
-      if (product.price < priceRange.min || product.price > priceRange.max) return false;
-      return true;
+      const matchesCategory = selectCategory.length ===  0 || selectCategory.includes(product.category);
+      const matchesBrand = selectedBrand.length === 0 || selectedBrand.includes(product.brand);
+      const matchesProductType = selectProductType.length === 0 || selectProductType.includes(product.product_type);
+      const matchesSubCategory = selectSubCategory.length === 0 || selectSubCategory.includes(product.subcategory);
+      const matchesPrice = product.price >= priceRange.min && product.price <= priceRange.max;
+
+      const matchesSearch = 
+             product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+             product.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
+             product.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+             product.subcategory.toLowerCase().includes(searchQuery.toLowerCase()) ||
+             product.product_type.toLowerCase().includes(searchQuery.toLowerCase());
+
+      return matchesCategory && matchesBrand && matchesPrice && matchesSearch && matchesSubCategory && matchesProductType;
     })
     .slice(0, visibleCount);
 
@@ -131,7 +196,7 @@ const Shop = () => {
                         <input
                           type="checkbox"
                           id={`category-${category.id}`}
-                          value={category.id} // Make sure you're filtering by category ID
+                          value={category.category_name} // Make sure you're filtering by category ID
                           onChange={handleCategoryChange}
                         />
                         <label htmlFor={`category-${category.id}`} className="ml-1">
@@ -166,7 +231,7 @@ const Shop = () => {
                         <input
                           type="checkbox"
                           id={`brand-${brand.id}`}
-                          value={brand.id} // Make sure you're filtering by brand ID
+                          value={brand.brand_name} 
                           onChange={handleBrandChange}
                         />
                         <label htmlFor={`brand-${brand.id}`} className="ml-1">
@@ -185,13 +250,13 @@ const Shop = () => {
           </div>
           <div className="col-lg-9 m-0 p-0">
             <div className="row mb-5 justify-content-center">
-              <SearchBar />
+              <SearchBar searchQuery={searchQuery} onSearchChange={handleSearchChange} />
             </div>
 
             <div className="row">
               {filteredProducts.map((product) => (
                 <div className="col-md-3 col-sm-6" key={product.id}>
-                  <div className="product-card">
+                  <div className="product-card" onClick={() => handleProductClick(product.id)}>
                     {/* Display main product image */}
                     <img
                       src={`${config.API_BASE_URL}${product.image}`}
@@ -201,7 +266,6 @@ const Shop = () => {
 
                     <h5>{product.name && product.name.length > 12 ? `${product.name.slice(0, 12)}...` : product.name}</h5>
                     <p>Price: ${product.price}</p>
-
                     <p>In Stock: {product.stock_level}</p>
 
                     <button className="product-add-to-cart-btn">Add to Cart</button>

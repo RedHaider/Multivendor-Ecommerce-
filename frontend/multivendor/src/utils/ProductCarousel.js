@@ -1,20 +1,9 @@
 import React, { useState, useRef } from 'react';
 import '../style/ProductCarousel.css';
 
-const ProductCarousel = () => {
-  const [mainImage, setMainImage] = useState('picture/product-details-image.png');
+const ProductCarousel = ({ images }) => {
+  const [mainImage, setMainImage] = useState(images[0]); // Set the first image as the default
   const trackRef = useRef(null); // To control the carousel scroll
-
-  const thumbnails = [
-    'picture/product-details-image-list-1.png',
-    'picture/product-details-image-list-2.png',
-    'picture/product-details-image-list-3.png',
-    'picture/product-details-image.png',
-    'picture/product-details-image-list-1.png',
-    'picture/product-details-image-list-2.png',
-    'picture/product-details-image-list-3.png',
-    'picture/product-details-image.png',
-  ];
 
   // Change main image
   const changeMainImage = (imageSrc) => {
@@ -26,7 +15,7 @@ const ProductCarousel = () => {
     trackRef.current.scrollBy({
       top: 0,
       left: -100, // Scroll by 100 pixels to the left
-      behavior: 'smooth'
+      behavior: 'smooth',
     });
   };
 
@@ -34,7 +23,7 @@ const ProductCarousel = () => {
     trackRef.current.scrollBy({
       top: 0,
       left: 100, // Scroll by 100 pixels to the right
-      behavior: 'smooth'
+      behavior: 'smooth',
     });
   };
 
@@ -53,12 +42,12 @@ const ProductCarousel = () => {
       {/* Thumbnail Images Carousel */}
       <div className="thumbnail-carousel-container">
         <div className="carousel-track" ref={trackRef}>
-          {thumbnails.map((imageSrc, index) => (
+          {images.map((imageSrc, index) => (
             <img
               key={index}
               className="product-details-image-list"
               src={imageSrc}
-              alt="product details"
+              alt="product thumbnail"
               onClick={() => changeMainImage(imageSrc)}
             />
           ))}

@@ -131,9 +131,21 @@ class Coupon(models.Model):
         return self.coupon_code
 
 class Cart(models.Model):
+    STATUS_CHOICE = [
+        ('acitvate', 'ACTIVATE'),
+        ('completed', 'COMPLETED')
+    ]
+
+
     cart_id = models.CharField(max_length=15, unique=True, blank=True)
-    customer_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    customer_id = models.ForeignKey(
+        settings.AUTH_USER_MODEL, 
+        on_delete=models.CASCADE, 
+        null=True,  # Allow NULL values
+        blank=True  # Allow blank values in forms
+        )
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    status = models.CharField(max_length=10, choices= STATUS_CHOICE, default='activate')
 
     def generate_cart_id(self):
         last_cart = Cart.objects.order_by('-id').first()  # Fixing the reference to Cart instead of Payment
@@ -145,7 +157,8 @@ class Cart(models.Model):
         return f"CRT{new_number:09d}"
 
     def calculate_total_amount(self):
-        total = sum(item.quantity * item.price for item in self.cartitems_set.all())
+        # Update to use 'cartitems' (related_name) instead of 'cartitems_set'
+        total = sum(item.quantity * item.price for item in self.cartitems.all())
         self.total_amount = total
         self.save()
 

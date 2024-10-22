@@ -8,7 +8,7 @@ urlpatterns = [
    path('', login_view, name='login'),
    path('logout/', logout_view, name='logout'),
     path('customer_register/', RegisterView.as_view(), name='register'),  # Use .as_view() correctly
-    path('customer_login/', LoginView.as_view(), name='login'),  # Use .as_view() correctly
+    path('customer_login/', LoginView.as_view(), name='login-customer'),  # Use .as_view() correctly
 
 
 ]

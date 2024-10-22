@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import { useState } from 'react';
+import config from '../config';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ const Register = () => {
     setSuccess('');
 
     try {
-      const respose = await axios.post('http://127.0.1:8000/customer_register/', formData);
+      const respose = await axios.post(`${config.API_BASE_URL}/customer_register/`, formData);
       setSuccess(respose.data.message);
       navigate('/login'); //Redirect to login after succefull registration
     } catch (err) {

@@ -239,3 +239,74 @@ def cart_detail(request, pk):
       }
 
     return render(request, 'order_management/cart-details.html', context)
+
+############################################################################
+############################################################################
+############################ API ###########################################
+############################################################################
+############################################################################
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from .models import Cart, CartItems, Product, ProductAttribute
+from .serializers import CartSerializer, AddToCartSerializer
+
+from django.contrib.auth.models import User  # Assuming you're using the default User model
+
+@api_view(['POST'])
+def add_to_cart(request):
+    serializer = AddToCartSerializer(data=request.data)
+
+    if serializer.is_valid():
+        product_id = serializer.validated_data['product_id']
+        product_variant_id = serializer.validated_data['product_variant_id']
+        quantity = serializer.validated_data['quantity']
+        customer_id = serializer.validated_data.get('customer_id')  # Get customer_id from request, if provided
+
+        # Ensure the customer is provided
+        if not customer_id:
+            return Response({"error": "Customer ID is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            product = Product.objects.get(id=product_id)
+            variant = ProductAttribute.objects.get(id=product_variant_id)  # Assuming you have a ProductAttribute model
+        except Product.DoesNotExist:
+            return Response({"error": "Product not found"}, status=status.HTTP_404_NOT_FOUND)
+        except ProductAttribute.DoesNotExist:
+            return Response({"error": "Product variant not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        # Since price is in the Product model, use product.price
+        price = product.price
+
+        # Check if there's an active cart for the customer
+        try:
+            cart = Cart.objects.get(customer_id=customer_id, status='activate')
+        except Cart.DoesNotExist:
+            # Create a new cart if none exists for the customer
+            cart = Cart.objects.create(customer_id_id=customer_id, status='activate')
+            request.session['cart_id'] = cart.cart_id
+
+        # Add or update the cart item
+        cart_item, item_created = CartItems.objects.get_or_create(
+            cart=cart,
+            product_id=product,
+            product_variant_id=variant,
+            defaults={'quantity': quantity, 'price': price}  # Use product.price here
+        )
+
+        if not item_created:
+            # If the item already exists, update the quantity
+            cart_item.quantity += int(quantity)
+            cart_item.save()
+
+        # Recalculate the total amount of the cart
+        cart.calculate_total_amount()
+
+        # Serialize and return the updated cart data
+        cart_serializer = CartSerializer(cart)
+        return Response(cart_serializer.data, status=status.HTTP_200_OK)
+
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+

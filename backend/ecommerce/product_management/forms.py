@@ -1,6 +1,7 @@
 from django import forms
 from .models import Banner, Slider, Size, Color, Brand, Category, SubCategory, Product, ProductImage, ProductAttribute , Review ,ProductType
 from django.forms import inlineformset_factory
+from django_ckeditor_5.widgets import CKEditor5Widget
 
 # Form for Category
 class ProductTypeForm(forms.ModelForm):
@@ -57,15 +58,26 @@ class BannerForm(forms.ModelForm):
 
 # Main product form
 class ProductForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(ProductForm, self).__init__(*args, **kwargs)
+        # Make sure 'product_details' is present and handled if you're adding custom logic
+        self.fields['product_details'].widget.attrs['class'] = 'rich-text-editor' 
+
     class Meta:
         model = Product
-        fields = ['name', 'description', 'price', 'purchased_price', 'category', 'subcategory', 'brand', 'stock_level',  'image', 'sku', 'product_type']
+        fields = ['name', 'description', 'price', 'purchased_price', 'category', 'subcategory', 'brand',  'image', 'sku', 'product_type','product_details']
 
 # Product variant form (size, color, image, quantity)
 class ProductAttributeForm(forms.ModelForm):
     class Meta:
         model = ProductAttribute
         fields = ['color', 'size', 'image', 'quantity']
+        widgets = {
+              "text": CKEditor5Widget(
+                  attrs={"class": "django_ckeditor_5"}, config_name="comment"
+              )
+          }
 
 # Product image form (for adding multiple images)
 class ProductImageForm(forms.ModelForm):

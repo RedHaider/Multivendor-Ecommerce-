@@ -3,6 +3,8 @@ from django.conf import settings  # Import settings
 from accounts.models import Vendor 
 from django.contrib.auth import get_user_model  # Import get_user_model
 from django.utils.text import slugify
+import re
+from ckeditor.fields import RichTextField
 # Create your models here.
 
 
@@ -14,6 +16,8 @@ class ProductType(models.Model):
     product_type_image = models.ImageField(upload_to='category_images/', blank=True,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    def __str__(self):
+        return self.product_type_name
 
 class Category(models.Model):
     product_type = models.ForeignKey(ProductType, on_delete= models.CASCADE, related_name = 'product_type')
@@ -48,6 +52,9 @@ class Brand(models.Model):
     brand_image = models.ImageField(upload_to='brand_images/',blank=True,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.brand_name
 
 class Color(models.Model):
     color_name = models.CharField(max_length=255)
@@ -87,6 +94,8 @@ class Product(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     sku = models.CharField(max_length=255, null=True, blank=True)  # New field
     in_stock = models.BooleanField(default=True)  # New in_stock field
+    # recently added
+    product_details = RichTextField(blank=True, null=True)
 
     def generate_product_id(self):
         last_product = Product.objects.order_by('-id').first()
@@ -96,10 +105,16 @@ class Product(models.Model):
             last_number = 0
         new_number = last_number + 1
         return f"PRO{new_number:09d}"  # Generates IDs like PRO000000001
+    
+    def recalculate_stock_level(self):
+        total_stock = self.attributes.aggregate(total=models.Sum('quantity'))['total'] or 0
+        self.stock_level = total_stock
+
 
     def save(self, *args, **kwargs):
         if not self.product_id:
             self.product_id = self.generate_product_id()
+        self.recalculate_stock_level()
         super().save(*args, **kwargs)
 
     def __str__(self):

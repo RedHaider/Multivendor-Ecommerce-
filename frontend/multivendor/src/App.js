@@ -63,7 +63,7 @@ function App() {
 
         {/* open only if you registered */}
         <Route path='/Whishlist' element={<PrivateRoute><Whishlist/></PrivateRoute>}/>
-        <Route path='/productdetails' element={<PrivateRoute><ProductDetails/></PrivateRoute>}/>
+        <Route path='/productdetails/:productId' element={<PrivateRoute><ProductDetails/></PrivateRoute>}/>
         <Route path='/cart' element={<PrivateRoute><Cart/></PrivateRoute>}/>
         <Route path='/checkout' element={<PrivateRoute><Checkout/></PrivateRoute>}/>
         <Route path='/ordertracking' element={<PrivateRoute><OrderTracking/></PrivateRoute>}/>

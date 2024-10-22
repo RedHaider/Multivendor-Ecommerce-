@@ -430,7 +430,8 @@ def product_type_delete(request, pk):
 ############################################################################
 ############################################################################
 
-from .serializers import ProductSerializer , CategorySerializer , ProductTypeSerializer , BrandSerializer
+from .serializers import ProductSerializer , CategorySerializer , ProductTypeSerializer , BrandSerializer, SubCategorySerializer
+from django.db.models import Q
 
 @api_view(['GET', 'POST'])  # Handles both GET and POST requests
 def ProductListView(request):
@@ -516,3 +517,88 @@ def BrandView(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def ProductDetailView(request, id):
+    try:
+        # Get the product by ID, use select_related and prefetch_related for related fields
+        product = Product.objects.select_related('category', 'subcategory', 'product_type', 'brand', 'vendor', 'user') \
+                                 .prefetch_related('attributes', 'images') \
+                                 .get(pk=id)
+    except Product.DoesNotExist:
+        return Response({"error": "Product not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    serializer = ProductSerializer(product)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def SubCategoryView(request):
+    if request.method == 'GET':
+        sub_category = SubCategory.objects.all()
+
+        if sub_category.exists():
+            serializer = SubCategorySerializer(sub_category, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({"details": "No Product Type Found"}, status= status.HTTP_404_NOT_FOUND)
+    elif request.method == 'POST':
+        serializer = SubCategory(data= request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status= status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])  # Use GET request since you're passing the query in the URL
+def SearchProducts(request):
+    # Get the search query from the request
+    query = request.GET.get('query', '')
+
+    # Split the query into multiple search terms (words)
+    search_terms = query.split()
+
+    # Build the search filters using Q objects with OR condition
+    filters = Q()
+    for term in search_terms:
+        filters |= (
+            Q(name__icontains=term) |
+            Q(description__icontains=term) |
+            Q(category__category_name__icontains=term) |  # Follow ForeignKey relation
+            Q(subcategory__subcategory_name__icontains=term) |  # Follow ForeignKey relation
+            Q(product_type__product_type_name__icontains=term) |  # Follow ForeignKey relation
+            Q(brand__brand_name__icontains=term) |  # Follow ForeignKey relation
+            Q(vendor__user__first_name__icontains=term) |  # Query on related User model
+            Q(vendor__user__email__icontains=term)  # Query on related User model
+        )
+
+    # Perform the search based on the filters constructed
+    products = Product.objects.filter(filters).distinct()
+
+    # If exact matches exist, return them
+    if products.exists():
+        serializer = ProductSerializer(products, many=True)
+        return Response(serializer.data)
+
+    # If no exact matches, provide suggestions
+    suggestions = Product.objects.filter(
+        Q(name__icontains=query) |
+        Q(description__icontains=query) |
+        Q(category__category_name__icontains=query) |
+        Q(subcategory__subcategory_name__icontains=query) |
+        Q(product_type__product_type_name__icontains=query) |
+        Q(brand__brand_name__icontains=query) |
+        Q(vendor__user__first_name__icontains=query) |
+        Q(vendor__user__email__icontains=query)
+    ).distinct()[:20]  # Limit suggestions to 20
+
+    if suggestions.exists():
+        serializer = ProductSerializer(suggestions, many=True)
+        return Response({
+            "message": "No exact matches found, but here are similar products:",
+            "suggestions": serializer.data
+        })
+
+    # Return a message if no results or suggestions are found
+    return Response({"message": "No results found"}, status=404)

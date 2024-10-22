@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Product, Category, ProductType, ProductAttribute, ProductImage , Brand
+from .models import Product, Category, ProductType, ProductAttribute, ProductImage , Brand , ProductType, SubCategory
 
 
 
@@ -14,6 +14,8 @@ class ProductTypeSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ProductAttributeSerializer(serializers.ModelSerializer):
+    color = serializers.StringRelatedField()
+    size = serializers.StringRelatedField()
     class Meta:
         model = ProductAttribute
         fields = '__all__'
@@ -21,6 +23,17 @@ class ProductAttributeSerializer(serializers.ModelSerializer):
 class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
+        fields = '__all__'
+
+class BrandSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Brand
+        fields = '__all__'
+
+
+class SubCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SubCategory
         fields = '__all__'
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -34,17 +47,14 @@ class ProductSerializer(serializers.ModelSerializer):
     brand = serializers.StringRelatedField()  # Show the brand name
     vendor = serializers.StringRelatedField()  # Show the vendor name
     user = serializers.StringRelatedField()  # Show the user name
+    
 
     class Meta:
         model = Product
-        fields = [            'id', 'name', 'product_id', 'description', 'price', 'purchased_price',
+        fields = [ 'id', 'name', 'product_id', 'description', 'price', 'purchased_price',
             'category', 'subcategory', 'product_type', 'brand', 'stock_level', 'vendor',
-            'user', 'image', 'sku', 'in_stock', 'attributes', 'images',
+            'user', 'image', 'sku','product_details', 'in_stock', 'attributes', 'images',
             'created_at', 'updated_at'
             ]
+        
 
-class BrandSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Brand
-        fields = '__all__'

@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../utils/authContext'; // Import your AuthContext
+import config from '../config'
 
 const Login = () => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ const Login = () => {
     setError('');
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/customer_login/', formData);
+      const response = await axios.post(`${config.API_BASE_URL}/customer_login/`, formData);
       const { access, refresh, role, user_id } = response.data;
 
       // Use the login function from AuthContext to set the access token

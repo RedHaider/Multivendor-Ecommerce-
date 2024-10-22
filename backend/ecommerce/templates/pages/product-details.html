@@ -47,8 +47,13 @@
             </p>
             <p>SKU: {{ product.sku }}</p>
             <p>Purchased Price: {{ product.purchased_price }}</p>
+            <h4 class="card-title mt-3 pb-3">Product Details</h4>
+            <p>
+              {{ product.product_details|safe }}
+            </p>
           </div>
         </div>
+
         <h4 class="card-title mt-3 pb-3">Product Varients</h4>
         <table class="table table-bordered">
           <thead>

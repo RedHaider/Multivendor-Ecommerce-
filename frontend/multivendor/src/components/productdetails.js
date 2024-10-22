@@ -1,8 +1,100 @@
+import React, {useState, useEffect} from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import ProductCarousel from "../utils/ProductCarousel";
 import RatingBreakdown from "../productComponents/RatingBreakdown";
 import ProductReview from "../productComponents/ProductReview";
+import config from '../config';
+import '../style/productdetails.css'
 
 const ProductDetails = () => {
+  const { productId } = useParams();
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [ error, setError] = useState(null); 
+  const [quantity, setQuantity] = useState(1); // State for quantity
+  const [selectedColor, setSelectedColor] = useState(null); // State for selected color
+  const [selectedSize, setSelectedSize] = useState(null); // State for selected size
+  const [selectedVariant, setSelectedVariant] = useState(null); // State for selected variant object
+  const [cartMessage, setCartMessage] = useState(null); // Message to show after adding to cart
+
+
+
+  useEffect(()=> {
+    const fetchProductDetails = async () => {
+      try {
+        const response = await axios.get(`${config.API_BASE_URL}/product-management/api/products/${productId}`);
+        setProduct(response.data);
+        // Set a default variant if available
+        if (response.data.attributes.length > 0) {
+          const defaultVariant = response.data.attributes[0];
+          setSelectedColor(defaultVariant.color);
+          setSelectedSize(defaultVariant.size);
+        }
+      } catch (error) {
+        setError("Failed to fetch product details");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProductDetails();
+  },[productId])
+
+
+  // selected variant based on the chosen color and size
+  useEffect(() => {
+    if (selectedColor && selectedSize && product) {
+      const variant = product.attributes.find(
+        attr => attr.color === selectedColor && attr.size === selectedSize
+      );
+      setSelectedVariant(variant || null);
+    }
+  }, [selectedColor, selectedSize, product]);
+
+
+  const handleAddToCart = async () => {
+    const customerId = localStorage.getItem('userId'); // Retrieve the customer ID from localStorage
+
+    if (!customerId) {
+      setCartMessage("You must be logged in to add items to the cart.");
+      return;
+    }
+
+    if (!selectedVariant) {
+      setCartMessage("Please select a valid color and size combination.");
+      return;
+    }
+
+    if (quantity > selectedVariant.quantity) {
+      setCartMessage(`Only ${selectedVariant.quantity} items are available in stock for this variant.`);
+      return;
+    }
+
+    try {
+      const response = await axios.post(`${config.API_BASE_URL}/order-management/api/add-to-cart/`, {
+        product_id: productId,
+        product_variant_id: selectedVariant.id, // Send the selected variant ID
+        quantity: quantity,
+        customer_id: customerId // Pass the customer ID from localStorage
+      });
+      setCartMessage("Product added to cart successfully!");
+    } catch (error) {
+      console.error("Failed to add to cart", error);
+      setCartMessage("Failed to add product to cart");
+    }
+  };
+
+  const handleQuantityChange = (e) => {
+    const value = parseInt(e.target.value, 10);
+    if (value >= 1) {
+      setQuantity(value);
+    }
+  };
+
+  if (loading) return <div>Loading...</div>
+  if (error) return <div>{error}</div>
+
   const reviews = [
     {
       name: 'Sayeed',
@@ -38,6 +130,18 @@ const ProductDetails = () => {
     2: 1,
     1: 1,
   };
+
+
+
+  const allImages = [
+    `${config.API_BASE_URL}${product.image}`, // Add the main product image
+    ...product.images.map((img) => `${config.API_BASE_URL}${img.photo_name}`), // Add images from the 'images' array
+    ...product.attributes.map((attr) => `${config.API_BASE_URL}${attr.image}`) // Add images from the 'attributes' array
+  ];
+
+  const availableColors = [...new Set(product.attributes.map(attr => attr.color))]; // Extract unique colors
+  const availableSizes = [...new Set(product.attributes.map(attr => attr.size))]; // Extract unique sizes
+  
     return ( 
         <div>
         <div className="row justify-content-center mb-5">
@@ -55,47 +159,94 @@ const ProductDetails = () => {
         <div class="col-md-6">
           <div class="row">
               <div class="col-12  thumbnail-images-container">
-                <ProductCarousel/>
+                <ProductCarousel images={allImages}/>
               </div>
           </div>
       </div>
 
             <div class="col-md-6 text-left">
-                <h1 class="product-details-info-h">Short sleeve middi dress</h1>
+                <h1 class="product-details-info-h">{product.name}</h1>
                 <div class=" text-left ">
                   <i class="fa fa-star stars" ></i>
                   <i class="fa fa-star stars" ></i>
                   <i class="fa fa-star stars" ></i>
                   <i class="rating">(ratings)</i>
                 </div>
-                <p class="text-danger font-weight-bold mt-1">$34</p>
-                <p class="product-details-info-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean porta fringilla elit ac finibus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
+                <p class="text-danger font-weight-bold mt-1">{product.price}</p>
+                <p class="product-details-info-description">{product.description}</p>
+                <p className="product-details-info-attribute">Category: <span className="product-details-info-attribute-span">{product.category}</span></p>
 
-                <p class="product-details-info-attribute">Color:<span class="product-details-info-attribute-span">Black</span></p>
-                <div>
-                  <p class="product-details-info-attribute">
-                      Size:
-                      <span class="btn-group" role="group" aria-label="Size options">
-                          <button type="button" class="btn btn-outline-primary size-option" onclick="selectSize(this)">S</button>
-                          <button type="button" class="btn btn-outline-primary size-option" onclick="selectSize(this)">M</button>
-                          <button type="button" class="btn btn-outline-primary size-option" onclick="selectSize(this)">L</button>
-                          <button type="button" class="btn btn-outline-primary size-option" onclick="selectSize(this)">XL</button>
-                      </span>
-                  </p>
-              </div>        
-              <div>
-                <p class="product-details-info-attribute">
-                    Quantity:
-                    <span class="quantity-selector">
-                        <button type="button" class="btn btn-outline-primary" onclick="decreaseQuantity()">-</button>
-                        <input type="number" id="quantity" value="1" min="1" max="100" class="quantity-input"/>
-                        <button type="button" class="btn btn-outline-primary" onclick="increaseQuantity()">+</button>
-                    </span>
-                </p>
+                {/* Color Selection */}
+                <div className='mb-3'>
+                  <p>Available Colors:</p>
+                  {availableColors.map(color => (
+                    <button
+                      key={color}
+                      className={` product-details-button ml-2 ${selectedColor === color ? 'selected' : ''}`}
+                      onClick={() => setSelectedColor(color)}
+                    >
+                      {color}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Size Selection */}
+                <div className='mb-3'>
+                  <p>Available Sizes:</p>
+                  {availableSizes.map(size => (
+                    <button
+                      key={size}
+                      className={`product-details-button ml-2 ${selectedSize === size ? 'selected' : ''}`}
+                      onClick={() => setSelectedSize(size)}
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
+
+      
+            {/* Quantity Selection */}
+            <div className='mb-3'>
+              <p>Quantity:</p>
+              <div className="quantity-selector">
+                <button
+                  type="button"
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  disabled={quantity === 1}
+                >
+                  -
+                </button>
+                <input
+                  type="number"
+                  value={quantity}
+                  onChange={handleQuantityChange}
+                  min="1"
+                  max={selectedVariant ? selectedVariant.quantity : 100}
+                  className="quantity-input"
+                />
+                <button
+                  type="button"
+                  
+                  onClick={() => setQuantity(quantity + 1)}
+                  disabled={selectedVariant && quantity >= selectedVariant.quantity}
+                >
+                  +
+                </button>
+              </div>
             </div>
             
-                <button class="product-details-info-btn">Add to Cart</button>
-                
+
+              {/* Conditionally Render Add to Cart or "Not Available" */}
+              <div>
+                {selectedVariant && selectedVariant.quantity > 0 ? (
+                  <button className="product-details-info-btn" onClick={handleAddToCart}>
+                    Add to Cart
+                  </button>
+                ) : (
+                  <p className="text-danger">NOT AVAILABLE</p>
+                )}
+              </div>
+            {cartMessage && <p>{cartMessage}</p>}
             </div>
         </div>
       </div>
@@ -103,31 +254,22 @@ const ProductDetails = () => {
 
       {/* Product Details */}
       <div class="container mt-5 mb-5">
-            <h2 className="text-left">Product Details Of Short Sleeve Midi Dress</h2>
+            <h2 className="text-left">Product Details of {product.name}</h2>
               <div class="row text-left"> 
                 <ul class="product-details-list">
-                  <li>Product Type: T-Shirt & 2 Quarter Pant</li>
-                  <li>T-Shirt Color: Black, Ash</li>
-                  <li>Main Material: T-Shirt Cotton & Pant Synthetic Fabric</li>
-                  <li>Gender: Men</li>
-                  <li>Stylish Design</li>
-                  <li>High-Quality Cotton Fabric</li>
-                  <li>M = T-Shirt: Length-27" / Chest: 38" Pant: Length-24" / Waist: 28-30"</li>
-                  <li>L = T-Shirt: Length-28" / Chest: 40" Pant: Length-25" / Waist: 32-33"</li>
-                  <li>XL = T-Shirt: Length-29" / Chest: 42" Pant: Length-26" / Waist: 34-35"</li>
-                  <li>#TShirtForMen</li>
+                <li>Brand: {product.brand}</li>
+                <li>Product Type: {product.product_type}</li>
+                <li>Category: {product.category}</li>
+                <li>Sub Category: {product.subcategory}</li>
+                <li>SKU: {product.sku}</li>
                 </ul>
               </div>
       </div>
             {/* Product Details */}
             <div class="container mt-5 mb-5">
-            <h2 className="text-left">Specifications of Short sleeve middi dress</h2>
-              <div class="row text-left"> 
-                <ul class="product-details-list">
-                  <li>Brand: No Brand</li>
-                  <li>SKU:389255983_BD-1940255191</li>
-                  <li>Main Material: Synthetic</li>
-                </ul>
+            <h2 className="text-left">Product's Extra Information</h2>
+              <div class="row text-left mt-4 ml-2"> 
+                  <div dangerouslySetInnerHTML={{ __html: product.product_details }}></div>
               </div>
       </div>
       <div class="container mt-5 mb-5 ">

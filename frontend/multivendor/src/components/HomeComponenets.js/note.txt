@@ -27,3 +27,6 @@
           </div>
         ))}
       </div>
+
+
+      <div dangerouslySetInnerHTML={{ __html: product.product_details }}></div>
