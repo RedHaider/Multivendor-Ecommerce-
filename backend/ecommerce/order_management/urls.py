@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import order_list, coupon_list, coupon_edit, coupon_form, coupon_delete, order_form ,order_delete ,order_edit, cart_list ,cart_delete ,cart_form , cart_edit, cart_detail , add_to_cart
+from .views import order_list, coupon_list, coupon_edit, coupon_form, coupon_delete, order_form ,order_delete ,order_edit, cart_list ,cart_delete ,cart_form , cart_edit, cart_detail , add_to_cart ,get_cart ,update_cart
 
 urlpatterns = [
 
@@ -28,5 +28,7 @@ urlpatterns = [
     ################################################ API ###############################
 
     path('api/add-to-cart/', add_to_cart, name="add-to-cart"),
+    path('api/cart-get/', get_cart, name="get-cart"),
+    path('api/cart-update/', update_cart, name='update-cart'),
 
 ]

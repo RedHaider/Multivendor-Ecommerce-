@@ -42,7 +42,13 @@ class Customer(models.Model):
     customerID = models.CharField(max_length=15, unique=True, blank=True)
     phone_number = models.CharField(max_length=20, null=True, blank=True)
     address = models.TextField(null=True, blank=True)
+    division = models.CharField(max_length=100, null=True, blank=True)
+    district = models.CharField(max_length=100, null=True, blank=True)
+    state = models.CharField(max_length=100, null=True, blank=True)
+    Thana = models.CharField(max_length=150, blank=True )
+    postal_code = models.CharField(max_length= 150, blank = True)
     created_at = models.DateTimeField(auto_now_add=True)
+    
 
     def generate_customer_id(self):
         last_customer = Customer.objects.order_by('-id').first()
@@ -65,7 +71,7 @@ class Customer(models.Model):
             self.address = self.user.address
         super().save(*args, **kwargs)
 
-    
+
 
 
 class Vendor(models.Model):

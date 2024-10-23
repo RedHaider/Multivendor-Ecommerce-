@@ -7,6 +7,10 @@ import ProductReview from "../productComponents/ProductReview";
 import config from '../config';
 import '../style/productdetails.css'
 
+//notification
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
 const ProductDetails = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
@@ -78,9 +82,12 @@ const ProductDetails = () => {
         quantity: quantity,
         customer_id: customerId // Pass the customer ID from localStorage
       });
+      toast.success("Product added to cart successfully!"); // Show success notification
       setCartMessage("Product added to cart successfully!");
+
     } catch (error) {
       console.error("Failed to add to cart", error);
+      toast.error("Failed to add product to cart."); // Show error notification
       setCartMessage("Failed to add product to cart");
     }
   };
@@ -144,6 +151,7 @@ const ProductDetails = () => {
   
     return ( 
         <div>
+           <ToastContainer />
         <div className="row justify-content-center mb-5">
                 <div className="col text-center">
                 <div className="heading">

@@ -1,4 +1,6 @@
 const Checkout = () => {
+
+
     return ( 
         <div>
         <div className="row justify-content-center mb-2">
@@ -12,58 +14,43 @@ const Checkout = () => {
       <div class="container mb-5 mt-5">
            <p>Have a coupon? <span class="blogpc">Click here to enter your code...</span></p>
 
-           <h1 class="checkoutbillinH">Billing Details</h1>
+           
            <div class="row">
                <div class="col-md-8">
                 <form class="registration-form updated">
-                    <h2>Register</h2>
-                    <div class="row">
+                <h1 class="checkoutbillinH text-center">Billing Details</h1>
+                    
 
-                        <div class="col-md-6">
-                        <label for="firstname">First Name *</label>
-                        <input type="text" id="firstname" name="firstname" required/>
-                        </div>
-                        <div class="col-md-6">
-                        <label for="lastname">Last Name *</label>
-                        <input type="text" id="lastname" name="lastname" required/>
-                        </div>
-
+                    <div class="col-md-12">
+                        <p >Name : John Cena</p>
+                        <p>Email : janina@gmail.com</p>
                     </div>
-                    <label for="companyname">Company Name *</label>
-                    <input type="text" id="companyname" name="companyname" required/>
 
-                    <label for="country">Country *</label>
-                    <input type="text" id="country" name="country" required/>
+                    <label for="EmailAddress">Email Address *</label>
+                    <input type="email" id="EmailAddress" name="EmailAddress" required/>
 
-                    <label for="StreetAddress">Street Address *</label>
+                    <label for="StreetAddress">Address *</label>
                     <input type="text" id="StreetAddress" name="StreetAddress" required/>
 
-                    <label for="TownCity">Town/City *</label>
-                    <input type="text" id="TownCity" name="TownCity" required/>
+                    <label for="PhoneNumber">Phone Number *</label>
+                    <input type="number" id="PhoneNumber" name="PhoneNumber" required/>
+
+                    <label for="District">Division *</label>
+                    <input type="text" id="District" name="District" required/>
 
                     <label for="District">District *</label>
                     <input type="text" id="District" name="District" required/>
 
-                    <label for="Postcode">Postcode *</label>
-                    <input type="text" id="Postcode" name="Postcode" required/>
+                    <label for="District">State *</label>
+                    <input type="text" id="District" name="District" required/>
 
-                    <div class="row">
+                    <label for="District">Thana *</label>
+                    <input type="text" id="District" name="District" required/>
 
-                        <div class="col-md-6">
-                        <label for="PhoneNumber">Phone Number *</label>
-                        <input type="number" id="PhoneNumber" name="PhoneNumber" required/>
-                        </div>
-                        <div class="col-md-6">
-                        <label for="EmailAddress">Email Address *</label>
-                        <input type="email" id="EmailAddress" name="EmailAddress" required/>
-                        </div>
+                    <label for="District">Postal Code *</label>
+                    <input type="text" id="District" name="District" required/>
 
-                    </div>
-            
-                    <label class="mb-3">
-                        <input type="checkbox" id="account" name="account" required/>
-                        Create an account?
-                    </label>
+
                     <label class="mb-3">
                         <input type="checkbox" id="shipaddress" name="shipaddress" required/>
                         Ship to a different address?

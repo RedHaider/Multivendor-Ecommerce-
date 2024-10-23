@@ -310,3 +310,60 @@ def add_to_cart(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+
+@api_view(['GET'])
+def get_cart(request):
+    customer_id = request.user.id  # Assuming the user is authenticated and user id is available
+    
+    try:
+        # Get the active cart for the logged-in user
+        cart = Cart.objects.get(customer_id=customer_id, status='activate')
+    except Cart.DoesNotExist:
+        return Response({"error": "No active cart found for this user."}, status=status.HTTP_404_NOT_FOUND)
+
+    # Serialize the cart data
+    cart_serializer = CartSerializer(cart)
+    print("he heyhkjasdhkajsdh", cart_serializer.data)
+    return Response(cart_serializer.data, status=status.HTTP_200_OK)
+
+#update the card form cart of the customer
+
+@api_view(['POST', 'PUT'])
+def update_cart(request):
+    try:
+        customer_id = request.user.id  # Ensure the user is authenticated
+        cart_items_data = request.data.get('cartitems', [])
+        removed_items = request.data.get('removedItems', [])  # Get removed items list
+
+        # Get the active cart for the customer
+        cart = Cart.objects.get(customer_id=customer_id, status='activate')
+
+        # Remove cart items that were marked for removal
+        if removed_items:
+            CartItems.objects.filter(cart=cart, product_variant_id__in=removed_items).delete()
+
+        # Update cart items' quantities
+        for item_data in cart_items_data:
+            product_variant_id = item_data.get('product_variant_id')
+            quantity = item_data.get('quantity')
+
+            try:
+                # Find and update the corresponding cart item
+                cart_item = CartItems.objects.get(cart=cart, product_variant_id=product_variant_id)
+                cart_item.quantity = quantity
+                cart_item.save()
+
+            except CartItems.DoesNotExist:
+                return Response({"error": f"Cart item with variant {product_variant_id} not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        # Recalculate the cart total after updating quantities and removing items
+        cart.calculate_total_amount()
+
+        return Response({"message": "Cart updated successfully."}, status=status.HTTP_200_OK)
+
+    except Cart.DoesNotExist:
+        return Response({"error": "Cart not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+

@@ -5,6 +5,8 @@ class CartItemSerializer(serializers.ModelSerializer):
     product_name = serializers.ReadOnlyField(source='product_id.name')  # Correct field name for the product
     variant_details = serializers.SerializerMethodField()  # Custom method for showing variant details
 
+    
+
     class Meta:
         model = CartItems
         fields = ['product_id', 'product_name', 'product_variant_id', 'variant_details', 'quantity', 'price', 'subtotal']
@@ -14,6 +16,7 @@ class CartItemSerializer(serializers.ModelSerializer):
         variant = obj.product_variant_id
         return {
             "id": variant.id,
+            "image": variant.image.url,
             "color": variant.color.color_name,  # Assuming color is a ForeignKey
             "size": variant.size.size_name  # Assuming size is a ForeignKey
         }

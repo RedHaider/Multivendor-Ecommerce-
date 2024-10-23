@@ -6,9 +6,18 @@ class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True)
     email = serializers.EmailField(required=True)
 
+    # Include new Customer fields
+    phone = serializers.CharField(required=True)
+    address = serializers.CharField(required=False)
+    division = serializers.CharField(required=False)
+    district = serializers.CharField(required=False)
+    state = serializers.CharField(required=False)
+    Thana = serializers.CharField(required=False)
+    postal_code = serializers.CharField(required=False)
+
     class Meta:
         model = User
-        fields = ['email', 'password', 'first_name', 'last_name', 'phone', 'address']
+        fields = ['email', 'password', 'first_name', 'last_name', 'phone', 'address', 'division', 'district', 'state', 'Thana', 'postal_code']
 
     def validate(self, data):
         # Ensure required fields are present
@@ -41,9 +50,15 @@ class RegisterSerializer(serializers.ModelSerializer):
         customer = Customer.objects.create(
             user=user,
             phone_number=validated_data.get('phone', ''),
-            address=validated_data.get('address', '')
+            address=validated_data.get('address', ''),
+            division=validated_data.get('division', ''),
+            district=validated_data.get('district', ''),
+            state=validated_data.get('state', ''),
+            Thana=validated_data.get('Thana', ''),
+            postal_code=validated_data.get('postal_code', '')
         )
 
         return user
+
 
 
