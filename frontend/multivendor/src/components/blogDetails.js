@@ -1,7 +1,7 @@
 const BlogDetails = () => {
     return ( 
         <div>
-        <div className="row justify-content-center mb-2">
+        <div className="row   no-gutters justify-content-center mb-2">
             <div className="col text-center">
             <div className="heading">
                 <h1>Blog Details</h1>

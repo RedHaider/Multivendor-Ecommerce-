@@ -2,12 +2,14 @@
 
 
 .fixed-container {
-  width: 1200px; /* Fixed width */
-  margin: 0 auto; /* Center the container */
+  width: 1200px; 
+  margin: 0 auto;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
 .custom-container {
-  max-width: 1200px; /* Adjust this value based on how much you want to expand */
+  max-width: 1200px; 
   margin: 0 auto;
   padding-left: 15px;
   padding-right: 15px;
@@ -17,117 +19,117 @@
     background: #f3f3f3;
   }
   
-  .topdiv {
-    height: 50px;
-    gap: 0px;
-    opacity: 0px;
-    background-color: #eb6626;
-  }
+.topdiv {
+  height: 50px;
+  /* gap: 0px; */
+  /* opacity: 0px; */
+  /* background-color: #eb6626; */
+}
+
+.logo {
+  width: 135px;
+  height: 50px;
+  left: 60px;
+}
+
+.icon-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px;
+}
+.icon {
+  font-size: 24px;
+  color: #6c757d; /* Adjust the color as needed */
+}
+.notification-badge {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: red;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 5px;
+  font-size: 10px;
+}
   
-  .logo {
-    width: 135px;
-    height: 50px;
-    left: 60px;
-  }
+.top-section {
+  background: #f3f3f3;
+}
+
+.category-color {
+  color: black;
+}
+
+.category-color :hover {
+  color: black;
+}
+
+.secondpaseblock {
+  width: 460.37px;
+  height: 444.7px;
+  border-radius: 0px 105px 0px 114px;
+  /* opacity: 0px; */
+  background: #eb6626;
+}
+.secondpasepic {
+  transform: scale(1.2);
+  width: 100vw;
+  height: auto;
+}
+.second-phaseMain {
+  margin-top: 150px;
+}
   
-  .icon-container {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 10px;
-  }
-  .icon {
-    font-size: 24px;
-    color: #6c757d; /* Adjust the color as needed */
-  }
-  .notification-badge {
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    background: red;
-    color: white;
-    border-radius: 50%;
-    padding: 2px 5px;
-    font-size: 10px;
-  }
-  
-  .top-section {
-    background: #f3f3f3;
-  }
-  
-  .category-color {
-    color: black;
-  }
-  
-  .category-color :hover {
-    color: black;
-  }
-  
-  .secondpaseblock {
-    width: 460.37px;
-    height: 444.7px;
-    border-radius: 0px 105px 0px 114px;
-    opacity: 0px;
-    background: #eb6626;
-  }
-  .secondpasepic {
-    transform: scale(1.2);
-    width: 100vw;
-    height: auto;
-  }
-  .second-phaseMain {
-    margin-top: 150px;
-  }
-  
-  .secondpaseheader {
-    width: 500px;
-    height: 70px;
-    font-family: Roboto;
-    font-size: 2.5rem; 
-    font-weight: 500;
-    margin-bottom: 1.5rem;
-    padding-right: 120px;
-  }
-  
-  .secondpaseletter {
-  
-    height: auto;
-    font-family: Roboto;
-    font-size: 16px;
-    font-weight: 400;
-    text-align: left;
-    font-size: 1rem; 
-    font-weight: 400;
-    line-height: 1.5;
-    margin-bottom: 1.5rem;
-  }
-  
-  
-  .secondpasebutton {
-    width: 100%; 
-    max-width: 196px;
-    height: 56px;
-    gap: 0px;
-    margin-bottom: 1rem;
-    border-radius: 4px;
-    opacity: 0px;
-    background: #eb6626;
-    border-color: #eb6626;
-    color: white;
-  }
-  
-  .secondpasebuttonn {
-    width: 100%; 
-    max-width: 196px;
-    height: 56px;
-    top: 520px;
-    left: 63px;
-    gap: 0px;
-    border-radius: 4px;
-    opacity: 0px;
-    border-color: #eb6626;
-    color: #eb6626;
-  }
+.secondpaseheader {
+  width: 500px;
+  height: 70px;
+  font-family: Roboto;
+  font-size: 2.5rem; 
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  padding-right: 120px;
+}
+
+.secondpaseletter {
+
+  height: auto;
+  font-family: Roboto;
+  font-size: 16px;
+  font-weight: 400;
+  text-align: left;
+  font-size: 1rem; 
+  font-weight: 400;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+}
+
+
+.secondpasebutton {
+  width: 100%; 
+  max-width: 196px;
+  height: 56px;
+  /* gap: 0px; */
+  margin-bottom: 1rem;
+  border-radius: 4px;
+  /* opacity: 0px; */
+  background: #eb6626;
+  border-color: #eb6626;
+  color: white;
+}
+
+.secondpasebuttonn {
+  width: 100%; 
+  max-width: 196px;
+  height: 56px;
+  top: 520px;
+  left: 63px;
+  /* gap: 0px; */
+  border-radius: 4px;
+  /* opacity: 0px; */
+  border-color: #eb6626;
+  color: #eb6626;
+}
   
   .scondphaseleft {
     margin-bottom: 150px;
@@ -469,9 +471,9 @@
     background: #eb6626;
     width: 250px;
     height: 39px;
-    gap: 0px;
+   /* gap: 0px;  */
     border-radius: 1px 0px 0px 0px;
-    opacity: 0px;
+    /* opacity: 0px; */
     border: #000000;
   }
   
@@ -488,8 +490,8 @@
     width: 50px;
     height: 40px;
   
-    gap: 0px;
-    opacity: 0px;
+    /* gap: 0px; */
+    /* opacity: 0px; */
   }
   
   .underline-hr {

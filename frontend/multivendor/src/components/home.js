@@ -6,23 +6,22 @@ const Home = () => {
     return ( 
         <div>
     {/* sedond phase */}
-            <div class="container-fluid  p-0"> 
-                <div class="row">
-                    <div class="col-12 mb-4">
-                        <div class="card bg-dark text-white">
-                            <img src="picture/home-page-hero-1.png" class="card-img w-100" alt="Product 1"/>
-                            
-                            <div class="card-img-overlay card-img-overlay-hero d-flex flex-column justify-content-end">
-                                {/* <span class="discount-badge">Up to 60% off</span> */}
-                                <h6 class="card-title dherekete text-left">10.10 Mega Brand Sale</h6>
-                                <h3 class="card-text text-left fw-bold">HOT DEALS</h3>
-                                <p class="card-text text-left">Shop best products on best prices</p>
-                                <button class="btn add-to-cart-btn m-2">Shop Now</button>
-                            </div>
-                        </div>
-                    </div>
+    <div class="container-fluid p-0"> 
+        <div class="row no-gutters">
+            <div class="col-12 mb-4">
+            <div class="card bg-dark text-white">
+                <img src="picture/home-page-hero-1.png" class="card-img img-fluid w-100" alt="Product 1" />
+
+                <div class="card-img-overlay card-img-overlay-hero d-flex flex-column justify-content-end">
+                <h6 class="card-title dherekete text-left">10.10 Mega Brand Sale</h6>
+                <h3 class="card-text text-left fw-bold">HOT DEALS</h3>
+                <p class="card-text text-left">Shop best products on best prices</p>
+                <button class="btn add-to-cart-btn m-2">Shop Now</button>
                 </div>
             </div>
+            </div>
+        </div>
+    </div>
 
     {/* 3rd phase */}
 

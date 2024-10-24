@@ -49,7 +49,7 @@ const Register = () => {
 
   return (
     <div>
-      <div className="row justify-content-center mb-2">
+      <div className="row  no-gutters justify-content-center mb-2">
         <div className="col text-center">
           <div className="heading">
             <h1>Register</h1>
@@ -73,7 +73,7 @@ const Register = () => {
       </div>
 
       <div className="container mb-5">
-        <h2>Register</h2>
+       
         {error && <p style={{ color: 'red' }}>{error}</p>}
         {success && <p style={{ color: 'green' }}>{success}</p>}
         <form className="registration-form" onSubmit={handleSubmit}>

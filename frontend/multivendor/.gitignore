@@ -24,3 +24,7 @@ yarn-error.log*
 *.zip
 backend/env
 frontend/multivendor/node_modules
+*.__pycache__
+*/__pycache__
+
+__pycache__/

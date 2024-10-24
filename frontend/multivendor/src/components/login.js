@@ -53,7 +53,7 @@ const Login = () => {
   
   return (
     <div>
-        <div className="row justify-content-center mb-2">
+        <div className="row  no-gutters justify-content-center mb-2">
                 <div className="col text-center">
                 <div className="heading">
                     <h1>Login</h1>
@@ -77,7 +77,7 @@ const Login = () => {
       </div>
 
       <div className="container mb-5">
-        <h2>Login</h2>
+        
         {error && <p style={{ color: 'red' }}>{error}</p>}
         <form className="registration-form" onSubmit={handleSubmit}>
           <label htmlFor="email">Email *</label>
