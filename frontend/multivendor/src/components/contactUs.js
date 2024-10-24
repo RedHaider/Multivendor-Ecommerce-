@@ -1,6 +1,6 @@
 const ContactUs = () => {
     return ( 
-        <div>
+    <div>
         <div className="row justify-content-center mb-2">
                 <div className="col text-center">
                 <div className="heading">

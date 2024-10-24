@@ -323,7 +323,7 @@ def get_cart(request):
 
     # Serialize the cart data
     cart_serializer = CartSerializer(cart)
-    print("he heyhkjasdhkajsdh", cart_serializer.data)
+    
     return Response(cart_serializer.data, status=status.HTTP_200_OK)
 
 #update the card form cart of the customer

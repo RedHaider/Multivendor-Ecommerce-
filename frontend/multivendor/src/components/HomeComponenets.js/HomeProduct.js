@@ -29,7 +29,7 @@ const HomeProduct = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="container mt-5 mb-5">
+    <div className=" fixed-container">
        <div className="row justify-content-center">
           <div className="col text-center">
             <div className="heading">

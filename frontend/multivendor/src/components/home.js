@@ -6,18 +6,18 @@ const Home = () => {
     return ( 
         <div>
     {/* sedond phase */}
-            <div class="container-fluid p-0"> 
+            <div class="container-fluid  p-0"> 
                 <div class="row">
                     <div class="col-12 mb-4">
                         <div class="card bg-dark text-white">
                             <img src="picture/home-page-hero-1.png" class="card-img w-100" alt="Product 1"/>
                             
                             <div class="card-img-overlay card-img-overlay-hero d-flex flex-column justify-content-end">
-                                <span class="discount-badge">Up to 60% off</span>
+                                {/* <span class="discount-badge">Up to 60% off</span> */}
                                 <h6 class="card-title dherekete text-left">10.10 Mega Brand Sale</h6>
                                 <h3 class="card-text text-left fw-bold">HOT DEALS</h3>
                                 <p class="card-text text-left">Shop best products on best prices</p>
-                                <button class="btn add-to-cart-btn m-2">Add to Cart</button>
+                                <button class="btn add-to-cart-btn m-2">Shop Now</button>
                             </div>
                         </div>
                     </div>
@@ -26,9 +26,9 @@ const Home = () => {
 
     {/* 3rd phase */}
 
-            <div class="container mt-6">
+            <div class="fixed-container ">
                 <div class="row row justify-content-between">
-                    <div class="col-md-6 promo-section ">
+                    <div class="col-md-6 promo-section justify-content-center ">
                         <img src="picture\promo-picture.png" alt="Promo Image"/>
                     </div>
                     <div class="col-md-6 promo-section ">

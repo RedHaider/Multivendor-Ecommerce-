@@ -1,5 +1,15 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+import config from "../config";
+
 const Checkout = () => {
 
+    const [ cartItems, setCartItems ] = useState([])
+    const [total , setTotal] = useState(0);
+    const [ loading, setLoading ] = useState(true);
+    const [error , setError] =  useState(true);
+
+    
 
     return ( 
         <div>
@@ -83,6 +93,16 @@ const Checkout = () => {
                         <div class="col-6 text-right checkout-card-t">$78.00</div>
                     </div>
                     <hr/>
+                    <div class="row">
+                        <div class="col-12 ">
+                            <form class="checkout-card-t ">
+                                <p class="checkout-card-t">Coupons:</p>
+                                <div class="pl-3 mb-3 registration-form updated">
+                                <input type="text" placeholder="Place Your Coupon Here" id="District" name="District" required/>
+                                </div>
+                              </form>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-12 ">
                             <form class="checkout-card-t ">

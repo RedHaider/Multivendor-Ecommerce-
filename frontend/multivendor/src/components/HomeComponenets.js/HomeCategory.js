@@ -30,8 +30,8 @@ const HomeCategory = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="container mt-6">
-      <div className="container mt-5 justify-content-center">
+    <div className="fixed-container">
+      <div className="c mt-5 justify-content-center">
         <div className="row justify-content-center">
           <div className="col text-center">
             <div className="heading">
@@ -41,7 +41,7 @@ const HomeCategory = () => {
           </div>
         </div>
 
-        <div className="container mt-5">
+        <div className=" mt-5">
           <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
             {categories.slice(0, visibleCount).map((category) => (
               <div className="col" key={category.id}>

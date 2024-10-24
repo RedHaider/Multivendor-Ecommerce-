@@ -156,7 +156,7 @@ const Shop = () => {
 
   return (
     <div>
-      <div className="container mt-5">
+      <div className="container-fluid custom-container mt-5">
         <div className="row justify-content-center mb-2">
           <div className="col text-center">
             <div className="heading">
@@ -255,7 +255,7 @@ const Shop = () => {
 
             <div className="row">
               {filteredProducts.map((product) => (
-                <div className="col-md-3 col-sm-6" key={product.id}>
+                <div className="col-lg-3 col-md-4 col-sm-6 col-12" key={product.id}>
                   <div className="product-card" onClick={() => handleProductClick(product.id)}>
                     {/* Display main product image */}
                     <img
