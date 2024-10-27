@@ -37,7 +37,7 @@
   .custom-accordion .btn::after {
     content: '+';
     font-size: 1.5rem;
-    color: #eb6626;
+    color: #FA7070;
     float: right; /* Keep the + icon aligned to the right */
   }
   

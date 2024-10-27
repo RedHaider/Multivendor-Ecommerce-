@@ -1,10 +1,10 @@
 /* Base style for the product details button */
 .product-details-button {
     background-color: white; /* Default background */
-    color: #FF5722; /* Default text color */
+    color: #FA7070; /* Default text color */
     padding: 10px 20px;
     font-size: 12px;
-    border: 2px solid #FF5722;
+    border: 2px solid #FA7070;
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
@@ -12,15 +12,15 @@
   
   /* Hover state */
   .product-details-button:hover {
-    background-color: #FF5722;
+    background-color: #FA7070;
     color: white;
   }
   
   /* Selected state */
   .selected {
-    background-color: #FF5722; /* Highlight selected background */
+    background-color: #FA7070; /* Highlight selected background */
     color: white; /* Selected text color */
-    border-color: #FF5722; /* Highlight selected border */
+    border-color: #FA7070; /* Highlight selected border */
   }
   
   /* Disabled state for the button (optional, if needed) */

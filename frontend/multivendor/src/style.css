@@ -23,7 +23,7 @@
   height: 50px;
   /* gap: 0px; */
   /* opacity: 0px; */
-  /* background-color: #eb6626; */
+  background-color: #FA7070;
 }
 
 .logo {
@@ -70,7 +70,7 @@
   height: 444.7px;
   border-radius: 0px 105px 0px 114px;
   /* opacity: 0px; */
-  background: #eb6626;
+  background: #FA7070;
 }
 .secondpasepic {
   transform: scale(1.2);
@@ -113,8 +113,8 @@
   margin-bottom: 1rem;
   border-radius: 4px;
   /* opacity: 0px; */
-  background: #eb6626;
-  border-color: #eb6626;
+  background: #FA7070;
+  border-color: #FA7070;
   color: white;
 }
 
@@ -127,8 +127,8 @@
   /* gap: 0px; */
   border-radius: 4px;
   /* opacity: 0px; */
-  border-color: #eb6626;
-  color: #eb6626;
+  border-color: #FA7070;
+  color: #FA7070;
 }
   
   .scondphaseleft {
@@ -271,7 +271,7 @@
     text-align: left;
   }
   .gallery-menu .nav-link:hover {
-    color: #eb6626;
+    color: #FA7070;
   }
   
   .fthphaseimg {
@@ -310,7 +310,7 @@
     width: 42px;
     height: 18px;
     color: #ffffff;
-    background: #eb6626;
+    background: #FA7070;
     width: 48px;
     height: 23px;
   }
@@ -319,7 +319,7 @@
     margin-bottom: 140px;
   }
   .cardButton {
-    background-color: #eb6626;
+    background-color: #FA7070;
     color: #ffffff;
   }
   
@@ -431,7 +431,7 @@
     font-size: 128px;
     font-weight: 400;
     text-align: center;
-    color: #eb6626;
+    color: #FA7070;
     margin-bottom: 0;
     transform: scale(-1.5);
   }
@@ -450,7 +450,8 @@
   }
   
   .footerStyle {
-    background: #1a1818;
+    background: #A0C498;
+;
     margin-bottom: 0px;
   }
   
@@ -468,7 +469,7 @@
   }
   
   .footerbutton {
-    background: #eb6626;
+    background: #FA7070;
     width: 250px;
     height: 39px;
    /* gap: 0px;  */
@@ -543,14 +544,14 @@
   }
   
   .popup-text-color {
-    color: #eb6626;
+    color: #FA7070;
   }
   .popup-button-color {
     width: 267px;
     height: 34px;
     border-radius: 2px 0px 0px 0px;
-    background: #eb6626;
-    border-color: #eb6626;
+    background: #FA7070;
+    border-color: #FA7070;
     color: #ffffff;
   }
   
@@ -558,8 +559,8 @@
     width: 267px;
     height: 34px;
     border-radius: 2px 0px 0px 0px;
-    border-color: #eb6626;
-    color: #eb6626;
+    border-color: #FA7070;
+    color: #FA7070;
   }
   
   .popup-cart-icon {
@@ -811,7 +812,7 @@
   font-size: 14px;
 }
 .add-to-cart-btn {
-  background-color: #FF5722;
+  background-color: #FA7070;
   color: grey;
   border: none;
   width: 150px;
@@ -918,7 +919,7 @@
   position: absolute;
   top: 10px;
   left: 10px;
-  background-color: #FF5722;
+  background-color: #FA7070;
   color: white;
   padding: 5px 10px;
   font-size: 12px;
@@ -930,7 +931,7 @@
   object-fit: cover;
 }
 .product-add-to-cart-btn {
-  background-color: #FF5722;
+  background-color: #FA7070;
   color: white;
   border: none;
   border-radius: 5px;
@@ -941,7 +942,7 @@
   background-color: #E64A19;
 }
 .load-more-btn {
-  background-color: #FF5722;
+  background-color: #FA7070;
   color: white;
   border: none;
   border-radius: 5px;
