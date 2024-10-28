@@ -23,7 +23,8 @@ class Order(models.Model):
     shipping_address = models.CharField(max_length=255)
     shipping_city = models.CharField(max_length=100)
     shipping_postal_code = models.CharField(max_length=10)
-        
+    order_note = models.TextField(blank=True, null=True)
+    vendor = models.ForeignKey(Vendor, on_delete = models.SET_NULL, null=True, blank=True)
 
     def generate_order_id(self):
         last_order = Order.objects.order_by('-id').first()
@@ -180,6 +181,7 @@ class CartItems(models.Model):
     quantity = models.IntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     subtotal = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)  # Add this field if you want to store subtotal
+
 
     def save(self, *args, **kwargs):
         self.subtotal = self.quantity * self.price

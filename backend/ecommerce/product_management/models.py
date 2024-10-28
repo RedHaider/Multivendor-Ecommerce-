@@ -84,7 +84,6 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     subcategory = models.ForeignKey(SubCategory, on_delete=models.SET_NULL, null=True)
     product_type = models.ForeignKey(ProductType, on_delete=models.SET_NULL, null=True)
-
     brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True)
     stock_level = models.IntegerField(default=0)
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)

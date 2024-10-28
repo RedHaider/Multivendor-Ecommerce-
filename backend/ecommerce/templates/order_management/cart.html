@@ -34,7 +34,7 @@
                                     <tbody>
                                         {% for cart in cart %}
                                         <tr>
-                                            <td><a href="{% url 'cart-detail' cart.pk  %}" class="text-black">{{ cart.cart_id }}</a>{{ cart.cart_id }}</td>
+                                            <td><a href="{% url 'cart-detail' cart.pk  %}" class="text-black">{{ cart.cart_id }}</a></td>
                                           <td>{{ cart.customer_id.username }}</td> <!-- Assuming customer_id is a user object -->
                                           <td>{{ cart.total_amount }}</td>
                                           <td>

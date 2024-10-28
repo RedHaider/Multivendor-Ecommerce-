@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import order_list, coupon_list, coupon_edit, coupon_form, coupon_delete, order_form ,order_delete ,order_edit, cart_list ,cart_delete ,cart_form , cart_edit, cart_detail , add_to_cart ,get_cart ,update_cart
+from .views import order_list, coupon_list, coupon_edit, coupon_form, coupon_delete, order_form ,order_delete ,order_edit, cart_list ,cart_delete ,cart_form , cart_edit, cart_detail , add_to_cart ,get_cart ,update_cart, order_detail_view, create_order ,validate_coupon
 
 urlpatterns = [
 
@@ -17,6 +17,7 @@ urlpatterns = [
     path('order/create/', order_form, name='order-form'),
     path('order/edit/<int:pk>/', order_edit , name= 'order-edit'),
     path('order/delete/<int:pk>/', order_delete ,name='order-delete'),
+    path('order/<str:order_id>/', order_detail_view, name='order-detail'),
 
 #cart 
     path('cart/', cart_list, name='cart-list'),
@@ -30,5 +31,7 @@ urlpatterns = [
     path('api/add-to-cart/', add_to_cart, name="add-to-cart"),
     path('api/cart-get/', get_cart, name="get-cart"),
     path('api/cart-update/', update_cart, name='update-cart'),
+    path('api/validate-coupon/', validate_coupon, name='validate_coupon'),
+    path('api/orders/create/', create_order, name='create-order'),
 
 ]

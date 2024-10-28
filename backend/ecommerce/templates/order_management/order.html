@@ -38,7 +38,7 @@
                                     <tbody>
                                         {% for order in order %}
                                         <tr>
-                                          <td>{{ order.order_id }}</td>
+                                          <td><a href="{% url 'order-detail' order.order_id  %}" class="text-black">{{ order.order_id }}</a></td>
                                           <td>{{ order.customer_id }}</td>
                                           <td>{{ order.total_amount }}</td>
                                           <td>{{ order.payment_type }}</td>

@@ -62,3 +62,14 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 
+class CustomerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Customer
+        fields = ['name', 'customerID', 'phone_number', 'address', 'division', 'district', 'state', 'Thana', 'postal_code', 'created_at']
+
+class UserSerializer(serializers.ModelSerializer):
+    customer_profile = CustomerSerializer(read_only=True)  # Nested customer profile
+
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email', 'phone', 'address', 'role', 'status', 'photo', 'email_verified_at', 'created_at', 'updated_at', 'customer_profile']

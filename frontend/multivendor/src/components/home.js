@@ -25,16 +25,17 @@ const Home = () => {
 
     {/* 3rd phase */}
 
-            <div class="fixed-container ">
-                <div class="row row justify-content-between">
-                    <div class="col-md-6 promo-section justify-content-center ">
-                        <img src="picture\promo-picture.png" alt="Promo Image"/>
-                    </div>
-                    <div class="col-md-6 promo-section ">
-                        <img src="picture\promo-picture.png" alt="Promo Image"/>
-                    </div>
-                </div>
-            </div>         
+    <div class="container-fluid">
+    <div class="row justify-content-between">
+        <div class="col-md-6 promo-section justify-content-center">
+            <img src="picture/promo-picture.png" alt="Promo Image"/>
+        </div>
+        <div class="col-md-6 promo-section">
+            <img src="picture/promo-picture.png" alt="Promo Image"/>
+        </div>
+    </div>
+</div>
+     
 
     {/* 5rth phase */}
   

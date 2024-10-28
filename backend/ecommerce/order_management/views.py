@@ -240,6 +240,11 @@ def cart_detail(request, pk):
 
     return render(request, 'order_management/cart-details.html', context)
 
+def order_detail_view(request, order_id):
+    # Get the order by the `order_id` string
+    order = get_object_or_404(Order, order_id=order_id)
+    return render(request, 'order_management/order_details.html', {'order': order})
+
 ############################################################################
 ############################################################################
 ############################ API ###########################################
@@ -249,8 +254,9 @@ def cart_detail(request, pk):
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from django.utils import timezone
 from .models import Cart, CartItems, Product, ProductAttribute
-from .serializers import CartSerializer, AddToCartSerializer
+from .serializers import CartSerializer, AddToCartSerializer , OrderSerializer , CartItemSerializer
 
 from django.contrib.auth.models import User  # Assuming you're using the default User model
 
@@ -366,4 +372,57 @@ def update_cart(request):
 
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+def validate_coupon(request):
+    coupon_code = request.data.get('coupon_code')  # Coupon code from the frontend
+    cart_items_data = request.data.get('cart_items')  # List of products in the cart (from frontend)
+
+    # Check if coupon exists
+    try:
+        coupon = Coupon.objects.get(coupon_code=coupon_code)
+    except Coupon.DoesNotExist:
+        return Response({"error": "Invalid coupon code"}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Check if coupon is active
+    if coupon.status != 'active':
+        return Response({"error": "Coupon is not active"}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Check if coupon has expired
+    if coupon.coupon_validity < timezone.now().date():
+        return Response({"error": "Coupon has expired"}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Vendor who issued the coupon
+    coupon_vendor = coupon.user
+
+    # Deserialize the cart items using the CartItemSerializer
+    serializer = CartItemSerializer(data=cart_items_data, many=True)
+    serializer.is_valid(raise_exception=True)
+    cart_items = serializer.validated_data
+
+    # Calculate discount for items from this vendor only
+    discount = 0
+    for item in cart_items:
+        product = Product.objects.get(id=item['product_id'].id)
+
+        # Apply discount only for products from the same vendor as the coupon
+        if product.user == coupon_vendor:
+            discount += float(item['price']) * item['quantity'] * (float(coupon.coupon_discount) / 100)
+
+    if discount == 0:
+        return Response({"error": "Coupon is not applicable to any products in your cart"}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Return the calculated discount
+    return Response({"discount": discount}, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def create_order(request):
+    serializer = OrderSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 

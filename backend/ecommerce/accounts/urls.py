@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import vendor_registration_view, login_view, logout_view, RegisterView, LoginView
+from .views import vendor_registration_view, login_view, logout_view, RegisterView, LoginView ,get_user_details
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -9,6 +9,14 @@ urlpatterns = [
    path('logout/', logout_view, name='logout'),
     path('customer_register/', RegisterView.as_view(), name='register'),  # Use .as_view() correctly
     path('customer_login/', LoginView.as_view(), name='login-customer'),  # Use .as_view() correctly
+
+##########################################################
+###################         ##############################
+###################  API    ##############################
+###################         ##############################
+##########################################################
+    
+    path('api/user/details/', get_user_details, name='user-details'),
 
 
 ]
