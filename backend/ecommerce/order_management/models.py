@@ -16,7 +16,8 @@ class Order(models.Model):
     order_id = models.CharField(max_length=15, unique=True, blank=True )
     customer_id = models.ForeignKey(settings.AUTH_USER_MODEL , on_delete= models.CASCADE)
     order_date = models.DateTimeField(auto_now_add=True)
-    total_amount = models.DecimalField(max_digits=15, decimal_places=2)
+    sub_total = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True)
+    total_amount = models.DecimalField(max_digits=15, decimal_places=2 )
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     payment_type = models.CharField(max_length=20)
     coupon_id = models.ForeignKey('Coupon', on_delete = models.SET_NULL, null=True, blank=True)
@@ -44,12 +45,17 @@ class Order(models.Model):
         return f'Order {self.order_id} by {self.customer_id.username}' 
     
 class OrderItems(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='orderitems')  # Rename to 'order'
-    product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
+    order = models.ForeignKey(
+        Order, on_delete=models.CASCADE, related_name='orderitems')
+    product_id = models.ForeignKey(
+        Product, on_delete=models.CASCADE)
     quantity = models.IntegerField()
-    product_variant_id = models.ForeignKey(ProductAttribute, on_delete=models.CASCADE, null=True, blank=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    subtotal = models.DecimalField(max_digits=15, decimal_places=2)  # quantity * price
+    product_variant_id = models.ForeignKey(
+        ProductAttribute, on_delete=models.CASCADE, null=True, blank=True)
+    price = models.DecimalField(
+        max_digits=10, decimal_places=2)
+    subtotal = models.DecimalField(
+        max_digits=15, decimal_places=2)  # quantity * price
 
     def save(self, *args, **kwargs):
         self.subtotal = self.quantity * self.price

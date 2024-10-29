@@ -133,7 +133,7 @@ const Cart = () => {
                                 <img src={`${config.API_BASE_URL}${item.variant_details.image}`} alt={item.variant_details.color} className="wishlist-items-pic" />
                                 <div className='pl-3'>
                                 <p className="wishlist-item-name p-1 " style={{ fontWeight: 'bold' }}>
-                                  {item.product_name || 'Product Name Unavailable'}</p>
+                                  {item.product_id.name || 'Product Name Unavailable'}</p>
                                   <p>Size: {item.variant_details.size}</p> 
                                   <p>Size: {item.variant_details.color}</p> 
                                   </div>

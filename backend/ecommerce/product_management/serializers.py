@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Product, Category, ProductType, ProductAttribute, ProductImage , Brand , ProductType, SubCategory
+from accounts.serializers import UserSerializer
 
 
 
@@ -46,7 +47,7 @@ class ProductSerializer(serializers.ModelSerializer):
     product_type = serializers.StringRelatedField()  # Show the product type name
     brand = serializers.StringRelatedField()  # Show the brand name
     vendor = serializers.StringRelatedField()  # Show the vendor name
-    user = serializers.StringRelatedField()  # Show the user name
+    user = UserSerializer()
     
 
     class Meta:

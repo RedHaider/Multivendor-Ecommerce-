@@ -20,14 +20,16 @@ const Checkout = () => {
     const [error, setError] = useState(null);
     const [isShippingDifferent, setIsShippingDifferent] = useState(false);
     const [cartItems, setCartItems] = useState([]);
-    const [subtotal, setSubtotal] = useState(0); // State to store original subtotal
-    const [total, setTotal] = useState(0); // State to store total after discount
+    const [subtotal, setSubtotal] = useState(0); 
+    const [total, setTotal] = useState(0); 
     const [coupon, setCoupon] = useState(''); 
     const [discount, setDiscount] = useState(0); 
     const [couponError, setCouponError] = useState(''); 
-    const [couponApplied, setCouponApplied] = useState(false); // Track coupon application
+    const [couponApplied, setCouponApplied] = useState(false); 
+    const [orderNote, setOrderNote] = useState(''); 
 
     useEffect(() => {
+        
         const fetchUserDetails = async () => {
             try {
                 const token = localStorage.getItem('accessToken');
@@ -45,6 +47,7 @@ const Checkout = () => {
 
                 // Populate the form fields with user data
                 setUserDetails({
+                    id : data.id,
                     firstName: data.first_name,
                     lastName: data.last_name,
                     email: data.email,
@@ -83,7 +86,6 @@ const Checkout = () => {
                 setLoading(false);
             } catch (err) {
                 setError('Failed to load cart items');
-                console.error('Error fetching cart items:', err);
                 setLoading(false);
             }
         };
@@ -111,6 +113,7 @@ const Checkout = () => {
     };
 
     const applyCoupon = async () => {
+        console.log(userDetails)
         if (couponApplied) return;  // Prevent further discount application
 
         const token = localStorage.getItem('accessToken');
@@ -126,15 +129,77 @@ const Checkout = () => {
 
             const discountAmount = response.data.discount;
             setDiscount(discountAmount);
-            setTotal((subtotal - discountAmount).toFixed(2)); // Subtract discount from subtotal to get the new total
+            setTotal((subtotal - discountAmount).toFixed(2)); 
             setCouponError('');
-            setCouponApplied(true);  // Disable the button after applying the coupon
+            setCouponApplied(true);  
         } catch (error) {
             setCouponError(error.response?.data?.error || "Failed to apply coupon");
             setDiscount(0);
         }
     };
 
+
+    const placeOrder = async () => {
+        const token = localStorage.getItem('accessToken');
+        console.log(cartItems);
+    
+        // Group items by vendor ID (User ID)
+        const vendorOrders = cartItems.reduce((vendors, item) => {
+            const vendorId = item.product_id.user.id;  // Use vendor's ID (User's ID)
+            console.log('Vendor ID:', vendorId);  // Log vendor ID for debugging
+    
+            if (!vendors[vendorId]) {
+                vendors[vendorId] = [];
+            }
+    
+            // Ensure you pass the product_id and product_variant_id as integers
+            console.log("Product details", item.product_id.id);  // Ensure this logs the correct product ID
+    
+            vendors[vendorId].push({
+                product_id: item.product_id.id,  // This should be the product ID (already correct)
+                product_variant_id: item.product_variant_id ? parseInt(item.product_variant_id) : null,  // Ensure variant ID is a number
+                quantity: item.quantity,
+                price: parseFloat(item.price)  // Ensure price is a float
+            });            
+    
+            return vendors;
+        }, {});
+    
+        const vendorOrdersData = Object.keys(vendorOrders).map(vendorId => ({
+            vendor_id: parseInt(vendorId),  // Use vendor ID (User ID)
+            items: vendorOrders[vendorId]
+        }));
+        
+        console.log("Vendor Orders Data:", vendorOrdersData);  // Check vendor order data for debugging
+    
+        // Create order payload
+        const orderData = {
+            customer_id: parseInt(userDetails.id),  // Ensure customer_id is a number
+            total_amount: parseFloat(total),  
+            sub_total: parseFloat(subtotal),  
+            payment_type: "Credit Card",
+            shipping_address: userDetails.address,
+            shipping_city: userDetails.state,
+            shipping_postal_code: userDetails.postalCode,
+            vendor_orders: vendorOrdersData,  // Send vendor orders by ID
+            coupon_id: couponApplied ? parseInt(coupon) : null,  
+            order_note: orderNote  
+        };
+    
+        try {
+            const response = await axios.post(`${config.API_BASE_URL}/order-management/api/orders/create/`, orderData, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            alert("Order placed successfully!");
+            console.log(response.data);
+        } catch (error) {
+            console.error("Error placing order", error.response?.data || error);
+        }
+    };
+    
+    
     if (loading) return <div>Loading...</div>;
     if (error) return <div>{error}</div>;
 
@@ -254,6 +319,8 @@ const Checkout = () => {
                                 rows="4"
                                 cols="50"
                                 placeholder="Enter your order notes here"
+                                value={orderNote} // Bind the order note state
+                                onChange={(e) => setOrderNote(e.target.value)}  // Capture order notes
                             ></textarea>
                         </form>
                     </div>
@@ -270,7 +337,7 @@ const Checkout = () => {
                                 <div key={item.id}>
                                     <div className="row">
                                         <div className="col-6 checkout-card-t">
-                                            {item.product_name} <span>x {item.quantity}</span>
+                                            {item.product_id.name} <span>x {item.quantity}</span>
                                         </div>
                                         <div className="col-6 text-right checkout-card-t">
                                             ${parseFloat(item.price).toFixed(2)}
@@ -313,7 +380,7 @@ const Checkout = () => {
                             </div>
                             <hr />
                             <div className="row justify-content-center">
-                                <button className="placeorder-checkout">Place Order</button>
+                               <button className="placeorder-checkout" onClick={placeOrder}>Place Order</button>
                             </div>
                         </div>
                     </div>

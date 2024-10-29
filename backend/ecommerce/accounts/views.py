@@ -173,5 +173,11 @@ class LoginView(APIView):
 @permission_classes([IsAuthenticated])  # Ensures only authenticated users can access this view
 def get_user_details(request):
     user = request.user
+
+    # Debugging to see what is coming from the frontend
+    print("Request Method:", request.method)  # Print the method used (should be GET)
+    print("Authenticated User:", user)  # Print the user object
+    print("Query Params:", request.query_params)  # Print any query parameters if present
+
     serializer = UserSerializer(user)
     return Response(serializer.data)
