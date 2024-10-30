@@ -19,6 +19,7 @@ import Register from './components/register';
 import Whishlist from './components/whishlist';
 import OrderTracking from './components/ordertracking';
 import PrivateRoute from './utils/privateroute';
+import OrderList from './components/orderList';
 import { AuthProvider } from './utils/authContext';
 //bootstrap
 import 'bootstrap/dist/js/bootstrap.bundle.min'; // Includes Popper.js
@@ -66,7 +67,8 @@ function App() {
         <Route path='/productdetails/:productId' element={<PrivateRoute><ProductDetails/></PrivateRoute>}/>
         <Route path='/cart' element={<PrivateRoute><Cart/></PrivateRoute>}/>
         <Route path='/checkout' element={<PrivateRoute><Checkout/></PrivateRoute>}/>
-        <Route path='/ordertracking' element={<PrivateRoute><OrderTracking/></PrivateRoute>}/>
+        <Route path='/ordertracking//:orderId' element={<PrivateRoute><OrderTracking/></PrivateRoute>}/>
+        <Route path='/orderlist' element={<PrivateRoute><OrderList/></PrivateRoute>} />
 
       </Routes>
       </div>

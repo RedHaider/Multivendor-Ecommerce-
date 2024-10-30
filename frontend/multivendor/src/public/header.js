@@ -5,7 +5,7 @@ import { AuthContext } from '../utils/authContext';
 import SearchBar from '../utils/SearchBar';
 
 const Header = () => {
-    const { isLoggedIn } = useContext(AuthContext);
+    const { isLoggedIn, user } = useContext(AuthContext); // Assuming user details are in AuthContext
 
     return (
         <div className="colorset">
@@ -87,29 +87,72 @@ const Header = () => {
                         </ul>
 
                         <div className="icon-container d-flex align-items-center justify-content-end flex-wrap">
-    <div className="flex-grow-1 mb-2 mb-lg-0" style={{ minWidth: '200px' }}>
-        <SearchBar />
-    </div>
+                            <div className="flex-grow-1 mb-2 mb-lg-0" style={{ minWidth: '200px' }}>
+                                <SearchBar />
+                            </div>
 
-    {isLoggedIn && (
-        <div className="d-flex align-items-center ml-2 mb-2 mb-lg-0">
-            <div style={{ position: 'relative', marginRight: '20px' }}>
-                <Link to="/cart">
-                    <i className="fa fa-shopping-bag icon" id="cartIcon"></i>
-                </Link>
-                <span className="notification-badge">1</span>
-            </div>
-            <Link to="/whishlist" className="nav-link">
-                <i className="fa fa-heart icon p-2"></i>
-            </Link>
-        </div>
-    )}
+                            {isLoggedIn && (
+                                <div className="d-flex align-items-center ml-2 mb-2 mb-lg-0">
+                                    <div style={{ position: 'relative', marginRight: '20px' }}>
+                                        <Link to="/cart">
+                                            <i className="fa fa-shopping-bag icon" id="cartIcon"></i>
+                                        </Link>
+                                        <span className="notification-badge">1</span>
+                                    </div>
+                                    <Link to="/whishlist" className="nav-link">
+                                        <i className="fa fa-heart icon p-2"></i>
+                                    </Link>
+                                </div>
+                            )}
 
-    <Link to="/login" className="nav-link">
-        <i className="fa fa-user icon p-2"></i>
-    </Link>
-</div>
-
+                            {isLoggedIn ? (
+                                <div className="dropdown">
+                                    <a
+                                        href="#"
+                                        className="nav-link dropdown-toggle"
+                                        id="userDropdown"
+                                        role="button"
+                                        data-toggle="dropdown"
+                                        aria-haspopup="true"
+                                        aria-expanded="false"
+                                    >
+                                        {user?.profilePicture ? (
+                                            <img
+                                                src={user.profilePicture}
+                                                alt="User"
+                                                className="rounded-circle"
+                                                style={{ width: '30px', height: '30px' }}
+                                            />
+                                        ) : (
+                                            <i className="fa fa-user icon p-2"></i>
+                                        )}
+                                    </a>
+                                    <div className="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                                        <div className="dropdown-item-text">
+                                            <strong>{user?.name}</strong>
+                                        </div>
+                                        <div className="dropdown-divider"></div>
+                                        <Link to="/profile" className="dropdown-item">
+                                            Profile
+                                        </Link>
+                                        <Link to="/orderlist" className="dropdown-item">
+                                            Order List
+                                        </Link>
+                                        <Link to="/settings" className="dropdown-item">
+                                            Settings
+                                        </Link>
+                                        <div className="dropdown-divider"></div>
+                                        <Link to="/logout" className="dropdown-item">
+                                            Logout
+                                        </Link>
+                                    </div>
+                                </div>
+                            ) : (
+                                <Link to="/login" className="nav-link">
+                                    <i className="fa fa-user icon p-2"></i>
+                                </Link>
+                            )}
+                        </div>
                     </div>
                 </nav>
             </div>

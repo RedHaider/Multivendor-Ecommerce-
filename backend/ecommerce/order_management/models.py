@@ -45,17 +45,12 @@ class Order(models.Model):
         return f'Order {self.order_id} by {self.customer_id.username}' 
     
 class OrderItems(models.Model):
-    order = models.ForeignKey(
-        Order, on_delete=models.CASCADE, related_name='orderitems')
-    product_id = models.ForeignKey(
-        Product, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='orderitems')
+    product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField()
-    product_variant_id = models.ForeignKey(
-        ProductAttribute, on_delete=models.CASCADE, null=True, blank=True)
-    price = models.DecimalField(
-        max_digits=10, decimal_places=2)
-    subtotal = models.DecimalField(
-        max_digits=15, decimal_places=2)  # quantity * price
+    product_variant_id = models.ForeignKey(ProductAttribute, on_delete=models.CASCADE, null=True, blank=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    subtotal = models.DecimalField(max_digits=15, decimal_places=2)  # quantity * price
 
     def save(self, *args, **kwargs):
         self.subtotal = self.quantity * self.price

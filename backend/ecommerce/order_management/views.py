@@ -251,12 +251,13 @@ def order_detail_view(request, order_id):
 ############################################################################
 ############################################################################
 
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view ,permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from django.utils import timezone
 from .models import Cart, CartItems, Product, ProductAttribute, Order, Vendor, OrderItems
-from .serializers import CartSerializer, AddToCartSerializer ,CouponValidationSerializer
+from .serializers import CartSerializer, AddToCartSerializer ,CouponValidationSerializer , OrderSerializer
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User  # Assuming you're using the default User model
 User = get_user_model()
@@ -388,7 +389,13 @@ def validate_coupon(request):
         coupon.times_used += 1
         coupon.save()
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({
+            "discount": serializer.data['discount'],
+            "total": serializer.data['total'],
+            "coupon_code ": coupon.coupon_code,
+            "coupon_id": coupon.id
+
+        }, status=status.HTTP_200_OK)
     
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -397,9 +404,122 @@ def validate_coupon(request):
 
 
 
+# @api_view(['POST'])
+# def process_order(request):
+#     # Print the raw incoming request data for debugging
+#     print("Raw Request Data:", request.data)
+
+#     # Extract main order data from the request payload
+#     order_data = {
+#         'customer_id': request.data.get('customer_id'),
+#         'payment_type': request.data.get('payment_type'),
+#         'shipping_address': request.data.get('shipping_address'),
+#         'shipping_city': request.data.get('shipping_city'),
+#         'shipping_postal_code': request.data.get('shipping_postal_code'),
+#         'order_note': request.data.get('order_note'),
+#         'total_amount': request.data.get('total_amount'),
+#         'sub_total': request.data.get('sub_total'),
+#         'coupon_id': request.data.get('coupon_id')
+#     }
+
+#     # Print the extracted order data
+#     print("Extracted Order Data:", order_data)
+
+#     # Fetch the User instance (Customer) based on customer_id
+#     customer_user = User.objects.filter(id=order_data['customer_id']).first()
+#     if not customer_user:
+#         print("Error: Customer (User) not found")
+#         return Response({"error": "Customer not found"}, status=status.HTTP_400_BAD_REQUEST)
+#     else:
+#         print("Customer found:", customer_user)
+
+#     # Now process the vendor orders
+#     vendor_orders = request.data.get('vendor_orders')
+#     if not vendor_orders:
+#         print("Error: No vendor orders found")
+#         return Response({"error": "Vendor orders not found"}, status=status.HTTP_400_BAD_REQUEST)
+
+#     # Print the vendor orders
+#     print("Vendor Orders:", vendor_orders)
+
+#     created_order_ids = []  # Store created order IDs to return later
+
+#     # For each vendor, create a separate order and order items
+#     for vendor_order in vendor_orders:
+#         vendor_id = vendor_order.get('vendor_id')
+
+#         # Ensure that the vendor exists
+#         vendor = Vendor.objects.filter(user_id=vendor_id).first()
+#         if not vendor:
+#             print(f"Error: Vendor with ID {vendor_id} not found")
+#             return Response({"error": f"Vendor with ID {vendor_id} not found"}, status=status.HTTP_400_BAD_REQUEST)
+#         else:
+#             print(f"Vendor found: {vendor}")
+
+#         # Create an individual order for each vendor
+#         vendor_order_instance = Order.objects.create(
+#             customer_id=customer_user,  # Assign the User instance here
+#             payment_type=order_data['payment_type'],
+#             shipping_address=order_data['shipping_address'],
+#             shipping_city=order_data['shipping_city'],
+#             shipping_postal_code=order_data['shipping_postal_code'],
+#             order_note=order_data['order_note'],
+#             total_amount=order_data['total_amount'],  # Total amount should now be recalculated per vendor if needed
+#             sub_total=order_data['sub_total'],
+#             coupon_id=order_data['coupon_id']  # Can be None if no coupon applied
+#         )
+
+#         # Print the created order for debugging
+#         print("Created Order for Vendor:", vendor_order_instance)
+
+#         # Process each item in the vendor's order
+#         items = vendor_order.get('items', [])
+#         for item in items:
+#             # Print item details for debugging
+#             print(f"Processing item: {item}")
+            
+#             product_id = item.get('product_id')
+#             product_variant_id = item.get('product_variant_id')
+#             quantity = item.get('quantity')
+#             price = item.get('price')
+
+#             # Fetch the Product instance based on the product_id
+#             product = Product.objects.filter(id=product_id).first()
+#             if not product:
+#                 print(f"Error: Product with ID {product_id} not found")
+#                 return Response({"error": f"Product with ID {product_id} not found"}, status=status.HTTP_400_BAD_REQUEST)
+
+#             # Fetch the ProductAttribute instance based on the product_variant_id
+#             product_attribute = ProductAttribute.objects.filter(id=product_variant_id).first()
+#             if not product_attribute:
+#                 print(f"Error: Product variant with ID {product_variant_id} not found")
+#                 return Response({"error": f"Product variant with ID {product_variant_id} not found"}, status=status.HTTP_400_BAD_REQUEST)
+
+#             # Create order items
+#             order_item = OrderItems.objects.create(
+#                 order=vendor_order_instance,  # Associate with the vendor's order
+#                 product_id=product,  # Assign the Product instance here
+#                 product_variant_id=product_attribute,  # Assign the ProductAttribute instance here
+#                 quantity=quantity,
+#                 price=price,
+#                 subtotal=quantity * price
+#             )
+
+#             # Print the created order item for debugging
+#             print("Created Order Item for Vendor:", order_item)
+
+#         # Save the created order ID to return later
+#         created_order_ids.append(vendor_order_instance.order_id)
+
+#     # Return the list of order IDs for each vendor after successful creation
+#     return Response({"order_ids": created_order_ids}, status=status.HTTP_201_CREATED)
+
+
+
+
+
 @api_view(['POST'])
 def process_order(request):
-    # Print the raw incoming request data for debugging
     print("Raw Request Data:", request.data)
 
     # Extract main order data from the request payload
@@ -412,28 +532,24 @@ def process_order(request):
         'order_note': request.data.get('order_note'),
         'total_amount': request.data.get('total_amount'),
         'sub_total': request.data.get('sub_total'),
-        'coupon_id': request.data.get('coupon_id')
     }
 
-    # Print the extracted order data
     print("Extracted Order Data:", order_data)
 
     # Fetch the User instance (Customer) based on customer_id
     customer_user = User.objects.filter(id=order_data['customer_id']).first()
     if not customer_user:
-        print("Error: Customer (User) not found")
         return Response({"error": "Customer not found"}, status=status.HTTP_400_BAD_REQUEST)
-    else:
-        print("Customer found:", customer_user)
 
-    # Now process the vendor orders
+    # Fetch the coupon instance if coupon_id is provided
+    coupon_id = request.data.get('coupon_id')
+    coupon = None
+    if coupon_id:
+        coupon = get_object_or_404(Coupon, id=coupon_id)
+
     vendor_orders = request.data.get('vendor_orders')
     if not vendor_orders:
-        print("Error: No vendor orders found")
         return Response({"error": "Vendor orders not found"}, status=status.HTTP_400_BAD_REQUEST)
-
-    # Print the vendor orders
-    print("Vendor Orders:", vendor_orders)
 
     created_order_ids = []  # Store created order IDs to return later
 
@@ -444,33 +560,26 @@ def process_order(request):
         # Ensure that the vendor exists
         vendor = Vendor.objects.filter(user_id=vendor_id).first()
         if not vendor:
-            print(f"Error: Vendor with ID {vendor_id} not found")
             return Response({"error": f"Vendor with ID {vendor_id} not found"}, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            print(f"Vendor found: {vendor}")
 
-        # Create an individual order for each vendor
+        # Create the order for each vendor
         vendor_order_instance = Order.objects.create(
-            customer_id=customer_user,  # Assign the User instance here
+            customer_id=customer_user,
             payment_type=order_data['payment_type'],
             shipping_address=order_data['shipping_address'],
             shipping_city=order_data['shipping_city'],
             shipping_postal_code=order_data['shipping_postal_code'],
             order_note=order_data['order_note'],
-            total_amount=order_data['total_amount'],  # Total amount should now be recalculated per vendor if needed
+            total_amount=order_data['total_amount'],
             sub_total=order_data['sub_total'],
-            coupon_id=order_data['coupon_id']  # Can be None if no coupon applied
+            coupon_id=coupon if coupon and vendor.user == coupon.user else None  # Use coupon_id, pass the Coupon instance
         )
 
-        # Print the created order for debugging
         print("Created Order for Vendor:", vendor_order_instance)
 
         # Process each item in the vendor's order
         items = vendor_order.get('items', [])
         for item in items:
-            # Print item details for debugging
-            print(f"Processing item: {item}")
-            
             product_id = item.get('product_id')
             product_variant_id = item.get('product_variant_id')
             quantity = item.get('quantity')
@@ -479,29 +588,25 @@ def process_order(request):
             # Fetch the Product instance based on the product_id
             product = Product.objects.filter(id=product_id).first()
             if not product:
-                print(f"Error: Product with ID {product_id} not found")
                 return Response({"error": f"Product with ID {product_id} not found"}, status=status.HTTP_400_BAD_REQUEST)
 
             # Fetch the ProductAttribute instance based on the product_variant_id
             product_attribute = ProductAttribute.objects.filter(id=product_variant_id).first()
             if not product_attribute:
-                print(f"Error: Product variant with ID {product_variant_id} not found")
                 return Response({"error": f"Product variant with ID {product_variant_id} not found"}, status=status.HTTP_400_BAD_REQUEST)
 
             # Create order items
             order_item = OrderItems.objects.create(
-                order=vendor_order_instance,  # Associate with the vendor's order
-                product_id=product,  # Assign the Product instance here
-                product_variant_id=product_attribute,  # Assign the ProductAttribute instance here
+                order=vendor_order_instance,
+                product_id=product,
+                product_variant_id=product_attribute,
                 quantity=quantity,
                 price=price,
                 subtotal=quantity * price
             )
 
-            # Print the created order item for debugging
             print("Created Order Item for Vendor:", order_item)
 
-        # Save the created order ID to return later
         created_order_ids.append(vendor_order_instance.order_id)
 
     # Return the list of order IDs for each vendor after successful creation
@@ -509,5 +614,12 @@ def process_order(request):
 
 
 
-
-
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_customer_orders(request):
+    customer = request.user  # Assuming the user is authenticated and represents the customer
+    orders = Order.objects.filter(customer_id=customer)
+    
+    # Serialize the orders and include related order items
+    serializer = OrderSerializer(orders, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)

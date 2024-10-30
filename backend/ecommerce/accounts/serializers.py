@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User , Customer
+from .models import User , Customer , Vendor
 from django.core.exceptions import ValidationError
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -73,3 +73,8 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id','first_name', 'last_name', 'email', 'phone', 'address', 'role', 'status', 'photo', 'email_verified_at', 'created_at', 'updated_at', 'customer_profile']
+
+class VendorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vendor
+        fields = '__all__'  # Include all fields or specify the fields you need

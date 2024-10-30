@@ -27,6 +27,7 @@ const Checkout = () => {
     const [couponError, setCouponError] = useState(''); 
     const [couponApplied, setCouponApplied] = useState(false); 
     const [orderNote, setOrderNote] = useState(''); 
+    const [couponId, setCouponId] = useState(null); 
 
     useEffect(() => {
         
@@ -112,65 +113,151 @@ const Checkout = () => {
         }));
     };
 
-    const applyCoupon = async () => {
-        console.log(userDetails)
-        if (couponApplied) return;  // Prevent further discount application
+    // const applyCoupon = async () => {
+    //     console.log(userDetails)
+    //     if (couponApplied) return;  // Prevent further discount application
 
+    //     const token = localStorage.getItem('accessToken');
+    //     try {
+    //         const response = await axios.post(`${config.API_BASE_URL}/order-management/api/validate-coupon/`, {
+    //             coupon_code: coupon,
+    //             cart_items: cartItems
+    //         }, {
+    //             headers: {
+    //                 Authorization: `Bearer ${token}`
+    //             }
+    //         });
+
+    //         const discountAmount = response.data.discount;
+    //         setDiscount(discountAmount);
+    //         setTotal((subtotal - discountAmount).toFixed(2)); 
+    //         setCouponError('');
+    //         setCouponApplied(true);  
+    //     } catch (error) {
+    //         setCouponError(error.response?.data?.error || "Failed to apply coupon");
+    //         setDiscount(0);
+    //     }
+    // };
+
+
+    // const placeOrder = async () => {
+    //     const token = localStorage.getItem('accessToken');
+    //     console.log(cartItems);
+    
+    //     // Group items by vendor ID (User ID)
+    //     const vendorOrders = cartItems.reduce((vendors, item) => {
+    //         const vendorId = item.product_id.user.id;  // Use vendor's ID (User's ID)
+    //         console.log('Vendor ID:', vendorId);  // Log vendor ID for debugging
+    
+    //         if (!vendors[vendorId]) {
+    //             vendors[vendorId] = [];
+    //         }
+    
+    //         // Ensure you pass the product_id and product_variant_id as integers
+    //         console.log("Product details", item.product_id.id);  // Ensure this logs the correct product ID
+    
+    //         vendors[vendorId].push({
+    //             product_id: item.product_id.id,  // This should be the product ID (already correct)
+    //             product_variant_id: item.product_variant_id ? parseInt(item.product_variant_id) : null,  // Ensure variant ID is a number
+    //             quantity: item.quantity,
+    //             price: parseFloat(item.price)  // Ensure price is a float
+    //         });            
+    
+    //         return vendors;
+    //     }, {});
+    
+    //     const vendorOrdersData = Object.keys(vendorOrders).map(vendorId => ({
+    //         vendor_id: parseInt(vendorId),  // Use vendor ID (User ID)
+    //         items: vendorOrders[vendorId]
+    //     }));
+        
+    //     console.log("Vendor Orders Data:", vendorOrdersData);  // Check vendor order data for debugging
+    
+    //     // Create order payload
+    //     const orderData = {
+    //         customer_id: parseInt(userDetails.id),  // Ensure customer_id is a number
+    //         total_amount: parseFloat(total),  
+    //         sub_total: parseFloat(subtotal),  
+    //         payment_type: "Credit Card",
+    //         shipping_address: userDetails.address,
+    //         shipping_city: userDetails.state,
+    //         shipping_postal_code: userDetails.postalCode,
+    //         vendor_orders: vendorOrdersData,  // Send vendor orders by ID
+    //         coupon_id: couponApplied ? parseInt(coupon) : null,  
+    //         order_note: orderNote  
+    //     };
+    
+    //     try {
+    //         const response = await axios.post(`${config.API_BASE_URL}/order-management/api/orders/create/`, orderData, {
+    //             headers: {
+    //                 Authorization: `Bearer ${token}`
+    //             }
+    //         });
+    //         alert("Order placed successfully!");
+    //         console.log(response.data);
+    //     } catch (error) {
+    //         console.error("Error placing order", error.response?.data || error);
+    //     }
+    // };
+
+    const applyCoupon = async () => {
+        if (couponApplied) return;  // Prevent further discount application
+    
         const token = localStorage.getItem('accessToken');
         try {
             const response = await axios.post(`${config.API_BASE_URL}/order-management/api/validate-coupon/`, {
-                coupon_code: coupon,
-                cart_items: cartItems
+                coupon_code: coupon,  // Send the coupon code entered by the user
+                cart_items: cartItems  // Cart items
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
-
+    
             const discountAmount = response.data.discount;
             setDiscount(discountAmount);
             setTotal((subtotal - discountAmount).toFixed(2)); 
             setCouponError('');
-            setCouponApplied(true);  
+            setCouponApplied(true);  // Mark coupon as applied
+
+            
+            // Store the coupon ID for later when placing the order
+            setCouponId(response.data.coupon_id); 
+            console.log('#########################',response.data.coupon_id);
+            console.log('i am coupon id###############################',couponId); // Save the coupon ID from the backend response
         } catch (error) {
             setCouponError(error.response?.data?.error || "Failed to apply coupon");
             setDiscount(0);
         }
     };
-
-
+    
+    
+   
     const placeOrder = async () => {
         const token = localStorage.getItem('accessToken');
-        console.log(cartItems);
-    
+        
         // Group items by vendor ID (User ID)
         const vendorOrders = cartItems.reduce((vendors, item) => {
-            const vendorId = item.product_id.user.id;  // Use vendor's ID (User's ID)
-            console.log('Vendor ID:', vendorId);  // Log vendor ID for debugging
+            const vendorId = item.product_id.user.id;
     
             if (!vendors[vendorId]) {
                 vendors[vendorId] = [];
             }
     
-            // Ensure you pass the product_id and product_variant_id as integers
-            console.log("Product details", item.product_id.id);  // Ensure this logs the correct product ID
-    
             vendors[vendorId].push({
-                product_id: item.product_id.id,  // This should be the product ID (already correct)
-                product_variant_id: item.product_variant_id ? parseInt(item.product_variant_id) : null,  // Ensure variant ID is a number
+                product_id: item.product_id.id,
+                product_variant_id: item.product_variant_id ? parseInt(item.product_variant_id) : null,
                 quantity: item.quantity,
-                price: parseFloat(item.price)  // Ensure price is a float
-            });            
+                price: parseFloat(item.price)
+            });
     
             return vendors;
         }, {});
     
         const vendorOrdersData = Object.keys(vendorOrders).map(vendorId => ({
-            vendor_id: parseInt(vendorId),  // Use vendor ID (User ID)
+            vendor_id: parseInt(vendorId),
             items: vendorOrders[vendorId]
         }));
-        
-        console.log("Vendor Orders Data:", vendorOrdersData);  // Check vendor order data for debugging
     
         // Create order payload
         const orderData = {
@@ -182,10 +269,10 @@ const Checkout = () => {
             shipping_city: userDetails.state,
             shipping_postal_code: userDetails.postalCode,
             vendor_orders: vendorOrdersData,  // Send vendor orders by ID
-            coupon_id: couponApplied ? parseInt(coupon) : null,  
+            coupon_id: couponApplied && couponId ? couponId : null,  // Pass the coupon ID if applied
             order_note: orderNote  
         };
-    
+        console.log(orderData.coupon_id,"#########################################3")
         try {
             const response = await axios.post(`${config.API_BASE_URL}/order-management/api/orders/create/`, orderData, {
                 headers: {

@@ -2,8 +2,10 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from .models import Cart, CartItems, OrderItems, Order
-from product_management.serializers import ProductSerializer 
+from product_management.serializers import   ProductAttributeSerializer
+from product_management.models import   Product
 from accounts.models import *
+from accounts.serializers import VendorSerializer
 from order_management.models import Coupon
 User = get_user_model()
 from decimal import Decimal
@@ -58,6 +60,13 @@ class CouponValidationSerializer(serializers.Serializer):
 
         return data
 
+class ProductSerializer(serializers.ModelSerializer):
+    variants = ProductAttributeSerializer(many=True, read_only=True)  # Include variants if needed
+
+    class Meta:
+        model = Product
+        fields = '__all__'
+
 class CartItemSerializer(serializers.ModelSerializer):
     # product_name = serializers.ReadOnlyField(source='product_id.name')  # Correct field name for the product
     variant_details = serializers.SerializerMethodField()  # Custom method for showing variant details
@@ -96,70 +105,67 @@ class AddToCartSerializer(serializers.Serializer):
 
 from .models import Order, OrderItems, Vendor
 
+
+
 class OrderItemSerializer(serializers.ModelSerializer):
+    product_id = ProductSerializer()
+    product_variant_id = ProductAttributeSerializer()
+
     class Meta:
         model = OrderItems
         fields = ['product_id', 'product_variant_id', 'quantity', 'price']
 
 class VendorOrderSerializer(serializers.Serializer):
-    vendor_id = serializers.IntegerField()
+    vendor = VendorSerializer()  # Serialize the full vendor object
     items = OrderItemSerializer(many=True)
 
 class OrderSerializer(serializers.ModelSerializer):
-    vendor_orders = VendorOrderSerializer(many=True)  # To handle the nested vendor orders
+    vendor_orders = serializers.SerializerMethodField()  # Custom method to retrieve vendor orders
 
     class Meta:
         model = Order
         fields = [
             'customer_id', 'payment_type', 'shipping_address', 'shipping_city',
             'shipping_postal_code', 'order_note', 'total_amount', 'sub_total',
-            'coupon_id', 'vendor_orders'
+            'coupon_id', 'vendor_orders', 'status', 'order_date', 'order_id'
         ]
 
-    def validate_customer_id(self, value):
-        # Ensure that the user is a customer
-        customer = Customer.objects.filter(user_id=value).first()
-        if not customer:
-            raise serializers.ValidationError("The customer ID is not valid or does not exist.")
-        return value
+    def get_vendor_orders(self, obj):
+        """
+        This method retrieves vendor orders related to the order.
+        Groups the items by vendor and includes vendor information.
+        """
+        vendor_orders_data = []
 
-    def validate(self, data):
-        vendor_orders = data.get('vendor_orders', [])
-        for vendor_order in vendor_orders:
-            vendor_id = vendor_order.get('vendor_id')
-            vendor = Vendor.objects.filter(user_id=vendor_id).first()
-            if not vendor:
-                raise serializers.ValidationError(f"Vendor with ID {vendor_id} is not valid.")
-        return data
+        # Get all order items related to this order, along with product and vendor details
+        vendor_items = obj.orderitems.all().select_related('product_id__vendor')
 
-    def create(self, validated_data):
-        # Remove vendor_orders from validated data
-        vendor_orders_data = validated_data.pop('vendor_orders')
-        
-        # Create the main order
-        order = Order.objects.create(**validated_data)
+        # Dictionary to group items by vendor
+        vendors = {}
 
-        # Iterate through the vendor orders to process each vendor's items
-        for vendor_order_data in vendor_orders_data:
-            vendor_id = vendor_order_data.get('vendor_id')
-            vendor = Vendor.objects.get(user_id=vendor_id)  # Assume the validation passed
-            items_data = vendor_order_data.get('items')
+        for item in vendor_items:
+            vendor = item.product_id.vendor
 
-            # Create the items associated with this vendor
-            for item_data in items_data:
-                OrderItems.objects.create(
-                    order=order,
-                    product_id=item_data['product_id'],
-                    product_variant_id=item_data['product_variant_id'],
-                    quantity=item_data['quantity'],
-                    price=item_data['price'],
-                    subtotal=item_data['quantity'] * item_data['price']
-                )
+            if vendor.id not in vendors:
+                # Add a new vendor with empty items initially
+                vendors[vendor.id] = {
+                    'vendor': VendorSerializer(vendor).data,  # Serialize vendor information
+                    'items': []
+                }
 
-        return order
+            # Add the item to the vendor's list of items
+            vendors[vendor.id]['items'].append({
+                'product': ProductSerializer(item.product_id).data,  # Serialize product details
+                'product_variant': ProductAttributeSerializer(item.product_variant_id).data if item.product_variant_id else None,
+                'quantity': item.quantity,
+                'price': item.price,
+            })
 
+        # Convert the vendors dictionary to a list of vendor orders
+        for vendor_order in vendors.values():
+            vendor_orders_data.append(vendor_order)
 
-
+        return vendor_orders_data
 
 
 
