@@ -376,9 +376,7 @@
   .carousel-item {
     text-align: center;
   }
-  .carousel-item img {
-    border-radius: 50%;
-  }
+
   .carousel-caption {
     bottom: 20px;
   }
