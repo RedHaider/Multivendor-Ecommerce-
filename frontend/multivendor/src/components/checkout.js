@@ -113,92 +113,7 @@ const Checkout = () => {
         }));
     };
 
-    // const applyCoupon = async () => {
-    //     console.log(userDetails)
-    //     if (couponApplied) return;  // Prevent further discount application
 
-    //     const token = localStorage.getItem('accessToken');
-    //     try {
-    //         const response = await axios.post(`${config.API_BASE_URL}/order-management/api/validate-coupon/`, {
-    //             coupon_code: coupon,
-    //             cart_items: cartItems
-    //         }, {
-    //             headers: {
-    //                 Authorization: `Bearer ${token}`
-    //             }
-    //         });
-
-    //         const discountAmount = response.data.discount;
-    //         setDiscount(discountAmount);
-    //         setTotal((subtotal - discountAmount).toFixed(2)); 
-    //         setCouponError('');
-    //         setCouponApplied(true);  
-    //     } catch (error) {
-    //         setCouponError(error.response?.data?.error || "Failed to apply coupon");
-    //         setDiscount(0);
-    //     }
-    // };
-
-
-    // const placeOrder = async () => {
-    //     const token = localStorage.getItem('accessToken');
-    //     console.log(cartItems);
-    
-    //     // Group items by vendor ID (User ID)
-    //     const vendorOrders = cartItems.reduce((vendors, item) => {
-    //         const vendorId = item.product_id.user.id;  // Use vendor's ID (User's ID)
-    //         console.log('Vendor ID:', vendorId);  // Log vendor ID for debugging
-    
-    //         if (!vendors[vendorId]) {
-    //             vendors[vendorId] = [];
-    //         }
-    
-    //         // Ensure you pass the product_id and product_variant_id as integers
-    //         console.log("Product details", item.product_id.id);  // Ensure this logs the correct product ID
-    
-    //         vendors[vendorId].push({
-    //             product_id: item.product_id.id,  // This should be the product ID (already correct)
-    //             product_variant_id: item.product_variant_id ? parseInt(item.product_variant_id) : null,  // Ensure variant ID is a number
-    //             quantity: item.quantity,
-    //             price: parseFloat(item.price)  // Ensure price is a float
-    //         });            
-    
-    //         return vendors;
-    //     }, {});
-    
-    //     const vendorOrdersData = Object.keys(vendorOrders).map(vendorId => ({
-    //         vendor_id: parseInt(vendorId),  // Use vendor ID (User ID)
-    //         items: vendorOrders[vendorId]
-    //     }));
-        
-    //     console.log("Vendor Orders Data:", vendorOrdersData);  // Check vendor order data for debugging
-    
-    //     // Create order payload
-    //     const orderData = {
-    //         customer_id: parseInt(userDetails.id),  // Ensure customer_id is a number
-    //         total_amount: parseFloat(total),  
-    //         sub_total: parseFloat(subtotal),  
-    //         payment_type: "Credit Card",
-    //         shipping_address: userDetails.address,
-    //         shipping_city: userDetails.state,
-    //         shipping_postal_code: userDetails.postalCode,
-    //         vendor_orders: vendorOrdersData,  // Send vendor orders by ID
-    //         coupon_id: couponApplied ? parseInt(coupon) : null,  
-    //         order_note: orderNote  
-    //     };
-    
-    //     try {
-    //         const response = await axios.post(`${config.API_BASE_URL}/order-management/api/orders/create/`, orderData, {
-    //             headers: {
-    //                 Authorization: `Bearer ${token}`
-    //             }
-    //         });
-    //         alert("Order placed successfully!");
-    //         console.log(response.data);
-    //     } catch (error) {
-    //         console.error("Error placing order", error.response?.data || error);
-    //     }
-    // };
 
     const applyCoupon = async () => {
         if (couponApplied) return;  // Prevent further discount application
@@ -238,8 +153,8 @@ const Checkout = () => {
         
         // Group items by vendor ID (User ID)
         const vendorOrders = cartItems.reduce((vendors, item) => {
-            const vendorId = item.product_id.user.id;
-    
+            const vendorId = item.product_id.user;
+            console.log("################",item.product_id.user)
             if (!vendors[vendorId]) {
                 vendors[vendorId] = [];
             }

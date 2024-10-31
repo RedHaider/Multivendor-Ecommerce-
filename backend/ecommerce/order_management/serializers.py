@@ -2,7 +2,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from .models import Cart, CartItems, OrderItems, Order
-from product_management.serializers import   ProductAttributeSerializer
+from product_management.serializers import   ProductAttributeSerializer, ProductSerializer
 from product_management.models import   Product
 from accounts.models import *
 from accounts.serializers import VendorSerializer
