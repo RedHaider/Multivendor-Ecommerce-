@@ -119,8 +119,20 @@ class VendorOrderSerializer(serializers.Serializer):
     vendor = VendorSerializer()  # Serialize the full vendor object
     items = OrderItemSerializer(many=True)
 
+
+
+class CustomerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Customer
+        fields = [
+            'customerID', 'name', 'phone_number', 'address', 'division',
+            'district', 'state', 'Thana', 'postal_code'
+        ]
+
+
 class OrderSerializer(serializers.ModelSerializer):
     vendor_orders = serializers.SerializerMethodField()  # Custom method to retrieve vendor orders
+    customer_id = serializers.SerializerMethodField()
 
     class Meta:
         model = Order
@@ -130,6 +142,11 @@ class OrderSerializer(serializers.ModelSerializer):
             'coupon_id', 'vendor_orders', 'status', 'order_date', 'order_id'
         ]
 
+    def get_customer_id(self, obj):
+        # Access and serialize the customer profile related to customer_id
+        customer_profile = obj.customer_id  # Assuming related name is `customer_profile`
+        return CustomerSerializer(customer_profile).data  # Serialize customer data
+    
     def get_vendor_orders(self, obj):
         """
         This method retrieves vendor orders related to the order.

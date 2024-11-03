@@ -14,10 +14,10 @@ const Home = () => {
     <div class="container-fluid">
     <div class="row justify-content-between">
         <div class="col-md-6 promo-section justify-content-center">
-            <img src="picture/promo-picture.png" alt="Promo Image"/>
+            <img src="picture/daraz/demo.webp" alt="Promo Image"/>
         </div>
         <div class="col-md-6 promo-section">
-            <img src="picture/promo-picture.png" alt="Promo Image"/>
+            <img src="picture/daraz/demo2.webp" alt="Promo Image"/>
         </div>
     </div>
     </div>

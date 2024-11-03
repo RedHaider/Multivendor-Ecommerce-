@@ -22,6 +22,7 @@ const OrderList = () => {
 
                 setOrders(sortedOrders);
                 setLoading(false);
+                console.log(orders);
             } catch (error) {
                 setError('Failed to fetch orders');
                 setLoading(false);

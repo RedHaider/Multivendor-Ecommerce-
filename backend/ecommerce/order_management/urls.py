@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import order_list, coupon_list, coupon_edit, coupon_form, coupon_delete, order_form ,order_delete ,order_edit, cart_list ,cart_delete ,cart_form , cart_edit, cart_detail , add_to_cart ,get_cart ,update_cart, order_detail_view, process_order ,validate_coupon, get_customer_orders
+from .views import order_list, coupon_list, coupon_edit, coupon_form, coupon_delete, order_form ,order_delete ,order_edit, cart_list ,cart_delete ,cart_form , cart_edit, cart_detail , add_to_cart ,get_cart ,update_cart, order_detail_view, process_order ,validate_coupon, get_customer_orders, get_order_detail
 
 urlpatterns = [
 
@@ -33,6 +33,7 @@ urlpatterns = [
     path('api/cart-update/', update_cart, name='update-cart'),
     path('api/validate-coupon/', validate_coupon, name='validate_coupon'),
     path('api/orders/create/', process_order, name='create-order'),
-    path('api/orders/', get_customer_orders, name = 'get-customer-orders' )
+    path('api/orders/', get_customer_orders, name = 'get-customer-orders' ),
+    path('api/orders/<str:order_id>/', get_order_detail, name= 'order_details')
 
 ]

@@ -613,6 +613,17 @@ def process_order(request):
     return Response({"order_ids": created_order_ids}, status=status.HTTP_201_CREATED)
 
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_order_detail(request, order_id):
+    try: 
+        order = Order.objects.get(order_id = order_id, customer_id = request.user)
+    except Order.DoesNotExist:
+        return Response({'error': 'Order not found'}, status= status.HTTP_404_NOT_FOUND)
+    
+    serializer = OrderSerializer(order)
+    return Response(serializer.data, status = status.HTTP_200_OK)
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -622,4 +633,5 @@ def get_customer_orders(request):
     
     # Serialize the orders and include related order items
     serializer = OrderSerializer(orders, many=True)
+    print(serializer.data)
     return Response(serializer.data, status=status.HTTP_200_OK)

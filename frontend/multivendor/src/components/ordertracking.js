@@ -1,4 +1,39 @@
+import React, {useEffect, useState} from 'react';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
+import config from '../config';
+
+
+
+
 const OrderTracking = () => {
+    // const { orderId } = useParams(); // Assuming you're passing orderId in the URL
+    // const [order, setOrder] = useState(null);
+    // const [loading, setLoading] = useState(true);
+    // const [error, setError] = useState(null);
+
+    // useEffect(() => {
+    //     const fetchOrderDetails = async () => {
+    //         try {
+    //             const response = await axios.get(`${config.API_BASE_URL}/order-management/api/orders/${orderId}/`, {
+    //                 headers: {
+    //                     Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+    //                 },
+    //             });
+    //             setOrder(response.data);
+    //             setLoading(false);
+    //         } catch (error) {
+    //             setError('Failed to fetch order details');
+    //             setLoading(false);
+    //         }
+    //     };
+
+    //     fetchOrderDetails();
+    // }, [orderId]);
+
+    // if (loading) return <div>Loading...</div>;
+    // if (error) return <div>{error}</div>;
+
     
     return ( 
         <div>
@@ -14,7 +49,7 @@ const OrderTracking = () => {
                 <div className="row">
                     <div className="col-md-4 odertrack-first-colum">
                             <h3 className="odertracking-one-header">Customer Name</h3>
-                            <p className="odertracking-one-text">Prashant patil</p>
+                            <p className="odertracking-one-text">Prasha</p>
                             <br/>
                             <h3 className="odertracking-one-header">Customer Contact</h3>
                             <p className="odertracking-one-text">017 7689 4578</p>
