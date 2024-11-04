@@ -231,6 +231,7 @@
               </li>
 
               <!-- Vendor Management Dropdown -->
+              {% if user.is_authenticated and user.role == 'admin' %}
               <li class="nav-item">
                 <a
                   data-bs-toggle="collapse"
@@ -257,6 +258,7 @@
                   </ul>
                 </div>
               </li>
+            {% endif %}
 
                             <!-- Sales & Performance Dropdown -->
               <li class="nav-item">
@@ -314,19 +316,6 @@
                 </div>
               </li>
 
-                    <!-- Registration & Login Links (No Dropdown) -->
-              <li class="nav-item">
-                <a href="#">
-                  <i class="fas fa-user-plus"></i>
-                  <p>Registration</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#">
-                  <i class="fas fa-sign-in-alt"></i>
-                  <p>Login</p>
-                </a>
-              </li>
 
             </ul>
           </div>

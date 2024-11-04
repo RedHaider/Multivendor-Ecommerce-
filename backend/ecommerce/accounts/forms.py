@@ -30,6 +30,5 @@ class CustomLoginForm(forms.Form):
     role = forms.ChoiceField(choices=[
         ('vendor', 'Vendor'),
         ('admin', 'Admin'),
-        ('customer', 'Customer'),
     ], widget=forms.Select(attrs={'class': 'form-control'}))
    

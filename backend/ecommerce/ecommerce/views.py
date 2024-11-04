@@ -1,9 +1,15 @@
 from django.shortcuts import render,  redirect
 from django.contrib.auth.decorators import login_required
 
+
 @login_required
 def dashboard(request):
-    return render(request, 'index.html')
+    if request.user.role == 'admin':
+        return render(request, 'index.html')
+    elif request.user.role == 'vendor':
+        return render(request, 'index.html')
+    else:
+        return redirect('login')
 
 @login_required
 def product_management(request):

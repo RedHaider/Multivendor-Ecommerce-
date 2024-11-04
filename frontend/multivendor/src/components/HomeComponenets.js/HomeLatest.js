@@ -1,12 +1,22 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 import axios from 'axios';
-import config from '../../config';  // Assuming you have a config.js file with the base API URL
+import config from '../../config';  
+import { FaHeart, FaShoppingCart, FaStar } from 'react-icons/fa'; 
 
 const HomeProduct = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [visibleCount, setVisibleCount] = useState(4);
+
+  // Set up navigation
+  const navigate = useNavigate();
+
+  // Function to redirect to product details page
+  const handleProductClick = (productId) => {
+    navigate(`/productdetails/${productId}`);
+  };
 
   // Fetch products from API and sort them by created_at (descending order)
   useEffect(() => {
@@ -25,8 +35,9 @@ const HomeProduct = () => {
   }, []);
 
   const loadMore = () => {
-    setVisibleCount((prevCount) => prevCount+4);
+    setVisibleCount((prevCount) => prevCount + 4);
   }
+
   // Display loading or error messages
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
@@ -36,16 +47,22 @@ const HomeProduct = () => {
        <div className="row justify-content-center">
           <div className="col text-center">
             <div className="heading">
-              <h1>Lasted Products</h1>
+              <h1>Latest Products</h1>
               <hr className="underline-hr" />
             </div>
           </div>
         </div>
       <div className="row">
-        {products.slice(0,visibleCount).map((product) => (
+        {products.slice(0, visibleCount).map((product) => (
           <div className="col-md-3 col-sm-6" key={product.id}>
-            <div className="product-card">
-              
+            <div 
+              className="product-card"
+              onClick={() => handleProductClick(product.id)} // Redirect to product details on click
+              style={{ cursor: 'pointer' }} // Makes the card look clickable
+            >
+              <div className="wishlist-icon">
+                <FaHeart />
+              </div>
               {/* Display main product image */}
               <img 
                 src={`${config.API_BASE_URL}${product.image}`} 
@@ -61,20 +78,29 @@ const HomeProduct = () => {
               </h5>
               <p>Price: ${product.price}</p>
               
-              {/* Display stock level */}
-              <p>In Stock: {product.stock_level}</p>
-              
-              {/* Button for adding to cart */}
-              <button className="product-add-to-cart-btn">Add to Cart</button>
+              <p className="product-review">
+                      Review 
+                      <span className="product-rating">
+                        {[...Array(4)].map((_, i) => (
+                          <FaStar key={i} />
+                        ))}
+                      </span>
+                    </p>
+
+                    <div className="cart-order-container">
+                        <div className="cart-icon">
+                          <FaShoppingCart />
+                        </div>
+                        <button className="product-add-to-cart-btn mr-4">Order Now</button>
+                      </div>
             </div>
           </div>
         ))}
       </div>
-      {/* loads more 4 product */}
+      {/* Load more products */}
       {visibleCount < products.length && (
-              <button className="load-more-btn" onClick={loadMore}>Load More</button>
+        <button className="load-more-btn" onClick={loadMore}>Load More</button>
       )}
-
     </div>
   );
 };

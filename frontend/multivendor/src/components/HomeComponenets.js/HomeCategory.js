@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';  // Import useNavigate for navigation
 import axios from 'axios';
 import config from '../../config';  // Import config with base URL
 
@@ -6,7 +7,9 @@ const HomeCategory = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [visibleCount, setVisibleCount] = useState(12)
+  const [visibleCount, setVisibleCount] = useState(12);
+
+  const navigate = useNavigate();
 
   // Fetch categories from the API
   useEffect(() => {
@@ -21,9 +24,14 @@ const HomeCategory = () => {
       });
   }, []);
 
-  //load more product
+  // Load more categories
   const loadMore = () => {
-    setVisibleCount((prevCount)=> prevCount+6);
+    setVisibleCount((prevCount) => prevCount + 6);
+  };
+
+  // Redirect to Shop with the selected category filter
+  const handleCategoryClick = (categoryId) => {
+    navigate(`/shop?category=${categoryId}`);
   };
 
   if (loading) return <div>Loading...</div>;
@@ -40,12 +48,15 @@ const HomeCategory = () => {
             </div>
           </div>
         </div>
-
-        <div className=" mt-5">
+        <div className="mt-5">
           <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-6 g-4">
             {categories.slice(0, visibleCount).map((category) => (
               <div className="col" key={category.id}>
-                <div className="card h-100">
+                <div 
+                  className="card h-100"
+                  onClick={() => handleCategoryClick(category.id)} // Redirect to Shop with category filter
+                  style={{ cursor: 'pointer' }}
+                >
                   <img
                     src={`${config.API_BASE_URL}${category.category_image}`}
                     className="card-img-top"
@@ -60,9 +71,8 @@ const HomeCategory = () => {
           </div>
         </div>
       </div>
-      {/* show the load more */}
       {visibleCount < categories.length && (
-      <button className="load-more-btn" onClick={loadMore}>Load More</button>
+        <button className="load-more-btn" onClick={loadMore}>Load More</button>
       )}
     </div>
   );

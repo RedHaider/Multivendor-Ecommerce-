@@ -3,10 +3,11 @@ import PriceRangeFilter from "../utils/pricerangefilter";
 import React, { useState, useEffect } from "react";
 import config from "../config";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { FaHeart, FaShoppingCart, FaStar } from 'react-icons/fa'; 
 
 const Shop = () => {
-  const [products, setProducts] = useState([]); // Initialize as an empty array
+  const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
   const [productType, setProductType] = useState([]);
@@ -255,8 +256,11 @@ const Shop = () => {
 
             <div className="row">
               {filteredProducts.map((product) => (
-                <div className="col-lg-3 col-md-4 col-sm-6 col-12" key={product.id}>
+                <div className="col-lg-3 col-md-4 col-sm-6 col-12 mb-2" key={product.id}>
                   <div className="product-card" onClick={() => handleProductClick(product.id)}>
+                    <div className="wishlist-icon">
+                      <FaHeart />
+                    </div>
                     {/* Display main product image */}
                     <img
                       src={`${config.API_BASE_URL}${product.image}`}
@@ -266,9 +270,22 @@ const Shop = () => {
 
                     <h5>{product.name && product.name.length > 12 ? `${product.name.slice(0, 12)}...` : product.name}</h5>
                     <p>Price: ${product.price}</p>
-                    <p>In Stock: {product.stock_level}</p>
 
-                    <button className="product-add-to-cart-btn">Add to Cart</button>
+                    <p className="product-review">
+                      Review 
+                      <span className="product-rating">
+                        {[...Array(4)].map((_, i) => (
+                          <FaStar key={i} />
+                        ))}
+                      </span>
+                    </p>
+
+                    <div className="cart-order-container">
+                        <div className="cart-icon">
+                          <FaShoppingCart />
+                        </div>
+                        <button className="product-add-to-cart-btn mr-4">Order Now</button>
+                      </div>
                   </div>
                 </div>
               ))}
@@ -289,3 +306,4 @@ const Shop = () => {
 };
 
 export default Shop;
+

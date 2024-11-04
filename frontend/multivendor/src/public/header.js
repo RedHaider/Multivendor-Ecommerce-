@@ -1,11 +1,35 @@
-import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext, useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import TopBar from './topBar';
 import { AuthContext } from '../utils/authContext';
 import SearchBar from '../utils/SearchBar';
+import config from '../config';
 
 const Header = () => {
-    const { isLoggedIn, user } = useContext(AuthContext); // Assuming user details are in AuthContext
+    const { isLoggedIn, user } = useContext(AuthContext);
+    const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const navigate = useNavigate();
+
+    // Fetch categories from the API
+    useEffect(() => {
+        axios.get(`${config.API_BASE_URL}/product-management/api/category/`)
+            .then((response) => {
+                setCategories(response.data);
+                setLoading(false);
+            })
+            .catch((error) => {
+                setError('Failed to fetch categories');
+                setLoading(false);
+            });
+    }, []);
+
+    // Redirect to Shop with selected category filter
+    const handleCategoryClick = (categoryId) => {
+        navigate(`/shop?category=${categoryId}`);
+    };
 
     return (
         <div className="colorset">
@@ -25,24 +49,22 @@ const Header = () => {
                             <i className="fas fa-bars"></i> All Categories
                         </a>
                         <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a className="dropdown-item" href="#">
-                                <i className="fa-sharp fa-thin fa-square"></i> Women’s Collection
-                            </a>
-                            <a className="dropdown-item" href="#">
-                                <i className="fa-thin fa-square"></i> Man’s Collection
-                            </a>
-                            <a className="dropdown-item" href="#">
-                                <i className="fa-thin fa-square"></i> Kid’s Collection
-                            </a>
-                            <a className="dropdown-item" href="#">
-                                <i className="fa-thin fa-square"></i> Accessories
-                            </a>
-                            <a className="dropdown-item" href="#">
-                                <i className="fa-thin fa-square"></i> Shoes
-                            </a>
-                            <a className="dropdown-item" href="#">
-                                <i className="fa-thin fa-square"></i> Jewelry
-                            </a>
+                            {loading ? (
+                                <div className="dropdown-item">Loading...</div>
+                            ) : error ? (
+                                <div className="dropdown-item">{error}</div>
+                            ) : (
+                                categories.map((category) => (
+                                    <a
+                                        key={category.id}
+                                        className="dropdown-item"
+                                        onClick={() => handleCategoryClick(category.id)}
+                                        style={{ cursor: 'pointer' }}
+                                    >
+                                        <i className="fa-thin fa-square"></i> {category.category_name}
+                                    </a>
+                                ))
+                            )}
                         </div>
                     </div>
                     <button

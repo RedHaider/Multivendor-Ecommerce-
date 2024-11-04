@@ -860,7 +860,7 @@
 }
 
 .promo-section {
-  background: linear-gradient(90deg, rgba(227, 61, 79, 1) 0%, rgba(247, 247, 247, 1) 100%);
+  background: linear-gradient(90deg, rgba(244, 99, 34, 1) 0%, rgba(247, 247, 247, 1) 100%);
   border-radius: 30px;
   padding: 20px;
   color: white;
@@ -871,7 +871,7 @@
 
 .promo-section img {
   max-width: 100%; /* Image won't exceed the container width */
-  height: auto;
+  height: 250px;
   border-radius: 15px;
 }
 .promo-details {
@@ -922,15 +922,37 @@
 .category-card p {
   font-weight: bold;
 }
+.wishlist-icon {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  color: #F46322;  /* Colour for the wishlist icon */
+  font-size: 1.6rem;
+  cursor: pointer;
+}
+.cart-icon {
+  position: absolute;
+  bottom: 70px;
+  right: 12px;
+  color: #333;
+  font-size: 2rem;
+  cursor: pointer;
+}
+.product-rating {
+  margin-left: 5px;
+}
 
+.product-image {
+  width: 100%;
+  border-radius: 8px;
+}
 .product-card {
+  position: relative;  /* Allows positioning of icons within the card */
+  padding: 10px;
   border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
-  margin-bottom: 20px;
-  position: relative;
-  transition: transform 0.3s;
 }
 .product-card:hover {
   transform: translateY(-5px);
@@ -954,7 +976,7 @@
 }
 .product-add-to-cart-btn {
   background-color: #F46322;
-
+  width: 70%;
   color: white;
   border: none;
   border-radius: 5px;

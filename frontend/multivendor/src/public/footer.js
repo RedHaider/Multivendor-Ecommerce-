@@ -23,9 +23,9 @@ const Footer = () => {
                     </li>
                     <li>
                       <div  className="pt-4" >
-                        <i className="fab fa-facebook pr-3 iconfooter"></i>
-                        <i className="fab fa-google pr-3 iconfooter"></i>
-                        <i className="fab fa-instagram pr-3 iconfooter"></i>
+                        <a href="#"><i  className="fab fa-facebook pr-3 iconfooter"></i></a>
+                        <a href="#"><i className="fab fa-google pr-3 iconfooter"></i></a>
+                        <a href="#"><i className="fab fa-instagram pr-3 iconfooter"></i></a>
 
                     </div>
                     </li>

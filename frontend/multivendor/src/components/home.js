@@ -14,10 +14,10 @@ const Home = () => {
     <div class="container-fixed">
     <div class="row justify-content-between">
         <div class="col promo-section">
-        <img src="picture/daraz/demo.webp" alt="Promo Image" />
+        <img src="picture/daraz/demo.webp"  alt="Promo Image" />
         </div>
         <div class="col promo-section">
-        <img src="picture/daraz/demo2.webp" alt="Promo Image" />
+        <img src="picture/daraz/demo2.webp"  alt="Promo Image" />
         </div>
     </div>
     </div>

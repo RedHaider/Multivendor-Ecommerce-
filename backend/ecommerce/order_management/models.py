@@ -195,3 +195,15 @@ class CartItems(models.Model):
         verbose_name = 'Cart Item'
         verbose_name_plural = 'Cart Item'
         ordering = ['-id']
+
+
+
+class Wishlist(models.Model):
+    wishlist_id = models.AutoField(primary_key=True) 
+    customer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)  
+    
+    class Meta:
+        unique_together = ('customer', 'product')  
+    def __str__(self):
+        return f"Wishlist for {self.customer} - Product {self.product}"
