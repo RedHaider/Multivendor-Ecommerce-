@@ -57,6 +57,9 @@ const OrderList = () => {
                         <p className={`card-text ${order.status.toLowerCase()}`}>
                             <strong>Status:</strong> {order.status}
                         </p>
+                        <Link to={`/ordertracking/${order.id}`} className="btn btn-primary">
+                            Track Order
+                        </Link>
                         
                         {order.vendor_orders.map((vendorOrder, vendorIndex) => (
                             <div key={vendorIndex} className="mb-3">

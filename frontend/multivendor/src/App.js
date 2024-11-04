@@ -67,7 +67,7 @@ function App() {
         <Route path='/productdetails/:productId' element={<PrivateRoute><ProductDetails/></PrivateRoute>}/>
         <Route path='/cart' element={<PrivateRoute><Cart/></PrivateRoute>}/>
         <Route path='/checkout' element={<PrivateRoute><Checkout/></PrivateRoute>}/>
-        <Route path='/ordertracking//:orderId' element={<PrivateRoute><OrderTracking/></PrivateRoute>}/>
+        <Route path='/ordertracking/:orderId' element={<PrivateRoute><OrderTracking/></PrivateRoute>}/>
         <Route path='/orderlist' element={<PrivateRoute><OrderList/></PrivateRoute>} />
 
       </Routes>

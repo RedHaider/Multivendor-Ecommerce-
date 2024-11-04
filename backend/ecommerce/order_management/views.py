@@ -615,9 +615,9 @@ def process_order(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_order_detail(request, order_id):
+def get_order_detail(request, id):
     try: 
-        order = Order.objects.get(order_id = order_id, customer_id = request.user)
+        order = Order.objects.get(id = id, customer_id = request.user)
     except Order.DoesNotExist:
         return Response({'error': 'Order not found'}, status= status.HTTP_404_NOT_FOUND)
     

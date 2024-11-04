@@ -119,15 +119,31 @@ class VendorOrderSerializer(serializers.Serializer):
     vendor = VendorSerializer()  # Serialize the full vendor object
     items = OrderItemSerializer(many=True)
 
-
-
 class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
+        fields = '__all__'
+
+
+class UserSerializer(serializers.ModelSerializer):
+    customer_id = serializers.SerializerMethodField()  # Custom field to include customer profile data
+
+    class Meta:
+        model = User
         fields = [
-            'customerID', 'name', 'phone_number', 'address', 'division',
-            'district', 'state', 'Thana', 'postal_code'
+            'id', 'first_name', 'last_name', 'address', 'customer_id',
         ]
+
+    def get_customer_id(self, obj):
+        # Use the related name `customer_profile` to access Customer instance
+        customer_profile = getattr(obj, 'customer_profile', None)  # Safely access customer_profile
+        
+        if customer_profile:
+            # Serialize the Customer data if it exists
+            return CustomerSerializer(customer_profile).data
+        else:
+            # Return None or an empty dict if no customer profile exists
+            return None
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -136,7 +152,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = [
+        fields = ['id',
             'customer_id', 'payment_type', 'shipping_address', 'shipping_city',
             'shipping_postal_code', 'order_note', 'total_amount', 'sub_total',
             'coupon_id', 'vendor_orders', 'status', 'order_date', 'order_id'
@@ -144,8 +160,8 @@ class OrderSerializer(serializers.ModelSerializer):
 
     def get_customer_id(self, obj):
         # Access and serialize the customer profile related to customer_id
-        customer_profile = obj.customer_id  # Assuming related name is `customer_profile`
-        return CustomerSerializer(customer_profile).data  # Serialize customer data
+        user_profile = obj.customer_id  # Assuming related name is `customer_profile`
+        return UserSerializer(user_profile).data  # Serialize customer data
     
     def get_vendor_orders(self, obj):
         """

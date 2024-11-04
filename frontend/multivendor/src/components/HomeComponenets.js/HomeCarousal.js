@@ -2,7 +2,7 @@ import React from 'react';
 
 const HomeCarousel = () => {
     return (
-        <div className="container-fluid p-0">
+        <div className="container-fluid container-fixed p-0">
             <div className="row justify-content-center">
                 <div id="carouselExampleIndicators" className="carousel slide" data-ride="carousel">
                     

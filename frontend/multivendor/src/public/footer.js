@@ -82,7 +82,7 @@ const Footer = () => {
           </div>
           <div className="row mt-5 pt-4 border-top">
             <div className="col-md-6 col-lg-6 mb-md-0 mb-4">
-              <p className="copyright mb-0 footerWordlast ">© 2023 All Rights Reserved by Essential-Infotech</p>
+              <p className="copyright mb-0 footerWordlast ">© 2024 All Rights Reserved by Essential-Infotech</p>
             </div>
             <div className="col-md-6 col-lg-6 text-md-right ">
               <img src="picture\mastercard.png" alt="Google" className="footerlogo  mr-3 "/>

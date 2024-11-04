@@ -6,7 +6,7 @@ const HomeCategory = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [visibleCount, setVisibleCount] = useState(8)
+  const [visibleCount, setVisibleCount] = useState(12)
 
   // Fetch categories from the API
   useEffect(() => {
@@ -23,7 +23,7 @@ const HomeCategory = () => {
 
   //load more product
   const loadMore = () => {
-    setVisibleCount((prevCount)=> prevCount+4);
+    setVisibleCount((prevCount)=> prevCount+6);
   };
 
   if (loading) return <div>Loading...</div>;
@@ -35,14 +35,14 @@ const HomeCategory = () => {
         <div className="row justify-content-center">
           <div className="col text-center">
             <div className="heading">
-              <h1>Category</h1>
+              <h1>Categories</h1>
               <hr className="underline-hr" />
             </div>
           </div>
         </div>
 
         <div className=" mt-5">
-          <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+          <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-6 g-4">
             {categories.slice(0, visibleCount).map((category) => (
               <div className="col" key={category.id}>
                 <div className="card h-100">

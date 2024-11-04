@@ -34,6 +34,6 @@ urlpatterns = [
     path('api/validate-coupon/', validate_coupon, name='validate_coupon'),
     path('api/orders/create/', process_order, name='create-order'),
     path('api/orders/', get_customer_orders, name = 'get-customer-orders' ),
-    path('api/orders/<str:order_id>/', get_order_detail, name= 'order_details')
+    path('api/orders/<int:id>/', get_order_detail, name= 'order_details')
 
 ]

@@ -43,7 +43,7 @@
     font-weight: 400;
     line-height: 24px;
     text-align: left;
-    color: #FA7070;
+    color: #F46322;
 }
 
 .shoptogglerH{
@@ -165,7 +165,7 @@
     font-weight: 500;
     line-height: 23.44px;
     text-align: left;
-    color: #FA7070;
+    color: #F46322;
 }
 .OVMt{
     font-family: Roboto;
@@ -224,7 +224,7 @@
     line-height: 24px;
     letter-spacing: 0.02em;
     text-align: left;
-    color: #FA7070;
+    color: #F46322;
 }
 
 .blogrecentimg{
@@ -289,20 +289,20 @@
 }
 
 .contactusbtn{
-    background: #FA7070;
-    border: #FA7070;
+    background: #F46322;
+    border: #F46322;
 
 }
 
 .contactusbtn :hover{
-    background: #FA7070;
-    border: #FA7070;
+    background: #F46322;
+    border: #F46322;
 
 }
 .contactusicon{
     width: 30px;
     height: 30px;
-    background: #FA7070;
+    background: #F46322;
     padding: 10px;
     border-radius: 50%;
     color: #FFFFFF;
@@ -412,7 +412,7 @@
     height: 42px;
     gap: 0px;
     opacity: 0px;
-    background: #FA7070;
+    background: #F46322;
     color: #FFFFFF;
 }
 
@@ -474,11 +474,11 @@
 }
 
 .product-details-info-btn{
-    border: 1px solid #FA7070;
+    border: 1px solid #F46322;
     color:white;
     width: 129px;
     height: 30px;
-    background-color: #FA7070;
+    background-color: #F46322;
 }
 
 .quantity-selector {
@@ -494,14 +494,14 @@
 
 .btn {
     padding: 5px 10px;
-    border: 1px solid #FA7070;
-    color: #FA7070;
+    border: 1px solid #F46322;
+    color: #F46322;
     background-color: white;
     cursor: pointer;
 }
 
 .btn:hover {
-    background-color: #FA7070;
+    background-color: #F46322;
     color: white;
 }
 
@@ -566,7 +566,7 @@
 .registration-form button {
     width: 100%;
     padding: 10px;
-    background-color: #FA7070;
+    background-color: #F46322;
     border: none;
     border-radius: 5px;
     color: white;
@@ -584,7 +584,7 @@
     font-weight: 400;
     line-height: 36px;
     text-align: left;
-    color: #FA7070;
+    color: #F46322;
 }
 
 
@@ -599,7 +599,7 @@
 }
 
 .wishlist-color{
-    color: #FA7070;
+    color: #F46322;
 }
 .wishlist-cross{
     color: red;
@@ -617,7 +617,7 @@ height: 55px;
     line-height: 30px;
     letter-spacing: 0.01em;
     text-align: left;
-    color: #FA7070;
+    color: #F46322;
 
 
 }
@@ -664,7 +664,7 @@ height: 55px;
     height: 40px;
     border-radius: 2px 0px 0px 0px;
     border: 1px 0px 0px 0px;
-    background-color: #FA7070;
+    background-color: #F46322;
 }
 
 .cartbillinH{
@@ -681,12 +681,12 @@ height: 55px;
     width: 200px;
     height: 32px;
     border-radius: 2px 0px 0px 0px;
-    background: #FA7070;
+    background: #F46322;
     color:white;
 }
 
 .placeorder-cart:hover{
-    color:#FA7070;
+    color:#F46322;
     background: white;
 }
 
@@ -695,12 +695,12 @@ height: 55px;
 }
 
 .card-update{
-    color:#FA7070;
+    color:#F46322;
     background: white;
 }
 
 .card-update:hover{
-    background: #FA7070;
+    background: #F46322;
     color:white;
 }
 
