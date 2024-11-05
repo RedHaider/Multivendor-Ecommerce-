@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import order_list, coupon_list, coupon_edit, coupon_form, coupon_delete, order_form ,order_delete ,order_edit, cart_list ,cart_delete ,cart_form , cart_edit, cart_detail , add_to_cart ,get_cart ,update_cart, order_detail_view, process_order ,validate_coupon, get_customer_orders, get_order_detail
+from .views import order_list, coupon_list, coupon_edit, coupon_form, coupon_delete, order_form ,order_delete ,order_edit, cart_list ,cart_delete ,cart_form , cart_edit, cart_detail , add_to_cart ,get_cart ,update_cart, order_detail_view, process_order ,validate_coupon, get_customer_orders, get_order_detail, add_to_wishlist, remove_from_wishlist, view_wishlist
 
 urlpatterns = [
 
@@ -34,6 +34,9 @@ urlpatterns = [
     path('api/validate-coupon/', validate_coupon, name='validate_coupon'),
     path('api/orders/create/', process_order, name='create-order'),
     path('api/orders/', get_customer_orders, name = 'get-customer-orders' ),
-    path('api/orders/<int:id>/', get_order_detail, name= 'order_details')
+    path('api/orders/<int:id>/', get_order_detail, name= 'order_details'),
+    path('api/wishlist/', view_wishlist, name='view-wishlist'),
+    path('api/wishlist/add/', add_to_wishlist, name='add-wishlist'),
+    path('api/wishlist/remove/<int:product_id>/', remove_from_wishlist, name='remove-wishlist'),
 
 ]

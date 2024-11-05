@@ -31,11 +31,13 @@ const Shop = () => {
 
   //new added
   const [searchQuery, setSearchQuery] = useState("");
+  const [wishlist, setWishList] = useState([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const productRes = await axios.get(`${config.API_BASE_URL}/product-management/api/products/`);
+        fetchWishlist();
         setProducts(productRes.data);
       } catch (error) {
         setError("Failed to fetch Products");
@@ -85,6 +87,78 @@ const Shop = () => {
     fetchProductTypes();
     fetchSubCategory();
   }, []);
+
+  const fetchWishlist = async () => {
+    const token = localStorage.getItem('accessToken'); 
+  
+    try {
+      const response = await axios.get(`${config.API_BASE_URL}/order-management/api/wishlist/`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include token in the request header
+        },
+      });
+      setWishList(response.data);
+    } catch (error) {
+      console.error("Failed to fetch wishlist", error);
+    }
+  };
+
+  const isInWishlist = (productId) => {
+    return wishlist.some((item) => item.product.id === productId);
+  };
+
+  const addToWishlist = async (event, productId) => {
+    event.stopPropagation();
+    event.preventDefault();
+  
+    const token = localStorage.getItem('accessToken'); 
+  
+    try {
+      await axios.post(
+        `${config.API_BASE_URL}/order-management/api/wishlist/add/`,
+        { product_id: productId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+   
+  
+      // Update wishlist state immediately for instant feedback
+      setWishList((prevWishlist) => [
+        ...prevWishlist,
+        { product: { id: productId } },
+      ]);
+    } catch (error) {
+   
+      console.error("Add to wishlist error", error);
+    }
+  };
+  
+  const removeFromWishlist = async (event, productId) => {
+    event.stopPropagation();
+    event.preventDefault();
+  
+    const token = localStorage.getItem('accessToken'); 
+  
+    try {
+      await axios.delete(`${config.API_BASE_URL}/order-management/api/wishlist/remove/${productId}/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+  
+      setWishList((prevWishlist) =>
+        prevWishlist.filter((item) => item.product.id !== productId)
+      );
+    } catch (error) {
+      
+      console.error("Remove from wishlist error", error);
+    }
+  };
+
 
 
   //code your functions from here
@@ -302,9 +376,16 @@ const handleAddToCart = async (event, product, redirectToCheckout = false) => {
               {filteredProducts.map((product) => (
                 <div className="col-lg-3 col-md-4 col-sm-6 col-12 mb-2" key={product.id}>
                   <div className="product-card" onClick={() => handleProductClick(product.id)}>
-                    <div className="wishlist-icon">
-                      <FaHeart />
-                    </div>
+                  <div
+                    className="wishlist-icon"
+                    onClick={(event) =>
+                      isInWishlist(product.id)
+                        ? removeFromWishlist(event, product.id)
+                        : addToWishlist(event, product.id)
+                    }
+                  >
+                    <FaHeart color={isInWishlist(product.id) ? "red" : "grey"} />
+                  </div>
                     {/* Display main product image */}
                     <img
                       src={`${config.API_BASE_URL}${product.image}`}

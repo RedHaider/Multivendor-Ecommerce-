@@ -8,10 +8,12 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const HomeProduct = () => {
   const [products, setProducts] = useState([]);
+  const [wishlist, setWishList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [visibleCount, setVisibleCount] = useState(8);
   const navigate = useNavigate();
+  
 
   // Function to redirect to product details page
   const handleProductClick = (productId) => {
@@ -57,18 +59,96 @@ const HomeProduct = () => {
     }
   };
 
+
   // Fetch products from API
   useEffect(() => {
-    axios.get(`${config.API_BASE_URL}/product-management/api/products/`)
-      .then((response) => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${config.API_BASE_URL}/product-management/api/products/`);
         setProducts(response.data);
+        await fetchWishlist(); 
         setLoading(false);
-      })
-      .catch((error) => {
+      } catch (error) {
         setError('Failed to fetch products');
         setLoading(false);
-      });
+      }
+    };
+    fetchData();
   }, []);
+
+
+
+  const fetchWishlist = async () => {
+    const token = localStorage.getItem('accessToken'); 
+  
+    try {
+      const response = await axios.get(`${config.API_BASE_URL}/order-management/api/wishlist/`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include token in the request header
+        },
+      });
+      setWishList(response.data);
+    } catch (error) {
+      console.error("Failed to fetch wishlist", error);
+    }
+  };
+
+  const isInWishlist = (productId) => {
+    return wishlist.some((item) => item.product.id === productId);
+  };
+
+  const addToWishlist = async (event, productId) => {
+    event.stopPropagation();
+    event.preventDefault();
+  
+    const token = localStorage.getItem('accessToken'); 
+  
+    try {
+      await axios.post(
+        `${config.API_BASE_URL}/order-management/api/wishlist/add/`,
+        { product_id: productId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+   
+  
+      // Update wishlist state immediately for instant feedback
+      setWishList((prevWishlist) => [
+        ...prevWishlist,
+        { product: { id: productId } },
+      ]);
+    } catch (error) {
+   
+      console.error("Add to wishlist error", error);
+    }
+  };
+  
+  const removeFromWishlist = async (event, productId) => {
+    event.stopPropagation();
+    event.preventDefault();
+  
+    const token = localStorage.getItem('accessToken'); 
+  
+    try {
+      await axios.delete(`${config.API_BASE_URL}/order-management/api/wishlist/remove/${productId}/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+  
+      setWishList((prevWishlist) =>
+        prevWishlist.filter((item) => item.product.id !== productId)
+      );
+    } catch (error) {
+      
+      console.error("Remove from wishlist error", error);
+    }
+  };
+  
 
   const loadMore = () => {
     setVisibleCount((prevCount) => prevCount + 4);
@@ -79,7 +159,7 @@ const HomeProduct = () => {
 
   return (
     <div className="container mb-5">
-      <ToastContainer /> {/* Toast notifications for feedback */}
+      <ToastContainer />
       <div className="row justify-content-center">
         <div className="col text-center">
           <div className="heading">
@@ -98,9 +178,16 @@ const HomeProduct = () => {
               className="product-card" 
               onClick={() => handleProductClick(product.id)}
             >
-              <div className="wishlist-icon">
-                <FaHeart />
-              </div>
+            <div
+              className="wishlist-icon"
+              onClick={(event) =>
+                isInWishlist(product.id)
+                  ? removeFromWishlist(event, product.id)
+                  : addToWishlist(event, product.id)
+              }
+            >
+              <FaHeart color={isInWishlist(product.id) ? "red" : "grey"} />
+            </div>
               <img 
                 src={`${config.API_BASE_URL}${product.image}`} 
                 alt={product.name} 

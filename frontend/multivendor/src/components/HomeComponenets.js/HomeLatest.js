@@ -9,9 +9,84 @@ import 'react-toastify/dist/ReactToastify.css';
 const HomeProduct = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [wishlist, setWishList] = useState([]);
   const [error, setError] = useState(null);
   const [visibleCount, setVisibleCount] = useState(4);
   const navigate = useNavigate();
+
+
+  const fetchWishlist = async () => {
+    const token = localStorage.getItem('accessToken'); 
+  
+    try {
+      const response = await axios.get(`${config.API_BASE_URL}/order-management/api/wishlist/`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include token in the request header
+        },
+      });
+      setWishList(response.data);
+    } catch (error) {
+      console.error("Failed to fetch wishlist", error);
+    }
+  };
+
+  const isInWishlist = (productId) => {
+    return wishlist.some((item) => item.product.id === productId);
+  };
+
+  const addToWishlist = async (event, productId) => {
+    event.stopPropagation();
+    event.preventDefault();
+  
+    const token = localStorage.getItem('accessToken'); 
+  
+    try {
+      await axios.post(
+        `${config.API_BASE_URL}/order-management/api/wishlist/add/`,
+        { product_id: productId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+   
+  
+      // Update wishlist state immediately for instant feedback
+      setWishList((prevWishlist) => [
+        ...prevWishlist,
+        { product: { id: productId } },
+      ]);
+    } catch (error) {
+   
+      console.error("Add to wishlist error", error);
+    }
+  };
+  
+  const removeFromWishlist = async (event, productId) => {
+    event.stopPropagation();
+    event.preventDefault();
+  
+    const token = localStorage.getItem('accessToken'); 
+  
+    try {
+      await axios.delete(`${config.API_BASE_URL}/order-management/api/wishlist/remove/${productId}/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+  
+      setWishList((prevWishlist) =>
+        prevWishlist.filter((item) => item.product.id !== productId)
+      );
+    } catch (error) {
+      
+      console.error("Remove from wishlist error", error);
+    }
+  };
+
+
 
   // Redirect to product details page
   const handleProductClick = (productId) => {
@@ -65,6 +140,7 @@ const HomeProduct = () => {
           new Date(b.created_at) - new Date(a.created_at)  // Sort in descending order
         );
         setProducts(sortedProducts);
+        fetchWishlist(); 
         setLoading(false);
       })
       .catch((error) => {
@@ -100,9 +176,16 @@ const HomeProduct = () => {
               onClick={() => handleProductClick(product.id)} // Redirect to product details on click
               style={{ cursor: 'pointer' }} // Makes the card look clickable
             >
-              <div className="wishlist-icon">
-                <FaHeart />
-              </div>
+            <div
+              className="wishlist-icon"
+              onClick={(event) =>
+                isInWishlist(product.id)
+                  ? removeFromWishlist(event, product.id)
+                  : addToWishlist(event, product.id)
+              }
+            >
+              <FaHeart color={isInWishlist(product.id) ? "red" : "grey"} />
+            </div>
               {/* Display main product image */}
               <img 
                 src={`${config.API_BASE_URL}${product.image}`} 

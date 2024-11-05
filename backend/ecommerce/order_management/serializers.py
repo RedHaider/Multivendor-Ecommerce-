@@ -1,7 +1,7 @@
 
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from .models import Cart, CartItems, OrderItems, Order
+from .models import Cart, CartItems, OrderItems, Order ,Wishlist
 from product_management.serializers import   ProductAttributeSerializer, ProductSerializer
 from product_management.models import   Product
 from accounts.models import *
@@ -199,6 +199,14 @@ class OrderSerializer(serializers.ModelSerializer):
             vendor_orders_data.append(vendor_order)
 
         return vendor_orders_data
+
+class WishlistSerializer(serializers.ModelSerializer):
+    product = ProductSerializer()
+
+    class Meta:
+        model = Wishlist
+        fields = ['wishlist_id', 'product']
+
 
 
 
