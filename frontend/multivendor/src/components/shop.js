@@ -3,10 +3,15 @@ import PriceRangeFilter from "../utils/pricerangefilter";
 import React, { useState, useEffect } from "react";
 import config from "../config";
 import axios from "axios";
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, redirect } from 'react-router-dom';
 import { FaHeart, FaShoppingCart, FaStar } from 'react-icons/fa'; 
 
+import { ToastContainer, toast } from 'react-toastify';
+
 const Shop = () => {
+
+  // store the states here
+
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
@@ -80,6 +85,45 @@ const Shop = () => {
     fetchProductTypes();
     fetchSubCategory();
   }, []);
+
+
+  //code your functions from here
+
+const handleAddToCart = async (event, product, redirectToCheckout = false) => {
+  event.stopPropagation(); 
+  event.preventDefault();  
+
+  const customerId = localStorage.getItem('userId'); 
+
+  if (!customerId) {
+    toast.error("You must be logged in to add items to the cart.");
+    return;
+  }
+
+  const defaultVariant = product.attributes && product.attributes.length > 0 ? product.attributes[0] : null;
+
+  if (!defaultVariant) {
+    toast.error("This product has no available variants to add to the cart.");
+    return;
+  }
+  try {
+    await axios.post(`${config.API_BASE_URL}/order-management/api/add-to-cart/`, {
+      product_id: product.id,
+      product_variant_id: defaultVariant.id, 
+      quantity: 1, 
+      customer_id: customerId 
+    });
+    toast.success("Product added to cart successfully!");
+
+    if (redirectToCheckout) {
+      navigate('/checkout');
+    }
+  } catch (error) {
+    console.error("Failed to add to cart", error);
+    toast.error("Failed to add product to cart.");
+  }
+};
+
 
   const navigate = useNavigate(); 
   const handleProductClick = (productId) => {
@@ -253,7 +297,7 @@ const Shop = () => {
             <div className="row mb-5 justify-content-center">
               <SearchBar searchQuery={searchQuery} onSearchChange={handleSearchChange} />
             </div>
-
+            <ToastContainer />
             <div className="row">
               {filteredProducts.map((product) => (
                 <div className="col-lg-3 col-md-4 col-sm-6 col-12 mb-2" key={product.id}>
@@ -281,10 +325,18 @@ const Shop = () => {
                     </p>
 
                     <div className="cart-order-container">
-                        <div className="cart-icon">
+                        <div 
+                          className="cart-icon"
+                          onClick={(event) => handleAddToCart(event, product)} // Add to cart without redirecting
+                        >
                           <FaShoppingCart />
                         </div>
-                        <button className="product-add-to-cart-btn mr-4">Order Now</button>
+                        <button 
+                          className="product-add-to-cart-btn mr-4" 
+                          onClick={(event) => handleAddToCart(event, product, true)} // Add to cart and redirect to checkout
+                        >
+                          Order Now
+                        </button>
                       </div>
                   </div>
                 </div>
