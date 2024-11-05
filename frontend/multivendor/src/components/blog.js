@@ -1,4 +1,13 @@
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
 const Blog = () => {
+
+  const navigate = useNavigate();
+
+  const goToBlogDetails = () => {
+      navigate('/blogdetails');
+  };
     return ( 
         <div>
         <div className="row  no-gutters justify-content-center mb-2">
@@ -22,7 +31,7 @@ const Blog = () => {
             <p className="blogpa mt-3">By Smith | June 20, 2023 | 2 Comments</p>
             <h1 className="blogph h4">Summer Collection for Women’s 2023</h1>
             <p className="blogpb">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean porta fringilla elit ac finibus. Pellentesque habitant morbi tristique senectus sollicitudin lectus tincidunt.</p>
-            <p className="blogpc " onclick="window.location.href='blogDetails.html'">Read more..</p>
+            <p className="blogpc " onClick={goToBlogDetails}>Read more..</p>
           </div>
         </div>
         <div className="row mt-3">
@@ -35,7 +44,7 @@ const Blog = () => {
             <p className="blogpa mt-3">By Smith | June 20, 2023 | 2 Comments</p>
             <h1 className="blogph h4">Summer Collection for Women’s 2023</h1>
             <p className="blogpb">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean porta fringilla elit ac finibus. Pellentesque habitant morbi tristique senectus sollicitudin lectus tincidunt.</p>
-            <p className="blogpc " onclick="window.location.href='blogDetails.html'">Read more..</p>
+            <p className="blogpc " onClick={goToBlogDetails}>Read more..</p>
           </div>
         </div>
   
@@ -49,7 +58,7 @@ const Blog = () => {
             <p className="blogpa mt-3">By Smith | June 20, 2023 | 2 Comments</p>
             <h1 className="blogph h4">Summer Collection for Women’s 2023</h1>
             <p className="blogpb">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean porta fringilla elit ac finibus. Pellentesque habitant morbi tristique senectus sollicitudin lectus tincidunt.</p>
-            <p className="blogpc " onclick="window.location.href='blogDetails.html'">Read more..</p>
+            <p className="blogpc " onClick={goToBlogDetails}>Read more..</p>
           </div>
         </div>
   
@@ -63,7 +72,7 @@ const Blog = () => {
             <p className="blogpa mt-3">By Smith | June 20, 2023 | 2 Comments</p>
             <h1 className="blogph h4">Summer Collection for Women’s 2023</h1>
             <p className="blogpb">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean porta fringilla elit ac finibus. Pellentesque habitant morbi tristique senectus sollicitudin lectus tincidunt.</p>
-            <p className="blogpc " onclick="window.location.href='blogDetails.html'">Read more..</p>
+            <p className="blogpc " onClick={goToBlogDetails}>Read more..</p>
           </div>
         </div>
         <div className="row mt-3">

@@ -105,7 +105,7 @@ const AboutUs = () => {
       </div>
       <div className="d-flex flex-wrap justify-content-center">
         <div className="card border-1 p-2 containar m-2" style={{width:"18rem"}}>
-          <img className="card-img-top meetoutteamimg" src="picture\Stylish leather jacket.png" alt="Card image cap"/>
+          <img className="card-img-top meetoutteamimg" src="picture\Stylish-leather-jacket.png" alt="Card image cap"/>
           <div className="card-body">
             <div className="d-flex flex-column justify-content-center align-items-center">
               <p className="card-text text-center meetoutteamh">Stylish Leather Jacket</p>
@@ -115,7 +115,7 @@ const AboutUs = () => {
         </div>
 
         <div className="card border-0 p-2 containar m-2" style={{width:"18rem"}}>
-          <img className="card-img-top meetoutteamimg" src="picture\Stylish leather jacket.png" alt="Card image cap"/>
+          <img className="card-img-top meetoutteamimg" src="picture\Stylish-leather-jacket.png" alt="Card image cap"/>
           <div className="card-body">
             <div className="d-flex flex-column justify-content-center align-items-center">
               <p className="card-text text-center meetoutteamh">Stylish Leather Jacket</p>
@@ -125,7 +125,7 @@ const AboutUs = () => {
         </div>
 
         <div className="card border-0 p-2 containar m-2" style={{width:"18rem"}}>
-          <img className="card-img-top meetoutteamimg" src="picture\Stylish leather jacket.png" alt="Card image cap"/>
+          <img className="card-img-top meetoutteamimg" src="picture\Stylish-leather-jacket.png" alt="Card image cap"/>
           <div className="card-body">
             <div className="d-flex flex-column justify-content-center align-items-center">
               <p className="card-text text-center meetoutteamh">Stylish Leather Jacket</p>
@@ -135,7 +135,7 @@ const AboutUs = () => {
         </div>
 
         <div className="card border-0 p-2 containar m-2" style={{width:"18rem"}}>
-          <img className="card-img-top meetoutteamimg" src="picture\Stylish leather jacket.png" alt="Card image cap"/>
+          <img className="card-img-top meetoutteamimg" src="picture\Stylish-leather-jacket.png" alt="Card image cap"/>
           <div className="card-body">
             <div className="d-flex flex-column justify-content-center align-items-center">
               <p className="card-text text-center meetoutteamh">Stylish Leather Jacket</p>

@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';  // Import useNavigate for navigation
 import axios from 'axios';
 import config from '../../config';  // Import config with base URL
+import './homestyle.css'
 
 const HomeCategory = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [visibleCount, setVisibleCount] = useState(12);
+  const [visibleCount, setVisibleCount] = useState(16);
 
   const navigate = useNavigate();
 
@@ -38,7 +39,7 @@ const HomeCategory = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="container mb-5">
+    <div className="container  mb-5">
       <div className="c mt-5 justify-content-center">
         <div className="row justify-content-center">
           <div className="col text-center">
@@ -48,28 +49,25 @@ const HomeCategory = () => {
             </div>
           </div>
         </div>
-        <div className="mt-5">
-          <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-6 g-4">
+        <div className="container mt-5">
+          <div className="custom-grid">
             {categories.slice(0, visibleCount).map((category) => (
-              <div className="col" key={category.id}>
-                <div 
-                  className="card h-100"
-                  onClick={() => handleCategoryClick(category.id)} // Redirect to Shop with category filter
-                  style={{ cursor: 'pointer' }}
-                >
-                  <img
-                    src={`${config.API_BASE_URL}${category.category_image}`}
-                    className="card-img-top"
-                    alt={category.category_name}
-                  />
-                  <div className="card-body text-center">
-                    <h5 className="card-title">{category.category_name}</h5>
-                  </div>
+              <div className="card h-100" key={category.id}
+                  onClick={() => handleCategoryClick(category.id)}
+                  style={{ cursor: 'pointer' }}>
+                <img
+                  src={`${config.API_BASE_URL}${category.category_image}`}
+                  className="card-img-top"
+                  alt={category.category_name}
+                />
+                <div className="card-body text-center">
+                  <h5 className="card-title card-title-small">{category.category_name}</h5>
                 </div>
               </div>
             ))}
           </div>
         </div>
+
       </div>
       {visibleCount < categories.length && (
         <button className="load-more-btn" onClick={loadMore}>Load More</button>

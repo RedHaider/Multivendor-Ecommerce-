@@ -11,7 +11,7 @@ const Home = () => {
 
     {/* 3rd phase */}
 
-    <div class="container-fixed">
+    <div class="container-fixed mt-3">
     <div class="row justify-content-between">
         <div class="col promo-section">
         <img src="picture/daraz/demo.webp"  alt="Promo Image" />

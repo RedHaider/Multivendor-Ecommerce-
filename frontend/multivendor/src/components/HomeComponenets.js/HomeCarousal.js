@@ -4,6 +4,7 @@ const HomeCarousel = () => {
     return (
         <div className="container-fluid container-fixed p-0">
             <div className="row justify-content-center">
+                <div className='col-10 p-0 m-0'>
                 <div id="carouselExampleIndicators" className="carousel slide" data-ride="carousel">
                     
                     {/* Carousel Indicators */}
@@ -83,6 +84,10 @@ const HomeCarousel = () => {
                         <span className="carousel-control-next-icon" aria-hidden="true"></span>
                         <span className="sr-only">Next</span>
                     </a>
+                </div>
+                </div>
+                <div className='col-2 p-0 m-0'>
+                    <img src="picture/daraz/vednor.jpeg" className="w-100" alt="go" />
                 </div>
             </div>
         </div>

@@ -118,8 +118,7 @@ const OrderTracking = () => {
                                                     <img
                                                         src={`${config.API_BASE_URL}${item.product_variant.image}`}
                                                         alt={item.product.name}
-                                                        className="product-image"
-                                                        width={50}
+                                                        width={100}
                                                     />
                                                 </td>
                                                 <td>{item.product.name}</td>
