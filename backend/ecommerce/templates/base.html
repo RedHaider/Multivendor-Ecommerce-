@@ -138,6 +138,7 @@
                         <span class="sub-item">Add Product</span>
                       </a>
                     </li>
+                    {% if user.is_authenticated and user.role == 'admin' %}
                     <li>
                       <a href="{% url 'product-type-list' %}">
                         <span class="sub-item">Product Type </span>
@@ -183,6 +184,7 @@
                         <span class="sub-item">Review </span>
                       </a>
                     </li>
+                    {% endif %}
                   </ul>
                 </div>
               </li>
@@ -211,6 +213,7 @@
                         <span class="sub-item">Coupon</span>
                       </a>
                     </li>
+                    {% if user.is_authenticated and user.role == 'admin' %}
                     <li>
                       <a href="{% url 'order-list' %}">
                         <span class="sub-item">Order</span>
@@ -221,6 +224,8 @@
                         <span class="sub-item">Cart</span>
                       </a>
                     </li>
+                    {% endif %}
+
                     <li>
                       <a href="#">
                         <span class="sub-item">Returns</span>
@@ -792,7 +797,73 @@
           window.location.href = '/dashboard/';
       }
   </script>
-    
+  <script>
+document.addEventListener("DOMContentLoaded", function () {
+  // Function to toggle main menu and save state
+  function toggleMainMenu(menuId) {
+    const allMenus = document.querySelectorAll(".sidebar .collapse");
+
+    allMenus.forEach((menu) => {
+      if (menu.id === menuId) {
+        if (menu.classList.contains("show")) {
+          menu.classList.remove("show");
+          localStorage.removeItem("activeMainMenu");
+        } else {
+          menu.classList.add("show");
+          localStorage.setItem("activeMainMenu", menuId);
+        }
+      } else {
+        menu.classList.remove("show");
+      }
+    });
+  }
+
+  // Function to handle submenu navigation and save state
+  function navigateToSubMenu(mainMenuId, subMenuId) {
+    localStorage.setItem("activeMainMenu", mainMenuId);
+    localStorage.setItem("activeSubMenu", subMenuId);
+    window.location.href = subMenuId; // Navigate to the URL of the submenu
+  }
+
+  // Restore the last opened main menu and submenu on page load
+  const activeMainMenu = localStorage.getItem("activeMainMenu");
+  const activeSubMenu = localStorage.getItem("activeSubMenu");
+  if (activeMainMenu) {
+    const mainMenu = document.getElementById(activeMainMenu);
+    if (mainMenu) {
+      mainMenu.classList.add("show");
+    }
+  }
+  if (activeSubMenu) {
+    const subMenuLink = document.querySelector(`a[href='${activeSubMenu}']`);
+    if (subMenuLink) {
+      subMenuLink.classList.add("active");
+    }
+  }
+
+  // Attach click event listeners to each main menu link
+  document.querySelectorAll(".nav-item > a[data-bs-toggle='collapse']").forEach((menuLink) => {
+    menuLink.addEventListener("click", function (event) {
+      event.preventDefault();
+      const menuId = this.getAttribute("href").substring(1);
+      toggleMainMenu(menuId);
+    });
+  });
+
+  // Attach click event listeners to each submenu link
+  document.querySelectorAll(".nav.nav-collapse a").forEach((subMenuLink) => {
+    subMenuLink.addEventListener("click", function (event) {
+      event.preventDefault();
+      const mainMenuId = this.closest(".collapse").id;
+      const subMenuHref = this.getAttribute("href");
+      navigateToSubMenu(mainMenuId, subMenuHref);
+    });
+  });
+});
+
+
+
+  </script>
 
       {% block script %}
 <!-- the content is here -->

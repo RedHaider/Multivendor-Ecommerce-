@@ -1,4 +1,13 @@
+import React from "react";
+import { Link, useNavigate } from 'react-router-dom';
+
 const Footer = () => {
+  const navigate = useNavigate();
+
+  const handleNavigation = (path) => {
+    navigate(path);
+    window.scrollTo(0, 0);
+  };
     return ( 
         <footer className="footerStyle ">
         <div className="container">
@@ -47,14 +56,44 @@ const Footer = () => {
                 </div>
                 <div className="col-md-4 mb-md-0 mb-4">
                   <ul className="list-unstyled">
-                    <li className="footerWord">
-                      <h1 className="footerheader pb-3">Categories</h1>
+                     <li className="footerWord">
+                      <h1 className="footerheader pb-3">Others</h1>
                     </li>
-                    <li className="footerWord pb-2">Man’s Collection</li>
-                    <li className="footerWord pb-2">women’s Collection</li>
-                    <li className="footerWord pb-2">Kids Collection</li>
-                    <li className="footerWord pb-2">Complete your look</li>
-                    <li className="footerWord pb-2">Accessories</li>
+                    <li
+                      onClick={() => handleNavigation("/termsandcondition")}
+                      style={{ color: "white", textAlign: "left", cursor: "pointer" }}
+                      className="pb-2"
+                    >
+                      Terms And Conditions
+                    </li>
+                    <li
+                      onClick={() => handleNavigation("/returnpolicy")}
+                      style={{ color: "white", textAlign: "left", cursor: "pointer" }}
+                      className="pb-2"
+                    >
+                      Return Policy
+                    </li>
+                    <li
+                      onClick={() => handleNavigation("/blog")}
+                      style={{ color: "white", textAlign: "left", cursor: "pointer" }}
+                      className="pb-2"
+                    >
+                      Blog 
+                    </li>
+                    <li
+                      onClick={() => handleNavigation("/contactus")}
+                      style={{ color: "white", textAlign: "left", cursor: "pointer" }}
+                      className="pb-2"
+                    >
+                      Contact Us
+                    </li>
+                    <li
+                      onClick={() => handleNavigation("/shop")}
+                      style={{ color: "white", textAlign: "left", cursor: "pointer" }}
+                      className="pb-2"
+                    >
+                      Shop
+                    </li>
                   </ul>
                 </div>
               </div>
