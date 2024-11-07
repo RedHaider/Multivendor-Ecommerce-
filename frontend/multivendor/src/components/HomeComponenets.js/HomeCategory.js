@@ -31,8 +31,8 @@ const HomeCategory = () => {
   };
 
   // Redirect to Shop with the selected category filter
-  const handleCategoryClick = (categoryId) => {
-    navigate(`/shop?category=${categoryId}`);
+  const handleCategoryClick = (category_name) => {
+    navigate(`/shop?category=${category_name}`);
   };
 
   if (loading) return <div>Loading...</div>;
@@ -53,7 +53,7 @@ const HomeCategory = () => {
           <div className="custom-grid">
             {categories.slice(0, visibleCount).map((category) => (
               <div className="card h-100" key={category.id}
-                  onClick={() => handleCategoryClick(category.id)}
+                  onClick={() => handleCategoryClick(category.category_name)}
                   style={{ cursor: 'pointer' }}>
                 <img
                   src={`${config.API_BASE_URL}${category.category_image}`}

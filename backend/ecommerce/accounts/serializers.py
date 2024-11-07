@@ -5,8 +5,10 @@ from django.core.exceptions import ValidationError
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True)
     email = serializers.EmailField(required=True)
+    photo = serializers.ImageField(required=False, allow_null=True)  # Add photo field
+    gender = serializers.ChoiceField(choices=Customer.GENDER_CHOICES, required=False)  # Add gender field
 
-    # Include new Customer fields
+    # Include other Customer fields
     phone = serializers.CharField(required=True)
     address = serializers.CharField(required=False)
     division = serializers.CharField(required=False)
@@ -17,14 +19,15 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['email', 'password', 'first_name', 'last_name', 'phone', 'address', 'division', 'district', 'state', 'Thana', 'postal_code']
+        fields = [
+            'email', 'password', 'first_name', 'last_name', 'phone', 'address', 
+            'division', 'district', 'state', 'Thana', 'postal_code', 'photo'
+        ]
 
     def validate(self, data):
-        # Ensure required fields are present
         if not data.get('email'):
             raise serializers.ValidationError("Email is required")
 
-        # Check if the email already exists
         if User.objects.filter(email=data['email']).exists():
             raise serializers.ValidationError("This email is already registered")
 
@@ -34,7 +37,10 @@ class RegisterSerializer(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
-        # Create the User
+        photo = validated_data.pop('photo', None)  # Remove photo from data if present
+        gender = validated_data.pop('gender', 'others')  # Remove gender from data if provided
+
+        # Create the User instance
         user = User.objects.create_user(
             username=validated_data['email'].split('@')[0],
             email=validated_data['email'],
@@ -43,11 +49,12 @@ class RegisterSerializer(serializers.ModelSerializer):
             last_name=validated_data.get('last_name', ''),
             role='customer',
             phone=validated_data.get('phone', ''),
-            address=validated_data.get('address', '')
+            address=validated_data.get('address', ''),
+            photo=photo  # Assign photo to the user model if provided
         )
 
         # Create the Customer associated with the user
-        customer = Customer.objects.create(
+        Customer.objects.create(
             user=user,
             phone_number=validated_data.get('phone', ''),
             address=validated_data.get('address', ''),
@@ -55,7 +62,8 @@ class RegisterSerializer(serializers.ModelSerializer):
             district=validated_data.get('district', ''),
             state=validated_data.get('state', ''),
             Thana=validated_data.get('Thana', ''),
-            postal_code=validated_data.get('postal_code', '')
+            postal_code=validated_data.get('postal_code', ''),
+            gender=gender  # Pass the gender value to the Customer instance
         )
 
         return user
@@ -65,7 +73,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
-        fields = ['name', 'customerID', 'phone_number', 'address', 'division', 'district', 'state', 'Thana', 'postal_code', 'created_at']
+        fields = ['name', 'customerID', 'phone_number', 'address', 'division', 'district', 'state', 'Thana', 'postal_code', 'created_at','gender']
 
 class UserSerializer(serializers.ModelSerializer):
     customer_profile = CustomerSerializer(read_only=True)  # Nested customer profile

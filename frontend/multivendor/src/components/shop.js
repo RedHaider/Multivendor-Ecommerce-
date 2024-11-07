@@ -11,7 +11,7 @@ import { ToastContainer, toast } from 'react-toastify';
 const Shop = () => {
 
   // store the states here
-
+  const location = useLocation();
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
@@ -32,6 +32,11 @@ const Shop = () => {
   //new added
   const [searchQuery, setSearchQuery] = useState("");
   const [wishlist, setWishList] = useState([]);
+
+  //extracting the category id from URL
+  const categoryIdFromUrl = new URLSearchParams(location.search).get("category")
+
+
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -87,6 +92,12 @@ const Shop = () => {
     fetchProductTypes();
     fetchSubCategory();
   }, []);
+
+  useEffect(() => {
+    if (categoryIdFromUrl) {
+      setSelectCategory((prevCategories) => [...prevCategories, categoryIdFromUrl]);
+    }
+  }, [categoryIdFromUrl]);
 
   const fetchWishlist = async () => {
     const token = localStorage.getItem('accessToken'); 
@@ -205,13 +216,12 @@ const handleAddToCart = async (event, product, redirectToCheckout = false) => {
   };
 
   // Handle category filter
-  const handleCategoryChange = (e) => {
-    const value = e.target.value;
-    
-    setSelectCategory((prevSelected) =>
-      prevSelected.includes(value) ? prevSelected.filter((cat) => cat !== value) : [...prevSelected, value]
-    );
-  };
+const handleCategoryChange = (e) => {
+  const value = e.target.value;
+  setSelectCategory((prevSelected) =>
+    prevSelected.includes(value) ? prevSelected.filter((cat) => cat !== value) : [...prevSelected, value]
+  );
+};
 
 
 
@@ -270,6 +280,15 @@ const handleAddToCart = async (event, product, redirectToCheckout = false) => {
     setVisibleCount((prevCount) => prevCount + 8);
   };
 
+  const clearAllFilters = () => {
+    setSelectCategory([]);
+    setSelectedBrand([]);
+    setSelectProductType([]);
+    setSelectSubCategory([]);
+    setPriceRange({ min: 0, max: 10000 });
+    setSearchQuery("");
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
 
@@ -291,7 +310,11 @@ const handleAddToCart = async (event, product, redirectToCheckout = false) => {
               {/* category filter */}
               <div className="row">
                 <div className="col-lg-6 shoptwoh">Filter</div>
-                <div className="col-lg-6 text-right shoptwotxt">Clear All</div>
+                <div className="col-lg-6 text-right shoptwotxt">
+                  <button className="btn btn-link" onClick={clearAllFilters}>
+                    Clear All
+                  </button>
+                </div>
               </div>
               <hr />
               <h5 className="d-flex justify-content-between">
@@ -312,12 +335,14 @@ const handleAddToCart = async (event, product, redirectToCheckout = false) => {
                   {categories.map((category) => (
                     <li className="category-item row" key={category.id}>
                       <div className="col text-left">
-                        <input
+                      <input
                           type="checkbox"
                           id={`category-${category.id}`}
-                          value={category.category_name} // Make sure you're filtering by category ID
+                          value={category.category_name}
                           onChange={handleCategoryChange}
+                          checked={selectCategory.includes(category.category_name)}  // Ensures checkbox is ticked
                         />
+                        
                         <label htmlFor={`category-${category.id}`} className="ml-1">
                           {category.category_name}
                         </label>
@@ -352,6 +377,7 @@ const handleAddToCart = async (event, product, redirectToCheckout = false) => {
                           id={`brand-${brand.id}`}
                           value={brand.brand_name} 
                           onChange={handleBrandChange}
+                          checked={selectedBrand.includes(brand.brand_name)}
                         />
                         <label htmlFor={`brand-${brand.id}`} className="ml-1">
                           {brand.brand_name}

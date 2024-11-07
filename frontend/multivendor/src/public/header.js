@@ -7,13 +7,12 @@ import SearchBar from '../utils/SearchBar';
 import config from '../config';
 
 const Header = () => {
-    const { isLoggedIn, user } = useContext(AuthContext);
+    const { isLoggedIn, user, logout } = useContext(AuthContext); // Import logout from AuthContext
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
-    // Fetch categories from the API
     useEffect(() => {
         axios.get(`${config.API_BASE_URL}/product-management/api/category/`)
             .then((response) => {
@@ -26,9 +25,13 @@ const Header = () => {
             });
     }, []);
 
-    // Redirect to Shop with selected category filter
     const handleCategoryClick = (categoryId) => {
         navigate(`/shop?category=${categoryId}`);
+    };
+
+    const handleLogout = () => {
+        logout();
+        navigate('/login'); // Redirect to login page after logout
     };
 
     return (
@@ -154,7 +157,7 @@ const Header = () => {
                                             <strong>{user?.name}</strong>
                                         </div>
                                         <div className="dropdown-divider"></div>
-                                        <Link to="/profile" className="dropdown-item">
+                                        <Link to="/myprofile" className="dropdown-item">
                                             Profile
                                         </Link>
                                         <Link to="/orderlist" className="dropdown-item">
@@ -164,9 +167,9 @@ const Header = () => {
                                             Settings
                                         </Link>
                                         <div className="dropdown-divider"></div>
-                                        <Link to="/logout" className="dropdown-item">
+                                        <button onClick={handleLogout} className="dropdown-item" style={{ cursor: 'pointer', border: 'none', background: 'none' }}>
                                             Logout
-                                        </Link>
+                                        </button>
                                     </div>
                                 </div>
                             ) : (

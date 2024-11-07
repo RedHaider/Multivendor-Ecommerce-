@@ -36,6 +36,7 @@ import TermsAndCondition from './components/TermsConditons';
 import ReturnAndRefund from './components/ReturnAndRefund';
 import VendorProfile from './components/VendorProfile';
 import MyProfile from './components/MyProfile';
+import Address from './components/address';
 
 
 function App() {
@@ -63,12 +64,14 @@ function App() {
       
 
         {/* open only if you registered */}
+        <Route path='/myprofile' element={<PrivateRoute><MyProfile/></PrivateRoute>}/>
         <Route path='/Whishlist' element={<PrivateRoute><Whishlist/></PrivateRoute>}/>
         <Route path='/productdetails/:productId' element={<PrivateRoute><ProductDetails/></PrivateRoute>}/>
         <Route path='/cart' element={<PrivateRoute><Cart/></PrivateRoute>}/>
         <Route path='/checkout' element={<PrivateRoute><Checkout/></PrivateRoute>}/>
         <Route path='/ordertracking/:orderId' element={<PrivateRoute><OrderTracking/></PrivateRoute>}/>
         <Route path='/orderlist' element={<PrivateRoute><OrderList/></PrivateRoute>} />
+        <Route path='/address' element={<PrivateRoute><Address/></PrivateRoute>} />
 
       </Routes>
       </div>

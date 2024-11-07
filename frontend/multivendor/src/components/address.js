@@ -1,12 +1,11 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../utils/authContext';
 import config from '../config';
 
-const MyProfile = () => {
-    const { user, isLoggedIn, logout } = useContext(AuthContext);// Get the current user details from context
+const Address = () => {
+    const { user, isLoggedIn, logout } = useContext(AuthContext); // Get the current user details from context
     const navigate = useNavigate();
     const [profile, setProfile] = useState({
         email: '',
@@ -15,7 +14,7 @@ const MyProfile = () => {
         lastName: '',
         birthday: '',
         gender: '',
-        profilePicture: ''
+        profilePicture: '',
     });
 
     const [error, setError] = useState('');
@@ -65,12 +64,14 @@ const MyProfile = () => {
     const handleChangePassword = () => {
         navigate('/change-password'); // Assuming there's a change password route
     };
+
+    // Logout function
     const handleLogout = () => {
-      logout();
-      setTimeout(() => {
-          navigate('/login');
-      }, 100);
-  };
+        logout();
+        setTimeout(() => {
+            navigate('/login');
+        }, 100);
+    };
 
     return (
         <div className="container mt-5 mb-5">
@@ -86,60 +87,41 @@ const MyProfile = () => {
             {error && <p style={{ color: 'red' }}>{error}</p>}
 
             <div className="row">
-              <div className="col-md-3 justify-content-center">
-                <div className="card" style={{ width: "18rem", backgroundColor: "#f8f9fa" }}>
-                  <div className="card-body">
-                    <Link to="/myprofile" className="card-text mb-3 text-dark text-decoration-none d-block">My Profile</Link>
-                    <Link to="/orderlist" className="card-text mb-3 text-dark text-decoration-none d-block">Orders</Link>
-                    <Link to="/Address" className="card-text mb-3 text-dark text-decoration-none d-block">Address</Link>
-                    <Link to="/whishlist" className="card-text mb-3 text-dark text-decoration-none d-block">Wishlist</Link>
-                    <Link to="/logout" onClick={handleLogout} className="card-text text-danger text-decoration-none d-block">Sign out</Link>
-                  </div>
+                <div className="col-md-3 justify-content-center">
+                    <div className="card" style={{ width: "18rem", backgroundColor: "#f8f9fa" }}>
+                        <div className="card-body">
+                            <Link to="/myprofile" className="card-text mb-3 text-dark text-decoration-none d-block">My Profile</Link>
+                            <Link to="/orderlist" className="card-text mb-3 text-dark text-decoration-none d-block">Orders</Link>
+                            <Link to="/Address" className="card-text mb-3 text-dark text-decoration-none d-block">Address</Link>
+                            <Link to="/whishlist" className="card-text mb-3 text-dark text-decoration-none d-block">Wishlist</Link>
+                            <Link to="/logout" onClick={handleLogout} className="card-text text-danger text-decoration-none d-block">Sign out</Link>
+                        </div>
+                    </div>
                 </div>
-              </div>
 
                 <div className="col-md-9">
                     <div className="row mb-4">
-                        <div className="col-md-6" >
-                            <div className="text-center mb-4">
-                                <img
-                                    src={`${config.API_BASE_URL}${profile.profilePicture}`}
-                                    alt="Profile"
-                                    className="img-fluid rounded-circle mb-2"
-                                    style={{ width: '200px', height: '200px' }}
-                                />
-                                
-                                <p><strong>Full Name:</strong> {profile.firstName} {profile.lastName}</p>
-                            </div>
+                        <div className="col-md-6" style={{ textAlign: "left" }} >
+                          <p><strong>Full Name:</strong> {profile.firstName} {profile.lastName}</p>
+                          <p><strong>Phone Number:</strong> {profile.phone}</p>
+                          <p><strong>Division:</strong> {profile.division}</p>
+                          <p><strong>State: </strong> {profile.state}</p>
+                          <p><strong>Postal Code:</strong> {profile.postal_code}</p>
                         </div>
                         <div className="col-md-6" style={{ textAlign: "left" }}>
                           <p><strong>Email Address:</strong> {profile.email}</p>
                           <p><strong>Customer ID:</strong> {profile.customerID}</p>
-                          <p><strong>Phone Number:</strong> {profile.phone}</p>
-                          <p><strong>Full Name:</strong> {profile.firstName} {profile.lastName}</p>
-                          <p>
-                            <strong>Profile Created:</strong> {new Date(profile.birthday).toLocaleDateString('en-GB', {
-                              day: '2-digit',
-                              month: 'long',
-                              year: 'numeric',
-                            }) || 'N/A'}
-                          </p>
-                          <p><strong>Gender:</strong> {profile.gender || 'N/A'}</p>
+                          <p><strong>Address:</strong> {profile.address}</p>
+                          <p><strong>District:</strong> {profile.district}</p>
+                          <p><strong>Thana:</strong> {profile.Thana}</p>
                         </div>
                     </div>
 
-                    <div className="row justify-content-center">
-                        <div className="col-md-4">
-                            <button className="btn btn-warning w-100 mb-3" onClick={handleEditProfile}>Edit Profile</button>
-                        </div>
-                        <div className="col-md-4">
-                            <button className="btn btn-warning w-100" onClick={handleChangePassword}>Change Password</button>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>
     );
 };
 
-export default MyProfile;
+export default Address;

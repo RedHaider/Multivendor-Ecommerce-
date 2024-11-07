@@ -37,6 +37,12 @@ class User(AbstractUser):
 
 #customer 
 class Customer(models.Model):
+    GENDER_CHOICES = (
+        ('male', 'Male'),
+        ('female', 'Female'),
+        ('others', 'Others'),
+    )
+
     user = models.OneToOneField(User, on_delete = models.CASCADE, related_name='customer_profile')
     name = models.CharField(max_length=150,  blank=True)
     customerID = models.CharField(max_length=15, unique=True, blank=True)
@@ -48,6 +54,7 @@ class Customer(models.Model):
     Thana = models.CharField(max_length=150, blank=True )
     postal_code = models.CharField(max_length= 150, blank = True)
     created_at = models.DateTimeField(auto_now_add=True)
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES, default='active', null=True,)
     
 
     def generate_customer_id(self):
