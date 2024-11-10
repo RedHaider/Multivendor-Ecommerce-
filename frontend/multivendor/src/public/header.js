@@ -7,12 +7,15 @@ import SearchBar from '../utils/SearchBar';
 import config from '../config';
 
 const Header = () => {
-    const { isLoggedIn, user, logout } = useContext(AuthContext); // Import logout from AuthContext
+    const { isLoggedIn, user, logout } = useContext(AuthContext);
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [wishlistCount, setWishListCount] = useState(null);
+    const [cartCount, setCartCount] = useState(0);  // Cart count state
     const navigate = useNavigate();
 
+    // Fetch categories for the dropdown
     useEffect(() => {
         axios.get(`${config.API_BASE_URL}/product-management/api/category/`)
             .then((response) => {
@@ -25,13 +28,74 @@ const Header = () => {
             });
     }, []);
 
+    //fetch wishlist number 
+
+    useEffect(() => {
+        const fetchWishlistCount = async () => {
+            try {
+                const token = localStorage.getItem('accessToken');
+                if (!token) {
+                    throw new Error('No token found, please log in');
+                }
+                const response = await axios.get(`${config.API_BASE_URL}/order-management/api/wishlist/`, {
+                    headers: {  // Corrected 'headers' instead of 'header'
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+    
+                const wishlistItems = response.data;
+                const totalWish = wishlistItems.length;
+                setWishListCount(totalWish);
+    
+            } catch (err) {
+                console.log('Error fetching Wishlist Items:', err);
+            }
+        };
+    
+        if (isLoggedIn) {
+            fetchWishlistCount();
+        }
+    }, [isLoggedIn]);
+    
+
+
+
+    // Fetch cart data to get the item count
+    useEffect(() => {
+        const fetchCartCount = async () => {
+            try {
+                const token = localStorage.getItem('accessToken');
+                if (!token) {
+                    throw new Error('No token found, please log in');
+                }
+
+                const response = await axios.get(`${config.API_BASE_URL}/order-management/api/cart-get/`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+
+                // Calculate total item count from cart data
+                const cartItems = response.data.cartitems || response.data;
+                const totalItemCount = cartItems.length; // Number of records
+                setCartCount(totalItemCount);
+            } catch (err) {
+                console.error('Error fetching cart items:', err);
+            }
+        };
+
+        if (isLoggedIn) {
+            fetchCartCount();
+        }
+    }, [isLoggedIn]);
+
     const handleCategoryClick = (categoryId) => {
         navigate(`/shop?category=${categoryId}`);
     };
 
     const handleLogout = () => {
         logout();
-        navigate('/login'); // Redirect to login page after logout
+        navigate('/login');
     };
 
     return (
@@ -122,11 +186,16 @@ const Header = () => {
                                         <Link to="/cart">
                                             <i className="fa fa-shopping-bag icon" id="cartIcon"></i>
                                         </Link>
-                                        <span className="notification-badge">1</span>
+                                        <span className="notification-badge">{cartCount}</span> {/* Display cart count */}
                                     </div>
-                                    <Link to="/whishlist" className="nav-link">
-                                        <i className="fa fa-heart icon p-2"></i>
-                                    </Link>
+                                    <div style={{ position: 'relative', marginRight: '20px' }}>
+                                            <Link to="/wishlist" >
+                                                <i className="fa fa-heart icon"></i>
+                                            </Link>
+                                        <span className="notification-badge">{wishlistCount}</span> {/* Display cart count */}
+                                    </div>
+                                    
+
                                 </div>
                             )}
 

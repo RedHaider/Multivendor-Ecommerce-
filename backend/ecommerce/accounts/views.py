@@ -2,7 +2,7 @@
 from django.shortcuts import render,  redirect
 from django.contrib.auth.decorators import login_required
 from .decorators import check_role
-from .models import  User
+from .models import  User, Vendor
 from django.contrib import messages
 from .forms import CustomLoginForm
 from django.contrib.auth import authenticate, login, logout
@@ -11,6 +11,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import RegisterSerializer
+from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
 
@@ -122,6 +123,17 @@ def logout_view(request):
     # Redirect to the login page after logout
     return redirect('login') 
 
+#user profile
+@login_required
+def user_profile(request):
+    user = request.user
+    if user.role == 'vendor':
+        # Fetch the vendor profile associated with this user
+        vendor = get_object_or_404(Vendor, user=user)
+        return render(request, 'pages/user-vendor.html', {'vendor': vendor})  # Context must be a dictionary
+    else:
+        # Redirect or display error if user is not a vendor
+        return render(request, 'error.html', {'message': 'Access Denied: You are not authorized to view this page.'})
 
 ##########################################################
 ###################         ##############################
