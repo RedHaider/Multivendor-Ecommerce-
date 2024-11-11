@@ -2,7 +2,7 @@
 from django.shortcuts import render,  redirect
 from django.contrib.auth.decorators import login_required
 from .decorators import check_role
-from .models import  User, Vendor
+from .models import  User, Vendor , Admin
 from django.contrib import messages
 from .forms import CustomLoginForm
 from django.contrib.auth import authenticate, login, logout
@@ -131,9 +131,13 @@ def user_profile(request):
         # Fetch the vendor profile associated with this user
         vendor = get_object_or_404(Vendor, user=user)
         return render(request, 'pages/user-vendor.html', {'vendor': vendor})  # Context must be a dictionary
+    
+    elif user.role =='admin':
+        return render(request, 'pages/user-admin.html', {'user':user})
+    
     else:
         # Redirect or display error if user is not a vendor
-        return render(request, 'error.html', {'message': 'Access Denied: You are not authorized to view this page.'})
+        return render(request,  {'message': 'Access Denied: You are not authorized to view this page.'})
 
 ##########################################################
 ###################         ##############################

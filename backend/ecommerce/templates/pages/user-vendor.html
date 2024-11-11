@@ -3,22 +3,28 @@
 
 {% block content %}
 
-<section class="profile-container container mt-5" 
->
+<section class="profile-container container mt-5">
   <!-- Profile Header -->
   <header
-  style="background-image: url('{{ vendor.banner.url }}'); 
-  background-size: cover; 
-  background-position: center; 
-  padding: 30px 0;
-  border-radius: 15px;
-  color: white;" class="profile-header text-center mt-5">
+    style="background-image: url('{{ vendor.banner.url}}'); 
+           background-size: cover; 
+           background-position: center; 
+           padding: 30px 0;
+           border-radius: 15px;
+           color: white;"
+    class="profile-header text-center mt-5">
+    
     <div class="profile-photo mb-3">
-      <img src="{{ vendor.logo.url }}" alt="Vendor Logo" class="rounded-circle" height="100" width="100" style="border: 3px solid white;">
+      <img src="{{ vendor.logo.url|default:'/static/img/default-logo.jpg' }}" alt="Vendor Logo" class="rounded-circle" height="100" width="100" style="border: 3px solid white;">
     </div>
-    <h2>{{ vendor.user.first_name }} {{ vendor.user.last_name }}</h2>
-    <p class=" text-white ">{{ vendor.business_name }}</p>
-    <p><a href="mailto:{{ vendor.user.email }}" style="color: #fff; text-decoration: underline;">{{ vendor.user.email }}</a></p>
+    <h2>{{ vendor.user.first_name|default:"First Name" }} {{ vendor.user.last_name|default:"Last Name" }}</h2>
+    <p class="text-white">{{ vendor.business_name|default:"Business Name" }}</p>
+    <p>
+      <a href="mailto:{{ vendor.user.email|default:"mailto:example@example.com" }}" style="color: #fff; text-decoration: underline;">
+        {{ vendor.user.email|default:"Email Not Available" }}
+      </a>
+    </p>
+    
     <div class="profile-actions d-flex justify-content-center gap-3 mt-3">
       <a href="{% url 'vendor_management' %}" class="btn btn-outline-light">Back</a>
       <a href="#" class="btn btn-outline-light">Edit Profile</a>
@@ -31,25 +37,38 @@
       <div class="row">
         <!-- Left Column -->
         <div class="col-md-6">
+          <h4 class="mb-3">My Information</h4>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"><strong>Name:</strong> {{ vendor.user.first_name|default:"First Name" }} {{ vendor.user.last_name|default:"Last Name" }}</li>
+            <li class="list-group-item"><strong>Email:</strong> {{ vendor.user.email|default:"Email Not Available" }}</li>
+            <li class="list-group-item"><strong>Phone Number:</strong> {{ vendor.user.phone|default:"Phone Not Available" }}</li>
+            <li class="list-group-item"><strong>Address:</strong> {{ vendor.user.address|default:"Address Not Available" }}</li>
+            <li class="list-group-item"><strong>Status:</strong> {{ vendor.user.status|default:"Status Not Available" }}</li>
+          </ul>
+        </div>
+
+        <div class="col-md-6">
           <h4 class="mb-3">Vendor Information</h4>
           <ul class="list-group list-group-flush">
-            <li class="list-group-item"><strong>Vendor ID:</strong> {{ vendor.vendorID }}</li>
-            <li class="list-group-item"><strong>Business Name:</strong> {{ vendor.business_name }}</li>
-            <li class="list-group-item"><strong>Phone Number:</strong> {{ vendor.phone_number }}</li>
-            <li class="list-group-item"><strong>Address:</strong> {{ vendor.address }}</li>
-            <li class="list-group-item"><strong>First Name:</strong> {{ vendor.user.first_name }}</li>
+            <li class="list-group-item"><strong>Vendor ID:</strong> {{ vendor.vendorID|default:"Not Available" }}</li>
+            <li class="list-group-item"><strong>Business Name:</strong> {{ vendor.business_name|default:"Not Available" }}</li>
+            <li class="list-group-item"><strong>Phone Number:</strong> {{ vendor.phone_number|default:"Not Available" }}</li>
+            <li class="list-group-item"><strong>Address:</strong> {{ vendor.address|default:"Not Available" }}</li>
+            <li class="list-group-item"><strong>Store Description:</strong> {{ vendor.store_description|default:"Not Available" }}</li>
+            <li class="list-group-item"><strong>Business License Number:</strong> {{ vendor.business_license_no|default:"Not Available" }}</li>
           </ul>
         </div>
 
         <!-- Right Column -->
-        <div class="col-md-6">
+        <div class="col-md-6 mt-5">
           <h4 class="mb-3">Location and Social Links</h4>
           <ul class="list-group list-group-flush">
-            <li class="list-group-item"><strong>District:</strong> {{ vendor.district }}</li>
-            <li class="list-group-item"><strong>Division:</strong> {{ vendor.division }}</li>
-            <li class="list-group-item"><strong>State:</strong> {{ vendor.state }}</li>
-            <li class="list-group-item"><strong>Facebook:</strong> <a href="{{ vendor.facebook }}" target="_blank">Facebook Profile</a></li>
-            <li class="list-group-item"><strong>Instagram:</strong> <a href="{{ vendor.instagram }}" target="_blank">Instagram Profile</a></li>
+            <li class="list-group-item"><strong>Division:</strong> {{ vendor.division|default:"Not Available" }}</li>
+            <li class="list-group-item"><strong>District:</strong> {{ vendor.district|default:"Not Available" }}</li>
+            <li class="list-group-item"><strong>State:</strong> {{ vendor.state|default:"Not Available" }}</li>
+            <li class="list-group-item"><strong>Contact Number:</strong> {{ vendor.contact_number|default:"Not Available" }}</li>
+            <li class="list-group-item"><strong>Facebook:</strong> <a href="{{ vendor.facebook|default:'#' }}" target="_blank">Link</a></li>
+            <li class="list-group-item"><strong>Instagram:</strong> <a href="{{ vendor.instagram|default:'#' }}" target="_blank">Link</a></li>
           </ul>
         </div>
       </div>

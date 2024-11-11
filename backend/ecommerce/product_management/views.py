@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import Vendor, Banner, Slider, Size, Color, Brand, Category, SubCategory, Product, ProductImage, ProductAttribute , Review , ProductType
@@ -263,55 +264,64 @@ def size_delete(request, pk):
     return render(request, 'product_management/size-list.html')
 
 
-#size Crud Operations done
+#Product Crud Operations done
 def product_list(request):
-    products = Product.objects.all()
-    return render(request, 'product_management.html', {'products':products})
+    user = request.user
+    if user.is_authenticated:
+        if user.role == 'vendor':
+            # Filter products uploaded by the current vendor
+            products = Product.objects.filter(user=user)
+        else:
+            # For non-vendors (e.g., admin), display all products
+            products = Product.objects.all()
+    else:
+        # For unauthenticated users, show no products or redirect as needed
+        products = Product.objects.none()
+
+    return render(request, 'product_management.html', {'products': products})
 
 
 def product_form(request):
     print('Entering product_form view')
     
-    # Fetch the vendor associated with the logged-in user
     vendor = get_object_or_404(Vendor, user=request.user)
     
     if request.method == 'POST':
         product_form = ProductForm(request.POST, request.FILES)
-        
-        # Pass 'instance=None' for formsets as no Product exists yet
-        attribute_formset = ProductAttributeFormSet(request.POST, request.FILES , instance=None)
-        image_formset = ProductImageFormSet(request.POST, request.FILES, instance=None)
+        attribute_formset = ProductAttributeFormSet(request.POST, request.FILES)
+        image_formset = ProductImageFormSet(request.POST, request.FILES)
 
         if product_form.is_valid() and attribute_formset.is_valid() and image_formset.is_valid():
             print('Form is valid')
 
-            # Create a product instance but don't save it yet
-            product = product_form.save(commit=False)  # Do not save to the database yet
-            product.user = request.user  # Set the user who is adding the product
-            product.vendor = vendor  # Set the vendor based on the logged-in use
-            
-            
-            product.save()  # Now save the product with the user
-            
-            # Set the product instance in the formsets before saving
+            # Initial save of the product instance without stock recalculation
+            product = product_form.save(commit=False)
+            product.user = request.user  
+            product.vendor = vendor  
+            product.save()  # Initial save to assign a primary key
+
+            # Save each attribute in the formset, associating it with the product
             attributes = attribute_formset.save(commit=False)
             for attribute in attributes:
                 attribute.product = product
                 attribute.save()
 
-            # Save product images
+            # Save each image in the formset, associating it with the product
             images = image_formset.save(commit=False)
             for image in images:
                 image.product = product
                 image.save()
 
-            return redirect('product-list')  # Redirect to your product management page
+            # After saving all attributes and images, recalculate stock level manually
+            product.stock_level = sum(attr.quantity for attr in product.attributes.all())
+            product.save()  # Final save to update stock level
+
+            return redirect('product-list')
 
     else:
         product_form = ProductForm()
-        # Formsets need 'instance=None' or they might not render correctly
-        attribute_formset = ProductAttributeFormSet(queryset=ProductAttribute.objects.none(), instance=None)
-        image_formset = ProductImageFormSet(queryset=ProductImage.objects.none(), instance=None)
+        attribute_formset = ProductAttributeFormSet(queryset=ProductAttribute.objects.none())
+        image_formset = ProductImageFormSet(queryset=ProductImage.objects.none())
 
     context = {
         'product_form': product_form,
@@ -324,6 +334,7 @@ def product_form(request):
     print(image_formset.errors)
 
     return render(request, 'pages/product-form.html', context)
+
 
 
 def product_detail(request, pk):
@@ -355,6 +366,9 @@ def product_edit(request, pk):
             
             attribute_formset.save()
             image_formset.save()
+
+            product.stock_level = sum(attr.quantity for attr in product.attributes.all())
+            product.save()  # Final save to update stock level
 
             return redirect('product-list')
     
@@ -423,6 +437,16 @@ def product_type_delete(request, pk):
         return redirect('product-type-list')
     return render(request, 'product_management/product_type_list.html', {'product_type':product_type})
 
+
+def load_categories(request):
+    product_type_id = request.GET.get('product_type')
+    categories = Category.objects.filter(product_type_id=product_type_id).order_by('category_name')
+    return JsonResponse(list(categories.values('id', 'category_name')), safe=False)
+
+def load_subcategories(request):
+    category_id = request.GET.get('category')
+    subcategories = SubCategory.objects.filter(category_id=category_id).order_by('subcategory_name')
+    return JsonResponse(list(subcategories.values('id', 'subcategory_name')), safe=False)
 
 ############################################################################
 ############################################################################

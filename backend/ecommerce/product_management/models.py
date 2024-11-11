@@ -105,15 +105,11 @@ class Product(models.Model):
         new_number = last_number + 1
         return f"PRO{new_number:09d}"  # Generates IDs like PRO000000001
     
-    def recalculate_stock_level(self):
-        total_stock = self.attributes.aggregate(total=models.Sum('quantity'))['total'] or 0
-        self.stock_level = total_stock
 
 
     def save(self, *args, **kwargs):
         if not self.product_id:
             self.product_id = self.generate_product_id()
-        self.recalculate_stock_level()
         super().save(*args, **kwargs)
 
     def __str__(self):

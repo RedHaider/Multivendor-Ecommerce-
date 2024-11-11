@@ -47,8 +47,24 @@ def coupon_delete(request, pk):
 
 
 def order_list(request):
-    order = Order.objects.all()
-    return render(request,'order_management/order.html' , {'order':order})
+    user = request.user
+    if user.is_authenticated and user.role == 'vendor':
+        # Retrieve the Vendor instance associated with the logged-in user
+        print('#################################################')
+        vendor = Vendor.objects.filter(user=user).first()
+        print(vendor)
+        if vendor:
+            # Filter orders where the vendor field matches the vendor instance
+            order = Order.objects.filter(vendor=vendor)
+            print(order)
+        else:
+            # If vendor instance not found, return an empty queryset
+            order = Order.objects.none()
+    else:
+        # If user is not a vendor or not authenticated, return an empty queryset
+        order = Order.objects.none()
+
+    return render(request, 'order_management/order.html', {'order': order})
 
 def order_form(request):
     if request.method == 'POST':
@@ -455,7 +471,8 @@ def process_order(request):
             order_note=order_data['order_note'],
             total_amount=order_data['total_amount'],
             sub_total=order_data['sub_total'],
-            coupon_id=coupon if coupon and vendor.user == coupon.user else None  # Use coupon_id, pass the Coupon instance
+            coupon_id=coupon if coupon and vendor.user == coupon.user else None,  # Use coupon_id, pass the Coupon instance
+            vendor= vendor
         )
 
         print("Created Order for Vendor:", vendor_order_instance)

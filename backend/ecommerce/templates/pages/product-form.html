@@ -331,10 +331,52 @@
         }
     });
     </script>
- 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script type="text/javascript">
+        // Handle Product Type change
+        $('#product_type').change(function() {
+            var url = "{% url 'ajax_load_categories' %}";  // URL for loading categories
+            var productTypeId = $(this).val();
+    
+            $.ajax({
+                url: url,
+                data: {
+                    'product_type': productTypeId
+                },
+                success: function(data) {
+                    $("#category").html('<option value="">Select Category</option>');
+                    $.each(data, function(index, category) {
+                        $("#category").append('<option value="' + category.id + '">' + category.category_name + '</option>');
+                    });
+                    $("#subcategory").html('<option value="">Select SubCategory</option>');  // Clear subcategories
+                }
+            });
+        });
+    
+        // Handle Category change
+        $('#category').change(function() {
+            var url = "{% url 'ajax_load_subcategories' %}";  // URL for loading subcategories
+            var categoryId = $(this).val();
+    
+            $.ajax({
+                url: url,
+                data: {
+                    'category': categoryId
+                },
+                success: function(data) {
+                    $("#subcategory").html('<option value="">Select SubCategory</option>');
+                    $.each(data, function(index, subcategory) {
+                        $("#subcategory").append('<option value="' + subcategory.id + '">' + subcategory.subcategory_name + '</option>');
+                    });
+                }
+            });
+        });
+    </script>
     
  <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
  <script>
      CKEDITOR.replace('product_details');  // Initialize CKEditor for the product_details field
  </script>
+ 
 {% endblock %}

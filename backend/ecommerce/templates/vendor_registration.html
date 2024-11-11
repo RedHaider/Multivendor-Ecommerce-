@@ -59,41 +59,41 @@
                 <div class="form-group col-md-6">
                     <label for="id_first_name">First Name</label>
                     {{ user_form.first_name.errors }}
-                    <input type="text" id="id_first_name" name="first_name" class="form-control" value="{{ user_form.first_name.value|default:'' }}">
+                    <input type="text" id="id_first_name" name="first_name" class="form-control" value="{{ user_form.first_name.value|default:'' }}" required>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="id_last_name">Last Name</label>
                     {{ user_form.last_name.errors }}
-                    <input type="text" id="id_last_name" name="last_name" class="form-control" value="{{ user_form.last_name.value|default:'' }}">
+                    <input type="text" id="id_last_name" name="last_name" class="form-control" value="{{ user_form.last_name.value|default:'' }}" required>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="id_email">Email</label>
                     {{ user_form.email.errors }}
-                    <input type="email" id="id_email" name="email" class="form-control" value="{{ user_form.email.value|default:'' }}">
+                    <input type="email" id="id_email" name="email" class="form-control" value="{{ user_form.email.value|default:'' }}" required>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="id_phone">Phone</label>
                     {{ user_form.phone.errors }}
-                    <input type="text" id="id_phone" name="phone" class="form-control" value="{{ user_form.phone.value|default:'' }}">
+                    <input type="text" id="id_phone" name="phone" class="form-control" value="{{ user_form.phone.value|default:'' }}" required>
                 </div>
             </div>
             <div class="form-group">
                 <label for="id_address">Address</label>
                 {{ user_form.address.errors }}
-                <textarea id="id_address" name="address" class="form-control">{{ user_form.address.value|default:'' }}</textarea>
+                <textarea id="id_address" name="address" class="form-control" required>{{ user_form.address.value|default:'' }}</textarea>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="id_password">Password</label>
                     {{ user_form.password.errors }}
-                    <input type="password" id="id_password" name="password" class="form-control">
+                    <input type="password" id="id_password" name="password" class="form-control" required>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="id_photo">Profile Photo</label>
                     {{ user_form.photo.errors }}
-                    <input type="file" id="id_photo" name="photo" class="form-control">
+                    <input type="file" id="id_photo" name="photo" class="form-control" required>
                 </div>
             </div>
 
@@ -103,46 +103,46 @@
                 <div class="form-group col-md-6">
                     <label for="id_business_name">Business Name</label>
                     {{ vendor_form.business_name.errors }}
-                    <input type="text" id="id_business_name" name="business_name" class="form-control" value="{{ vendor_form.business_name.value|default:'' }}">
+                    <input type="text" id="id_business_name" name="business_name" class="form-control" value="{{ vendor_form.business_name.value|default:'' }}" required>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="id_phone_number">Business Phone</label>
                     {{ vendor_form.phone_number.errors }}
-                    <input type="text" id="id_phone_number" name="phone_number" class="form-control" value="{{ vendor_form.phone_number.value|default:'' }}">
+                    <input type="text" id="id_phone_number" name="phone_number" class="form-control" value="{{ vendor_form.phone_number.value|default:'' }}" required>
                 </div>
             </div>
             <div class="form-group">
                 <label for="id_business_address">Business Address</label>
                 {{ vendor_form.address.errors }}
-                <textarea id="id_business_address" name="address" class="form-control">{{ vendor_form.address.value|default:'' }}</textarea>
+                <textarea id="id_business_address" name="address" class="form-control" required>{{ vendor_form.address.value|default:'' }}</textarea>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="id_logo">Logo</label>
                     {{ vendor_form.logo.errors }}
-                    <input type="file" id="id_logo" name="logo" class="form-control">
+                    <input type="file" id="id_logo" name="logo" class="form-control" required>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="id_banner">Banner</label>
                     {{ vendor_form.banner.errors }}
-                    <input type="file" id="id_banner" name="banner" class="form-control">
+                    <input type="file" id="id_banner" name="banner" class="form-control" required>
                 </div>
             </div>
             <div class="form-group">
                 <label for="id_store_description">Store Description</label>
                 {{ vendor_form.store_description.errors }}
-                <textarea id="id_store_description" name="store_description" class="form-control">{{ vendor_form.store_description.value|default:'' }}</textarea>
+                <textarea id="id_store_description" name="store_description" class="form-control" required>{{ vendor_form.store_description.value|default:'' }}</textarea>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label for="id_division">Division</label>
                     {{ vendor_form.division.errors }}
-                    <input type="text" id="id_division" name="division" class="form-control" value="{{ vendor_form.division.value|default:'' }}">
+                    <input type="text" id="id_division" name="division" class="form-control" value="{{ vendor_form.division.value|default:'' }}" required>
                 </div>
                 <div class="form-group col-md-4">
                     <label for="id_district">District</label>
                     {{ vendor_form.district.errors }}
-                    <input type="text" id="id_district" name="district" class="form-control" value="{{ vendor_form.district.value|default:'' }}">
+                    <input type="text" id="id_district" name="district" class="form-control" value="{{ vendor_form.district.value|default:'' }}" required>
                 </div>
                 <div class="form-group col-md-4">
                     <label for="id_state">State</label>
@@ -153,28 +153,28 @@
             <div class="form-group">
                 <label for="id_business_license_no">Business License Number</label>
                 {{ vendor_form.business_license_no.errors }}
-                <input type="text" id="id_business_license_no" name="business_license_no" class="form-control" value="{{ vendor_form.business_license_no.value|default:'' }}">
+                <input type="text" id="id_business_license_no" name="business_license_no" class="form-control" value="{{ vendor_form.business_license_no.value|default:'' }}" required>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="id_facebook">Facebook</label>
                     {{ vendor_form.facebook.errors }}
-                    <input type="text" id="id_facebook" name="facebook" class="form-control" value="{{ vendor_form.facebook.value|default:'' }}">
+                    <input type="text" id="id_facebook" name="facebook" class="form-control" value="{{ vendor_form.facebook.value|default:'' }}" required>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="id_instagram">Instagram</label>
                     {{ vendor_form.instagram.errors }}
-                    <input type="text" id="id_instagram" name="instagram" class="form-control" value="{{ vendor_form.instagram.value|default:'' }}">
+                    <input type="text" id="id_instagram" name="instagram" class="form-control" value="{{ vendor_form.instagram.value|default:'' }}" required>
                 </div>
             </div>
             <div class="form-group">
                 <label for="id_contact_number">Contact Number</label>
                 {{ vendor_form.contact_number.errors }}
-                <input type="text" id="id_contact_number" name="contact_number" class="form-control" value="{{ vendor_form.contact_number.value|default:'' }}">
+                <input type="text" id="id_contact_number" name="contact_number" class="form-control" value="{{ vendor_form.contact_number.value|default:'' }}" required>
             </div>
             
             <!-- Submit Button -->
-            <button type="submit" class="btn btn-primary">Register</button>
+            <button type="submit" class="btn btn-primary" id="submitBtn" disabled>Register</button>
         </form>
     </div>
     </div>

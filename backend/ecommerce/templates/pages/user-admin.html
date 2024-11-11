@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="profile-container container mt-5">
+  <!-- Profile Header -->
+  <header class="profile-header text-center">
+    <div class="profile-photo mb-3">
+      <img src="{{ admin.user.photo.url }}" alt="Admin Photo" class="rounded-circle" height="100" width="100">
+    </div>
+    <h2>{{ admin.user.first_name }} {{ admin.user.last_name }}</h2>
+    <p class="text-muted">{{ admin.role }}</p>
+    <p><a href="mailto:{{ admin.user.email }}">{{ admin.user.email }}</a></p>
+  </header>
+
+  <!-- Profile Details -->
+  <div class="profile-details card mt-4">
+    <div class="card-body">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><strong>Role:</strong> {{ user.first_name }} {{ user.last_name }}</li>
+        <li class="list-group-item"><strong>Email:</strong> {{ user.email }}</li>
+        <li class="list-group-item"><strong>Role:</strong> {{ user.role }}</li>
+        <li class="list-group-item"><strong>Phone Number:</strong> {{ user.phone }}</li>
+        <li class="list-group-item"><strong>Address:</strong> {{ user.address }}</li>
+        <li class="list-group-item"><strong>Status:</strong> {{ user.status }}</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
