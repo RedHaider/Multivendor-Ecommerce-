@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link  } from 'react-router-dom';
 import axios from 'axios';
 import ProductCarousel from "../utils/ProductCarousel";
 import RatingBreakdown from "../productComponents/RatingBreakdown";
@@ -182,7 +182,9 @@ const ProductDetails = () => {
                 </div>
                 <p class="text-danger font-weight-bold mt-1">{product.price}</p>
                 <p class="product-details-info-description">{product.description}</p>
+                <p class="product-details-info-description">Vendor: <Link to={`/vendorprofile/${product.vendor.id}`}>{product.vendor.business_name}</Link></p>
                 <p className="product-details-info-attribute">Category: <span className="product-details-info-attribute-span">{product.category}</span></p>
+
 
                 {/* Color Selection */}
                 <div className='mb-3'>

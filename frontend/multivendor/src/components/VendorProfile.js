@@ -1,122 +1,116 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useParams } from "react-router-dom";
+import config from "../config";
+import axios from "axios";
+import HomeProduct from "./HomeComponenets.js/HomeProduct";
 
 const VendorProfile = () => {
+  const { id } = useParams();
+  const [vendorInfo, setVendorInfo] = useState(null);
+  const [error, setError] = useState(null); 
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchVendorDetails = async () => {
+      try {
+        const response = await axios.get(`${config.API_BASE_URL}/api/vendors/${id}/`);
+        setVendorInfo(response.data);
+      } catch (error) {
+        setError("Error fetching vendor data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchVendorDetails();
+  }, [id]);
+
+  if (loading) return <p>Loading vendor details...</p>;
+  if (error) return <p>{error}</p>;
+
   return (
     <div className="container mt-5">
-        <div className="row  no-gutters justify-content-center mb-2">
+      <div className="row no-gutters justify-content-center mb-2">
         <div className="col text-center">
-        <div className="heading">
+          <div className="heading">
             <h1>Vendor Profile</h1>
             <hr className="underline-hr"/>
+          </div>
         </div>
-        </div>
-        </div>
+      </div>
+      
       <div className="row">
-        {/* Left Column for Profile and Description */}
         <div className="col-md-4">
           <img
-            src="https://via.placeholder.com/150" // Replace with actual image URL
+            src={vendorInfo.logo || "https://via.placeholder.com/150"}
             alt="Vendor Profile"
             className="img-fluid rounded-circle mb-3"
           />
           <h4>Description</h4>
-          <p>
-            When an unknown printer took a galley of type and scrambled it to
-            make a type specimen book. It has survived not only five centuries,
-            but also the leap into electronic typesetting, remaining essentially
-            unchanged. It was popularised in the 1960s with the release of
-            Letraset sheets containing Lorem Ipsum passages, and more recently
-            with desktop publishing software like Aldus PageMaker including
-            versions of Lorem Ipsum.
-          </p>
+          <p>{vendorInfo.store_description || "No description available."}</p>
         </div>
 
-        {/* Right Column for Seller Information and Products */}
         <div className="col-md-8">
-        <div className="row">
-            <div className="col-md-6">
-          <h4>ShopY</h4>
-          <table className="table table-bordered">
-            <tbody>
-              <tr>
-                <th>Seller Name</th>
-                <td>sellerY</td>
-              </tr>
-              <tr>
-                <th>Total Products</th>
-                <td>03</td>
-              </tr>
-              <tr>
-                <th>Total Sale</th>
-                <td>23</td>
-              </tr>
-              <tr>
-                <th>Join Date</th>
-                <td>January 20, 2021</td>
-              </tr>
-            </tbody>
-          </table>
-          </div>
-          <div className="col-md-6">
-          <div className="mt-4">
-            <h5>Contact</h5>
-            <p>sellerY@shopy.com</p>
-            <p>0000111111</p>
-          </div>
-          </div>
-          </div>
-
-          <h4 className="mt-4">Seller Products</h4>
           <div className="row">
-            {/* Product 1 */}
-            <div className="col-md-4">
-              <div className="card">
-                <img
-                  src="https://via.placeholder.com/150" // Replace with product image URL
-                  className="card-img-top"
-                  alt="Product"
-                />
-                <div className="card-body">
-                  <h5 className="card-title">Shoe</h5>
-                  <p className="card-text">$1200</p>
-                  <button className="btn btn-warning">Add To Cart</button>
-                </div>
-              </div>
+            <div className="col-md-6">
+              <h4>{vendorInfo.business_name}</h4>
+              <table className="table table-bordered">
+                <tbody>
+                  <tr>
+                    <th>Seller Name</th>
+                    <td>{vendorInfo.business_name}</td>
+                  </tr>
+                  <tr>
+                    <th>Total Products</th>
+                    <td>{vendorInfo.total_products || "N/A"}</td>  
+                  </tr>
+                  <tr>
+                    <th>Total Sale</th>
+                    <td>{vendorInfo.total_sales || "N/A"}</td>
+                  </tr>
+                  <tr>
+                    <th>Join Date</th>
+                    <td>{new Date(vendorInfo.created_at).toLocaleDateString()}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
+            <div className="col-md-6">
+              <div className="mt-4">
+                <h5>Contact</h5>
+                <p>{vendorInfo.user ? vendorInfo.user.email : "N/A"}  {vendorInfo.contact_number || "N/A"}</p>
+                <p>Address: {vendorInfo.address || "N/A"}</p>
+                <p>Division: {vendorInfo.division || "N/A"}</p>
+                <p>District: {vendorInfo.district || "N/A"}</p>
+                <p>State: {vendorInfo.state || "N/A"}</p>
+                <p>
+                  {vendorInfo.facebook ? (
+                    <a href={vendorInfo.facebook} target="_blank" rel="noopener noreferrer">
+                      Facebook |
+                    </a>
+                  ) : (
+                    "N/A"
+                  )}
 
-            {/* Product 2 */}
-            <div className="col-md-4">
-              <div className="card">
-                <img
-                  src="https://via.placeholder.com/150" // Replace with product image URL
-                  className="card-img-top"
-                  alt="Product"
-                />
-                <div className="card-body">
-                  <h5 className="card-title">Bag</h5>
-                  <p className="card-text">$1200</p>
-                  <button className="btn btn-warning">Add To Cart</button>
-                </div>
-              </div>
-            </div>
-
-            {/* Product 3 */}
-            <div className="col-md-4">
-              <div className="card">
-                <img
-                  src="https://via.placeholder.com/150" // Replace with product image URL
-                  className="card-img-top"
-                  alt="Product"
-                />
-                <div className="card-body">
-                  <h5 className="card-title">Jacket</h5>
-                  <p className="card-text">$1200</p>
-                  <button className="btn btn-warning">Add To Cart</button>
-                </div>
+                  {vendorInfo.instagram ? (
+                    <a href={vendorInfo.instagram} target="_blank" rel="noopener noreferrer">
+                     | Instagram
+                    </a>
+                  ) : (
+                    "N/A"
+                  )}
+                </p>
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Render HomeProduct component only if vendorInfo is loaded */}
+      <div className="row mt-4">
+        <div className="col-12">
+          {vendorInfo && <HomeProduct vendorId={id} />} {/* Pass vendorId to HomeProduct */}
         </div>
       </div>
     </div>

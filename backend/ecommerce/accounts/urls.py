@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import vendor_registration_view, login_view, logout_view, RegisterView, LoginView ,get_user_details , user_profile
+from .views import vendor_registration_view, login_view, logout_view, RegisterView, LoginView ,get_user_details , user_profile , vendor_details
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -18,7 +18,7 @@ urlpatterns = [
 ##########################################################
     
     path('api/user/details/', get_user_details, name='user-details'),
-
+    path('api/vendors/<str:id>/', vendor_details, name='vendor-detail'),
 
 ]
 

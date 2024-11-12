@@ -148,7 +148,7 @@ def user_profile(request):
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from .serializers import UserSerializer
+from .serializers import UserSerializer, VendorSerializer
 
 class RegisterView(APIView):
     def post(self, request):
@@ -197,3 +197,12 @@ def get_user_details(request):
 
     serializer = UserSerializer(user)
     return Response(serializer.data)
+
+@api_view(['GET'])
+def vendor_details(request, id):
+    try:
+        vendor = Vendor.objects.get(id=id)  # Fixed typo: Vendor.objects.get
+        serializer = VendorSerializer(vendor)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Vendor.DoesNotExist:
+        return Response({"error": "Vendor not found"}, status=status.HTTP_404_NOT_FOUND)

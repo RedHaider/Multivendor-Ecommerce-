@@ -85,4 +85,5 @@ class UserSerializer(serializers.ModelSerializer):
 class VendorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vendor
-        fields = '__all__'  # Include all fields or specify the fields you need
+        fields = '__all__'  
+

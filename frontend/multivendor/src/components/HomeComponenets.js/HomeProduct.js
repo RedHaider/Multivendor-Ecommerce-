@@ -6,7 +6,7 @@ import { FaHeart, FaShoppingCart, FaStar } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const HomeProduct = () => {
+const HomeProduct = ( { vendorId }) => {
   const [products, setProducts] = useState([]);
   const [wishlist, setWishList] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -65,7 +65,12 @@ const HomeProduct = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`${config.API_BASE_URL}/product-management/api/products/`);
-        setProducts(response.data);
+
+        const filteredProducts = vendorId
+          ? response.data.filter((product) => product.vendor.id === parseInt(vendorId))
+          : response.data;
+
+        setProducts(filteredProducts);
         await fetchWishlist(); 
         setLoading(false);
       } catch (error) {
@@ -74,7 +79,7 @@ const HomeProduct = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [vendorId]);
 
 
 

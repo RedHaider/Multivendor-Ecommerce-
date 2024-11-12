@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from .models import Product, Category, ProductType, ProductAttribute, ProductImage , Brand , ProductType, SubCategory
-from accounts.serializers import UserSerializer
+from .models import Product, Category, ProductType, ProductAttribute, ProductImage , Brand , ProductType, SubCategory 
+from accounts.serializers import UserSerializer , VendorSerializer
 
 
 
@@ -32,6 +32,7 @@ class BrandSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+
 class SubCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = SubCategory
@@ -46,8 +47,9 @@ class ProductSerializer(serializers.ModelSerializer):
     subcategory = serializers.StringRelatedField()  # Show the subcategory name
     product_type = serializers.StringRelatedField()  # Show the product type name
     brand = serializers.StringRelatedField()  # Show the brand name
-    vendor = serializers.StringRelatedField()  # Show the vendor name
+    # vendor = serializers.StringRelatedField()  # Show the vendor name
     user = UserSerializer()
+    vendor = VendorSerializer( read_only=True)
     
 
     class Meta:

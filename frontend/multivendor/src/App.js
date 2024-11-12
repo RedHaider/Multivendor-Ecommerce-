@@ -58,12 +58,13 @@ function App() {
         <Route path='/register' element={<Register/>}/>
         <Route path='/termsandcondition' element={<TermsAndCondition/>}/>
         <Route path='/returnpolicy' element={<ReturnAndRefund/>}/>
-        <Route path='/vednorprofile' element={<VendorProfile/>}/>
+        
         
       
 
         {/* open only if you registered */}
         <Route path='/myprofile' element={<PrivateRoute><MyProfile/></PrivateRoute>}/>
+        <Route path='/vendorprofile/:id' element={<PrivateRoute><VendorProfile/></PrivateRoute>}/>
         <Route path='/wishlist' element={<PrivateRoute><Whishlist/></PrivateRoute>}/>
         <Route path='/productdetails/:productId' element={<PrivateRoute><ProductDetails/></PrivateRoute>}/>
         <Route path='/cart' element={<PrivateRoute><Cart/></PrivateRoute>}/>
