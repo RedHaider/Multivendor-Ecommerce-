@@ -1,12 +1,14 @@
 import { useNavigate } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import config from '../../config';
+import { AuthContext } from '../../utils/authContext';
 import { FaHeart, FaShoppingCart, FaStar } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const HomeProduct = ( { vendorId }) => {
+  const { fetchCartCount, fetchWishlistCount } = useContext(AuthContext);
   const [products, setProducts] = useState([]);
   const [wishlist, setWishList] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,19 +24,16 @@ const HomeProduct = ( { vendorId }) => {
 
   // Function to add product to cart and optionally redirect to checkout
   const handleAddToCart = async (event, product, redirectToCheckout = false) => {
-    event.stopPropagation(); // Stop propagation to prevent triggering the parent onClick
-    event.preventDefault();  // Prevent any default link behavior
-
-    const customerId = localStorage.getItem('userId'); // Retrieve the customer ID from localStorage
+    event.stopPropagation(); 
+    event.preventDefault();  
+    const customerId = localStorage.getItem('userId'); 
 
     if (!customerId) {
       toast.error("You must be logged in to add items to the cart.");
       return;
     }
 
-    // Select a default variant if available
     const defaultVariant = product.attributes && product.attributes.length > 0 ? product.attributes[0] : null;
-
     if (!defaultVariant) {
       toast.error("This product has no available variants to add to the cart.");
       return;
@@ -43,13 +42,14 @@ const HomeProduct = ( { vendorId }) => {
     try {
       await axios.post(`${config.API_BASE_URL}/order-management/api/add-to-cart/`, {
         product_id: product.id,
-        product_variant_id: defaultVariant.id, // Send the selected variant ID
-        quantity: 1, // Assuming a default quantity of 1 for now
-        customer_id: customerId // Pass the customer ID from localStorage
+        product_variant_id: defaultVariant.id, 
+        quantity: 1, 
+        customer_id: customerId 
       });
       toast.success("Product added to cart successfully!");
+      fetchCartCount();
 
-      // If `redirectToCheckout` is true, navigate to the checkout page
+
       if (redirectToCheckout) {
         navigate('/checkout');
       }
@@ -85,11 +85,10 @@ const HomeProduct = ( { vendorId }) => {
 
   const fetchWishlist = async () => {
     const token = localStorage.getItem('accessToken'); 
-  
     try {
       const response = await axios.get(`${config.API_BASE_URL}/order-management/api/wishlist/`, {
         headers: {
-          Authorization: `Bearer ${token}`, // Include token in the request header
+          Authorization: `Bearer ${token}`, 
         },
       });
       setWishList(response.data);
@@ -105,9 +104,7 @@ const HomeProduct = ( { vendorId }) => {
   const addToWishlist = async (event, productId) => {
     event.stopPropagation();
     event.preventDefault();
-  
     const token = localStorage.getItem('accessToken'); 
-  
     try {
       await axios.post(
         `${config.API_BASE_URL}/order-management/api/wishlist/add/`,
@@ -118,15 +115,13 @@ const HomeProduct = ( { vendorId }) => {
           },
         }
       );
-   
-  
-      // Update wishlist state immediately for instant feedback
+
       setWishList((prevWishlist) => [
         ...prevWishlist,
         { product: { id: productId } },
       ]);
+      fetchWishlistCount();
     } catch (error) {
-   
       console.error("Add to wishlist error", error);
     }
   };
@@ -134,22 +129,16 @@ const HomeProduct = ( { vendorId }) => {
   const removeFromWishlist = async (event, productId) => {
     event.stopPropagation();
     event.preventDefault();
-  
     const token = localStorage.getItem('accessToken'); 
-  
     try {
       await axios.delete(`${config.API_BASE_URL}/order-management/api/wishlist/remove/${productId}/`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-
-  
-      setWishList((prevWishlist) =>
-        prevWishlist.filter((item) => item.product.id !== productId)
-      );
+      setWishList(prevWishlist => prevWishlist.filter(item => item.product.id !== productId));
+      fetchWishlistCount();
     } catch (error) {
-      
       console.error("Remove from wishlist error", error);
     }
   };
@@ -164,7 +153,6 @@ const HomeProduct = ( { vendorId }) => {
 
   return (
     <div className="container mb-5">
-      <ToastContainer />
       <div className="row justify-content-center">
         <div className="col text-center">
           <div className="heading">

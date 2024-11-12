@@ -7,12 +7,10 @@ import SearchBar from '../utils/SearchBar';
 import config from '../config';
 
 const Header = () => {
-    const { isLoggedIn, user, logout } = useContext(AuthContext);
+    const { isLoggedIn, user, logout, cartCount, wishlistCount } = useContext(AuthContext);
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [wishlistCount, setWishListCount] = useState(null);
-    const [cartCount, setCartCount] = useState(0);  // Cart count state
     const navigate = useNavigate();
 
     // Fetch categories for the dropdown
@@ -31,63 +29,17 @@ const Header = () => {
     //fetch wishlist number 
 
     useEffect(() => {
-        const fetchWishlistCount = async () => {
-            try {
-                const token = localStorage.getItem('accessToken');
-                if (!token) {
-                    throw new Error('No token found, please log in');
-                }
-                const response = await axios.get(`${config.API_BASE_URL}/order-management/api/wishlist/`, {
-                    headers: {  // Corrected 'headers' instead of 'header'
-                        Authorization: `Bearer ${token}`
-                    }
-                });
+        axios.get(`${config.API_BASE_URL}/product-management/api/category/`)
+            .then((response) => {
+                setCategories(response.data);
+                setLoading(false);
+            })
+            .catch((error) => {
+                setError('Failed to fetch categories');
+                setLoading(false);
+            });
+    }, []);
     
-                const wishlistItems = response.data;
-                const totalWish = wishlistItems.length;
-                setWishListCount(totalWish);
-    
-            } catch (err) {
-                console.log('Error fetching Wishlist Items:', err);
-            }
-        };
-    
-        if (isLoggedIn) {
-            fetchWishlistCount();
-        }
-    }, [isLoggedIn]);
-    
-
-
-
-    // Fetch cart data to get the item count
-    useEffect(() => {
-        const fetchCartCount = async () => {
-            try {
-                const token = localStorage.getItem('accessToken');
-                if (!token) {
-                    throw new Error('No token found, please log in');
-                }
-
-                const response = await axios.get(`${config.API_BASE_URL}/order-management/api/cart-get/`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-
-                // Calculate total item count from cart data
-                const cartItems = response.data.cartitems || response.data;
-                const totalItemCount = cartItems.length; // Number of records
-                setCartCount(totalItemCount);
-            } catch (err) {
-                console.error('Error fetching cart items:', err);
-            }
-        };
-
-        if (isLoggedIn) {
-            fetchCartCount();
-        }
-    }, [isLoggedIn]);
 
     const handleCategoryClick = (categoryId) => {
         navigate(`/shop?category=${categoryId}`);
