@@ -52,13 +52,20 @@ const HomeCategory = () => {
         <div className="container mt-5">
           <div className="custom-grid">
             {categories.slice(0, visibleCount).map((category) => (
-              <div className="card h-100" key={category.id}
-                  onClick={() => handleCategoryClick(category.category_name)}
-                  style={{ cursor: 'pointer' }}>
+              <div 
+                className="card h-100" 
+                key={category.id}
+                onClick={() => handleCategoryClick(category.category_name)}
+                style={{ 
+                  cursor: 'pointer',
+                  border: '1px solid #ccc',     // Optional: to round the corners slightly
+                }}
+              >
                 <img
                   src={`${config.API_BASE_URL}${category.category_image}`}
                   className="card-img-top"
                   alt={category.category_name}
+                  height={100}
                 />
                 <div className="card-body text-center">
                   <h5 className="card-title card-title-small">{category.category_name}</h5>

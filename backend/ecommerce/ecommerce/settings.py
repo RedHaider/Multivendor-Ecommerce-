@@ -178,4 +178,4 @@ SESSION_COOKIE_AGE = 1209600  # 2 weeks, adjust as needed
 # Use Django's session-based authentication system
 SESSION_SAVE_EVERY_REQUEST = True  # This will update the session expiration time every time the user makes a request.
 
-ALLOWED_HOSTS = ['haiderpupil.pythonanywhere.com', 'rongberong.eitrobotics.com']
+# ALLOWED_HOSTS = ['haiderpupil.pythonanywhere.com', 'rongberong.eitrobotics.com']

@@ -266,7 +266,7 @@ def order_detail_view(request, order_id):
 ############################ API ###########################################
 ############################################################################
 ############################################################################
-
+from django.db import transaction
 from rest_framework.decorators import api_view ,permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -435,82 +435,96 @@ def process_order(request):
 
     print("Extracted Order Data:", order_data)
 
-    # Fetch the User instance (Customer) based on customer_id
-    customer_user = User.objects.filter(id=order_data['customer_id']).first()
-    if not customer_user:
-        return Response({"error": "Customer not found"}, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        with transaction.atomic():
+            # Fetch the User instance (Customer) based on customer_id
+            customer_user = User.objects.filter(id=order_data['customer_id']).first()
+            if not customer_user:
+                return Response({"error": "Customer not found"}, status=status.HTTP_400_BAD_REQUEST)
 
-    # Fetch the coupon instance if coupon_id is provided
-    coupon_id = request.data.get('coupon_id')
-    coupon = None
-    if coupon_id:
-        coupon = get_object_or_404(Coupon, id=coupon_id)
+            # Fetch the coupon instance if coupon_id is provided
+            coupon_id = request.data.get('coupon_id')
+            coupon = None
+            if coupon_id:
+                coupon = get_object_or_404(Coupon, id=coupon_id)
 
-    vendor_orders = request.data.get('vendor_orders')
-    if not vendor_orders:
-        return Response({"error": "Vendor orders not found"}, status=status.HTTP_400_BAD_REQUEST)
+            vendor_orders = request.data.get('vendor_orders')
+            if not vendor_orders:
+                return Response({"error": "Vendor orders not found"}, status=status.HTTP_400_BAD_REQUEST)
 
-    created_order_ids = []  # Store created order IDs to return later
+            created_order_ids = []  # Store created order IDs to return later
 
-    # For each vendor, create a separate order and order items
-    for vendor_order in vendor_orders:
-        vendor_id = vendor_order.get('vendor_id')
+            # For each vendor, create a separate order and order items
+            for vendor_order in vendor_orders:
+                vendor_id = vendor_order.get('vendor_id')
 
-        # Ensure that the vendor exists
-        vendor = Vendor.objects.filter(user_id=vendor_id).first()
-        if not vendor:
-            return Response({"error": f"Vendor with ID {vendor_id} not found"}, status=status.HTTP_400_BAD_REQUEST)
+                # Ensure that the vendor exists
+                vendor = Vendor.objects.filter(user_id=vendor_id).first()
+                if not vendor:
+                    return Response({"error": f"Vendor with ID {vendor_id} not found"}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Create the order for each vendor
-        vendor_order_instance = Order.objects.create(
-            customer_id=customer_user,
-            payment_type=order_data['payment_type'],
-            shipping_address=order_data['shipping_address'],
-            shipping_city=order_data['shipping_city'],
-            shipping_postal_code=order_data['shipping_postal_code'],
-            order_note=order_data['order_note'],
-            total_amount=order_data['total_amount'],
-            sub_total=order_data['sub_total'],
-            coupon_id=coupon if coupon and vendor.user == coupon.user else None,  # Use coupon_id, pass the Coupon instance
-            vendor= vendor
-        )
+                # Create the order for each vendor
+                vendor_order_instance = Order.objects.create(
+                    customer_id=customer_user,
+                    payment_type=order_data['payment_type'],
+                    shipping_address=order_data['shipping_address'],
+                    shipping_city=order_data['shipping_city'],
+                    shipping_postal_code=order_data['shipping_postal_code'],
+                    order_note=order_data['order_note'],
+                    total_amount=order_data['total_amount'],
+                    sub_total=order_data['sub_total'],
+                    coupon_id=coupon if coupon and vendor.user == coupon.user else None,  # Use coupon_id, pass the Coupon instance
+                    vendor=vendor
+                )
 
-        print("Created Order for Vendor:", vendor_order_instance)
+                print("Created Order for Vendor:", vendor_order_instance)
 
-        # Process each item in the vendor's order
-        items = vendor_order.get('items', [])
-        for item in items:
-            product_id = item.get('product_id')
-            product_variant_id = item.get('product_variant_id')
-            quantity = item.get('quantity')
-            price = item.get('price')
+                # Process each item in the vendor's order
+                items = vendor_order.get('items', [])
+                for item in items:
+                    product_id = item.get('product_id')
+                    product_variant_id = item.get('product_variant_id')
+                    quantity = item.get('quantity')
+                    price = item.get('price')
 
-            # Fetch the Product instance based on the product_id
-            product = Product.objects.filter(id=product_id).first()
-            if not product:
-                return Response({"error": f"Product with ID {product_id} not found"}, status=status.HTTP_400_BAD_REQUEST)
+                    # Fetch the Product instance based on the product_id
+                    product = Product.objects.filter(id=product_id).first()
+                    if not product:
+                        return Response({"error": f"Product with ID {product_id} not found"}, status=status.HTTP_400_BAD_REQUEST)
 
-            # Fetch the ProductAttribute instance based on the product_variant_id
-            product_attribute = ProductAttribute.objects.filter(id=product_variant_id).first()
-            if not product_attribute:
-                return Response({"error": f"Product variant with ID {product_variant_id} not found"}, status=status.HTTP_400_BAD_REQUEST)
+                    # Fetch the ProductAttribute instance based on the product_variant_id
+                    product_attribute = ProductAttribute.objects.filter(id=product_variant_id).first()
+                    if not product_attribute:
+                        return Response({"error": f"Product variant with ID {product_variant_id} not found"}, status=status.HTTP_400_BAD_REQUEST)
 
-            # Create order items
-            order_item = OrderItems.objects.create(
-                order=vendor_order_instance,
-                product_id=product,
-                product_variant_id=product_attribute,
-                quantity=quantity,
-                price=price,
-                subtotal=quantity * price
-            )
+                    # Create order items
+                    order_item = OrderItems.objects.create(
+                        order=vendor_order_instance,
+                        product_id=product,
+                        product_variant_id=product_attribute,
+                        quantity=quantity,
+                        price=price,
+                        subtotal=quantity * price
+                    )
 
-            print("Created Order Item for Vendor:", order_item)
+                    print("Created Order Item for Vendor:", order_item)
 
-        created_order_ids.append(vendor_order_instance.order_id)
+                created_order_ids.append(vendor_order_instance.order_id)
+            
+            # Correct the field name from 'user' to 'customer' in the CartItems deletion
+                        # Locate the active cart and delete associated CartItems
+            active_cart = Cart.objects.filter(customer_id=customer_user).first()
+            if active_cart:
+                CartItems.objects.filter(cart=active_cart).delete()
+                active_cart.save()
+                print('###############################################33')
 
-    # Return the list of order IDs for each vendor after successful creation
-    return Response({"order_ids": created_order_ids}, status=status.HTTP_201_CREATED)
+            # Return the list of order IDs for each vendor after successful creation
+            return Response({"order_ids": created_order_ids}, status=status.HTTP_201_CREATED)
+        
+    except Exception as e:
+        print("Order processing failed:", str(e))
+        return Response({"error": "Order processing failed", "details": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @api_view(['GET'])
