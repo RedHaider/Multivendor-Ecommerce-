@@ -42,3 +42,12 @@ CartFormset = inlineformset_factory(
     extra=1, 
     can_delete=True
 )
+
+
+class OrderStatusForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ['status']
+        widgets = {
+            'status': forms.Select(attrs={'class':'form-select'}),
+        }

@@ -19,6 +19,13 @@
             <p>Order Date: {{ order.order_date }}</p>
             <p>Status: {{ order.status }}</p>
             <p>Payment Type: {{ order.payment_type }}</p>
+            <!-- Form to update the order status -->
+            <form method="post" action="{% url 'order-detail' order.order_id %}">
+              {% csrf_token %}
+              <label for="status">Status:</label>
+              {{ form.status }}
+              <button type="submit" class="btn btn-primary mt-2">Update Status</button>
+            </form>
           </div>
           
           <div class="col-md-6">

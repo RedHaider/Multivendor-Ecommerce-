@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 
 from django.contrib import messages
-from .forms import CouponForm ,OrderForm  , OrderItemForm , OrderFormset ,Cart ,CartForm, CartFormset
+from .forms import CouponForm ,OrderForm  , OrderItemForm , OrderFormset ,Cart ,CartForm, CartFormset , OrderStatusForm
 from .models import Order, OrderItems, Cart ,CartItems ,Coupon, Payment ,Wishlist
-
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 # Create your views here.
 
 def order_list(request):
@@ -259,7 +260,15 @@ def cart_detail(request, pk):
 def order_detail_view(request, order_id):
     # Get the order by the `order_id` string
     order = get_object_or_404(Order, order_id=order_id)
-    return render(request, 'order_management/order_details.html', {'order': order})
+
+    if request.method == 'POST':
+        form = OrderStatusForm(request.POST , instance=order)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('order-detail', args=[order_id]))
+    else:
+        form = OrderStatusForm(instance=order)
+    return render(request, 'order_management/order_details.html', {'order': order , 'form':form})
 
 ############################################################################
 ############################################################################
