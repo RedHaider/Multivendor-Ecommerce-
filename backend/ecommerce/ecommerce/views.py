@@ -21,9 +21,6 @@ def sales_performance(request):
 def promotion_discount(request):
     return render(request, 'promotion_discount.html')
 
-def vendor_management(request):
-    return render(request, 'vendor_management.html')
-
 def commission(request):
     return render(request, 'commission.html')
 
@@ -54,11 +51,7 @@ def coupon_form(request):
 
 
 
-def vendor_details(request):
-    return render(request, 'pages/vendor-details.html' )
 
-def vendor_profile(request):
-    return render(request, 'pages/vendor-profile.html' )
 
 
 

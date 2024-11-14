@@ -49,20 +49,21 @@ def coupon_delete(request, pk):
 
 def order_list(request):
     user = request.user
-    if user.is_authenticated and user.role == 'vendor':
-        # Retrieve the Vendor instance associated with the logged-in user
-        print('#################################################')
-        vendor = Vendor.objects.filter(user=user).first()
-        print(vendor)
-        if vendor:
-            # Filter orders where the vendor field matches the vendor instance
-            order = Order.objects.filter(vendor=vendor)
-            print(order)
+    if user.is_authenticated:
+        if user.role == 'admin':
+            order = Order.objects.all()
+        elif user.role == 'vendor':
+
+            vendor = Vendor.objects.filter(user=user).first()
+            if vendor:
+                order = Order.objects.filter(vendor=vendor)
+                print(order)
+            else:
+                order = Order.objects.none()
         else:
-            # If vendor instance not found, return an empty queryset
-            order = Order.objects.none()
+            orders = Order.objects.none()
+    
     else:
-        # If user is not a vendor or not authenticated, return an empty queryset
         order = Order.objects.none()
 
     return render(request, 'order_management/order.html', {'order': order})

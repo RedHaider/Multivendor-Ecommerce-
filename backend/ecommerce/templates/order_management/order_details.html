@@ -5,8 +5,8 @@
   <div class="page-inner">
     <div class="page-header d-flex justify-content-between">
       <h3 class="fw-bold mb-3">Order Details</h3>
-      <a href="{% url 'order-list'  %}" class="btn btn-danger btn-round ms-auto text-white" style="text-decoration: none;">
-        Back to Orders
+      <a href="javascript:history.back()" class="btn btn-danger btn-round ms-auto text-white" style="text-decoration: none;">
+        Back
       </a>
     </div>
     <div class="card">
@@ -22,9 +22,13 @@
             <!-- Form to update the order status -->
             <form method="post" action="{% url 'order-detail' order.order_id %}">
               {% csrf_token %}
-              <label for="status">Status:</label>
-              {{ form.status }}
-              <button type="submit" class="btn btn-primary mt-2">Update Status</button>
+              
+              {% if user.role != 'admin' %}
+                <label for="status">Status:</label>
+                {{ form.status }}
+                <button type="submit" class="btn btn-primary mt-2">Update Status</button>
+              {% endif %}
+              
             </form>
           </div>
           

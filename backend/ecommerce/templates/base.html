@@ -249,13 +249,69 @@
                 <div class="collapse" id="vendorManagement">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="{% url 'vendor_management' %}">
+                      <a href="{% url 'vendor-list' %}">
                         <span class="sub-item">Vendor List</span>
                       </a>
                     </li>
                     <li>
                       <a href="#">
                         <span class="sub-item">Vendor Requests</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a
+                  data-bs-toggle="collapse"
+                  href="#contentManagement"
+                  class="collapsed"
+                  aria-expanded="false"
+                >
+                  <i class="fas fa-users"></i>
+                  <p>Content Management</p>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse" id="contentManagement">
+                  <ul class="nav nav-collapse">
+                    <li>
+                      <a href="#">
+                        <span class="sub-item">Dashboard Carousal</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <span class="sub-item">Dashboard Promotions</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{% url 'aboutus_dropdown_list' %}">
+                        <span class="sub-item">About Us Dropdowns</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <span class="sub-item">About Us Our Team</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{% url 'aboutus_mv_list' %}">
+                        <span class="sub-item">About Us More Informations</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <span class="sub-item">Contact Us Form</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <span class="sub-item">Contact Us FAQ</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <span class="sub-item">Blog </span>
                       </a>
                     </li>
                   </ul>

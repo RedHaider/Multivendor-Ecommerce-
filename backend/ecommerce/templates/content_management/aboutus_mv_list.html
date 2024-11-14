@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <div class="page-inner">
+    <div class="page-header d-flex justify-content-between">
+      <h3 class="fw-bold mb-3">Mission & Vision Entries</h3>
+
+    </div>
+    <div class="card">
+      <div class="card-body">
+        {% if mv_entries %}
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for entry in mv_entries %}
+              <tr>
+                <td>{{ entry.title }}</td>
+                <td>
+                  <a href="{% url 'aboutus_mv_detail' entry.id %}" class="btn btn-info">View</a>
+                  <a href="{% url 'aboutus_mv_edit' entry.id %}" class="btn btn-warning">Edit</a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <p>No mission & vision entries found.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

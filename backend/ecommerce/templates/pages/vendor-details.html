@@ -1,46 +1,72 @@
-
 {% extends 'base.html' %}
-
 {% load static %}
 
 {% block content %}
-        <div class="container">
-          <div class="page-inner">
-            <div class="page-header d-flex justify-content-between">
-              <h3 class="fw-bold mb-3">Vendor Details</h3>
-            <div>
-              <a href="{% url 'vendor_management' %}" class="btn btn-danger btn-round ms-auto text-white" style="text-decoration: none;">
-                  Back
+<div class="container">
+  <div class="page-inner">
+    <div class="page-header d-flex justify-content-between">
+      <h3 class="fw-bold mb-3">Vendor Details</h3>
+      <div>
+        <a href="{% url 'vendor-list' %}" class="btn btn-danger btn-round ms-auto text-white" style="text-decoration: none;">
+          Back
+        </a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <p>Vendor Logo: 
+              {% if vendor.logo %}
+                <img src="{{ vendor.logo.url }}" height="100  style="border-radius: 20px;" alt="">
+              {% else %}
+                Not Available
+              {% endif %}
+            </p>
+            <p>Vendor ID: {{ vendor.vendorID|default:"Not Available" }}</p>
+            <p>Vendor Name: 
+              {{ vendor.user.first_name|default:"" }} {{ vendor.user.last_name|default:"Not Available" }}
+            </p>
+            <p>Vendor Address: {{ vendor.address|default:"Not Available" }}</p>
+            <p>Vendor Number: {{ vendor.phone_number|default:"Not Available" }}</p>
+            <p>Facebook ID: 
+              {% if vendor.facebook %}
+                <a href="{{ vendor.facebook }}" target="_blank">Facebook</a>
+              {% else %}
+                Not Available
+              {% endif %}
+            </p>
+            <p>Products: 
+              <a href="{% url 'vendor-products' vendor.id %}" class="btn btn-primary btn-sm" style="text-decoration: none;">
+                View Products
               </a>
-              <a href="{% url 'vendor-edit' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
-                Edit
-              </a>
-            </div>
-            </div>
-            <div class="card">
-              <div class="card-body">
-                <div class="row ">
-                  <div class="col-md-6">
-                    <p>Vendor ID: V001</p>
-                    <p>Vendor Name: Jason Brown</p>
-                    <p>Vendor Address: Sheura</p>
-                    <p>Vendor Number: 01326615484</p>
-                    <p>Vendor Logo:   <img src="{% static 'img/blogpost.jpg' %}" height="50" width="50" style="border-radius: 20px;" alt=""></p>
-                    <p>Facebook ID: <a href="facebook.com">facebook</a></p>
-
-                  </div>
-                  <div class="col-md-6">
-                    <p>Vendor Email: @gmail.com</p>
-                    <p>Order District: Gazipur</p>
-                    <p>Order District: Division</p>
-                    <p>Order District: State</p>
-                    <p>Vendor Banner:   <img src="{% static 'img/blogpost.jpg' %}" height="50" width="50" style="border-radius: 20px;" alt=""></p>
-                    <p>Instagram ID: <a href="facebook.com">Instagram</a></p>
-
-                  </div>
-                </div>
-              </div>
-            </div>
+            </p>
           </div>
-
+          <div class="col-md-6">
+            <p>Vendor Banner: 
+              {% if vendor.banner %}
+                <img src="{{ vendor.banner.url }}" height="100"  style="border-radius: 20px;" alt="">
+              {% else %}
+                Not Available
+              {% endif %}
+            </p>
+            <p>Vendor Email: {{ vendor.user.email|default:"Not Available" }}</p>
+            <p>District: {{ vendor.district|default:"Not Available" }}</p>
+            <p>Division: {{ vendor.division|default:"Not Available" }}</p>
+            <p>State: {{ vendor.state|default:"Not Available" }}</p>
+            <p>Instagram ID: 
+              {% if vendor.instagram %}
+                <a href="{{ vendor.instagram }}" target="_blank">Instagram</a>
+              {% else %}
+                Not Available
+              {% endif %}
+            </p>
+            <p>Orders:<a href="{% url 'vendor-order-list' vendor.id %}" class="btn btn-primary btn-sm">View Orders</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

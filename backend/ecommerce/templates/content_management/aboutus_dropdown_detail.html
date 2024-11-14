@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <div class="page-inner">
+    <div class="page-header d-flex justify-content-between">
+      <h3 class="fw-bold mb-3">{{ dropdown.title }}</h3>
+      <a href="{% url 'aboutus_dropdown_list' %}" class="btn btn-secondary btn-round ms-auto">Back to List</a>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <h4>Content:</h4>
+        <p>{{ dropdown.content }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

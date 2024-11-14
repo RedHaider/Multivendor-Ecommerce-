@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+  <div class="page-inner">
+    <div class="page-header d-flex justify-content-between">
+      <h3 class="fw-bold mb-3">{{ vendor.user.first_name }}'s Products</h3>
+      <a href="{% url 'vendor_details' vendor.id %}" class="btn btn-danger btn-round ms-auto text-white" style="text-decoration: none;">
+        Back to Vendor Details
+      </a>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        {% if products %}
+          <div class="table-responsive">
+            <table id="vendor-product-table" class="display table table-striped table-hover">
+              <thead>
+                <tr>
+                  <th>Product ID</th>
+                  <th>Name</th>
+                  <th>Category</th>
+                  <th>Price</th>
+                  <th>Stock</th>
+                  <th>Image</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th>Product ID</th>
+                  <th>Name</th>
+                  <th>Category</th>
+                  <th>Price</th>
+                  <th>Stock</th>
+                  <th>Image</th>
+                </tr>
+              </tfoot>
+              <tbody>
+                {% for product in products %}
+                <tr>
+                  <td>
+                    <a href="{% url 'product-detail' product.id %}" class="text-black">{{ product.product_id }}</a>
+                  </td>
+                  <td>{{ product.name }}</td>
+                  <td>{{ product.category.category_name|default:"N/A" }}</td>
+                  <td>${{ product.price }}</td>
+                  <td>{{ product.stock_level }}</td>
+                  <td>
+                    {% if product.image %}
+                      <img src="{{ product.image.url }}" width="50" height="50" alt="{{ product.name }}">
+                    {% else %}
+                      No Image
+                    {% endif %}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <p>No products available for this vendor.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    $(document).ready(function () {
+        $("#vendor-product-table").DataTable({
+            pageLength: 5,
+            initComplete: function () {
+                this.api().columns().every(function () {
+                    var column = this;
+                    var select = $('<select class="form-select"><option value=""></option></select>')
+                        .appendTo($(column.footer()).empty())
+                        .on("change", function () {
+                            var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                            column.search(val ? "^" + val + "$" : "", true, false).draw();
+                        });
+
+                    column.data().unique().sort().each(function (d, j) {
+                        select.append('<option value="' + d + '">' + d + "</option>");
+                    });
+                });
+            },
+        });
+    });
+</script>
+{% endblock %}

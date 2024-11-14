@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <div class="page-inner">
+    <div class="page-header d-flex justify-content-between">
+      <h3 class="fw-bold mb-3">About Us Dropdown</h3>
+      <a href="{% url 'aboutus_dropdown_create' %}" class="btn btn-success btn-round ms-auto text-white" style="text-decoration: none;">
+        Add New Dropdown
+      </a>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        {% if dropdown_items %}
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for dropdown in dropdown_items %}
+              <tr>
+                <td>{{ dropdown.title }}</td>
+                <td>
+                  <a href="{% url 'aboutus_dropdown_edit' dropdown.id %}" class="btn btn-warning">Edit</a>
+                  <form action="{% url 'aboutus_dropdown_delete' dropdown.id %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?');">Delete</button>
+                  </form>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <p>No dropdown items found.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
