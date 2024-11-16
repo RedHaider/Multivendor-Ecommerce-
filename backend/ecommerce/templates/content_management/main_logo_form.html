@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="page-inner">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card p-2">
+                    <div class="page-header d-flex justify-content-between p-1">
+                        <h3 class="fw-bold mb-3">{% if logo %}Edit Logo{% else %}Add New Logo{% endif %}</h3>
+                        <a href="{% url 'logo-main-list' %}" class="btn btn-secondary btn-round ms-auto text-white" style="text-decoration: none;">
+                            Back
+                        </a>
+                    </div>
+                    {% if form.errors %}
+                    <div class="alert alert-danger">
+                        <ul>
+                            {% for field, errors in form.errors.items %}
+                                {% for error in errors %}
+                                    <li>{{ field }}: {{ error }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            
+                            <!-- Title -->
+                            <div class="form-group form-inline mb-3">
+                                <label for="title" class="col-md-3 col-form-label">Title</label>
+                                <div class="col-md-9 p-0">
+                                    <input
+                                        type="text"
+                                        class="form-control input-full"
+                                        id="title"
+                                        name="title"
+                                        placeholder="Enter title"
+                                        value="{{ form.title.value|default:'' }}"
+                                    />
+                                    {{ form.title.errors }}
+                                </div>
+                            </div>
+
+                            <!-- Logo -->
+                            <div class="form-group form-inline mb-3">
+                                <label for="logo" class="col-md-3 col-form-label">Logo</label>
+                                <div class="col-md-9 p-0">
+                                    <input
+                                        type="file"
+                                        class="form-control input-full"
+                                        id="logo"
+                                        name="logo"
+                                    />
+                                    {% if logo and logo.logo %}
+                                        <p class="mt-2">Current Logo: <img src="{{ logo.logo.url }}" alt="{{ logo.title }}" width="100"></p>
+                                    {% endif %}
+                                    {{ form.logo.errors }}
+                                </div>
+                            </div>
+
+                            <!-- Form Actions -->
+                            <div class="card-action d-flex justify-content-end">
+                                <button type="submit" class="btn btn-success me-2">Save</button>
+                                <a href="{% url 'logo-main-list' %}" class="btn btn-danger">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

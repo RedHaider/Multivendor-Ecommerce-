@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="page-inner">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card p-2">
+                    <div class="page-header d-flex justify-content-between p-1">
+                        <h3 class="fw-bold mb-3">{% if banner %}Edit Banner{% else %}Add New Banner{% endif %}</h3>
+                        <a href="{% url 'home-banner-list' %}" class="btn btn-secondary btn-round ms-auto text-white" style="text-decoration: none;">
+                            Back
+                        </a>
+                    </div>
+                    {% if form.errors %}
+                    <div class="alert alert-danger">
+                        <ul>
+                            {% for field, errors in form.errors.items %}
+                                {% for error in errors %}
+                                    <li>{{ field }}: {{ error }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            
+                            <!-- Title -->
+                            <div class="form-group form-inline mb-3">
+                                <label for="title" class="col-md-3 col-form-label">Title</label>
+                                <div class="col-md-9 p-0">
+                                    <input
+                                        type="text"
+                                        class="form-control input-full"
+                                        id="title"
+                                        name="title"
+                                        placeholder="Enter banner title"
+                                        value="{{ form.title.value|default:'' }}"
+                                    />
+                                    {{ form.title.errors }}
+                                </div>
+                            </div>
+
+                            <!-- Image -->
+                            <div class="form-group form-inline mb-3">
+                                <label for="image" class="col-md-3 col-form-label">Image</label>
+                                <div class="col-md-9 p-0">
+                                    <input
+                                        type="file"
+                                        class="form-control input-full"
+                                        id="image"
+                                        name="image"
+                                    />
+                                    {% if banner and banner.image %}
+                                        <p class="mt-2">Current Image: <img src="{{ banner.image.url }}" alt="{{ banner.title }}" width="100"></p>
+                                    {% endif %}
+                                    {{ form.image.errors }}
+                                </div>
+                            </div>
+
+                            <!-- Form Actions -->
+                            <div class="card-action d-flex justify-content-end">
+                                <button type="submit" class="btn btn-success me-2">Save</button>
+                                <a href="{% url 'home-banner-list' %}" class="btn btn-danger">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

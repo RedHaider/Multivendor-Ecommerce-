@@ -275,12 +275,12 @@
                 <div class="collapse" id="contentManagement">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="#">
+                      <a href="{% url 'home-carousal-list' %}">
                         <span class="sub-item">Dashboard Carousal</span>
-                      </a>
+                    </a>
                     </li>
                     <li>
-                      <a href="#">
+                      <a href="{% url 'home-banner-list' %}">
                         <span class="sub-item">Dashboard Promotions</span>
                       </a>
                     </li>
@@ -300,18 +300,28 @@
                       </a>
                     </li>
                     <li>
-                      <a href="#">
+                      <a href="{% url 'footer-description-list' %}">
+                        <span class="sub-item">Footer Description</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{% url 'contactus-form-list' %}">
                         <span class="sub-item">Contact Us Form</span>
                       </a>
                     </li>
                     <li>
-                      <a href="#">
+                      <a href="{% url 'contactus-faq-list' %}">
                         <span class="sub-item">Contact Us FAQ</span>
                       </a>
                     </li>
                     <li>
                       <a href="#">
                         <span class="sub-item">Blog </span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{% url 'logo-main-list' %}">
+                        <span class="sub-item">Main Logo</span>
                       </a>
                     </li>
                   </ul>

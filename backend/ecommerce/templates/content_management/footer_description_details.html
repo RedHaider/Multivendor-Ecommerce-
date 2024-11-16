@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="page-inner">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card p-3">
+                    <div class="page-header d-flex justify-content-between p-1">
+                        <h3 class="fw-bold mb-3">{{ description.title }}</h3>
+                        <a href="{% url 'footer-description-list' %}" class="btn btn-secondary btn-round ms-auto text-white" style="text-decoration: none;">
+                            Back to List
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <h5>Details</h5>
+                        <p><strong>ID:</strong> {{ description.id }}</p>
+                        <p><strong>Title:</strong> {{ description.title }}</p>
+                        <p><strong>Description:</strong></p>
+                        <p>{{ description.description }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

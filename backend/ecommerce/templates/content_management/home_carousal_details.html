@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    {% if carousal %}
+        <h2>{{ carousal.title }}</h2>
+        {% if carousal.image %}
+            <img src="{{ carousal.image.url }}" alt="{{ carousal.title }}" class="img-fluid">
+        {% else %}
+            <p>No image available.</p>
+        {% endif %}
+    {% else %}
+        <p>No carousal data available.</p>
+    {% endif %}
+    <p><a href="{% url 'home-carousal-list' %}" class="btn btn-secondary">Back to List</a></p>
+</div>
+{% endblock %}

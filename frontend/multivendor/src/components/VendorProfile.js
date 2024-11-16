@@ -62,12 +62,28 @@ const VendorProfile = () => {
                     <td>{vendorInfo.business_name}</td>
                   </tr>
                   <tr>
-                    <th>Total Products</th>
-                    <td>{vendorInfo.total_products || "N/A"}</td>  
+                    <th>Facebook</th>
+                    <td>
+                    {vendorInfo.facebook ? (
+                    <a href={vendorInfo.facebook} target="_blank" rel="noopener noreferrer">
+                        Facebook 
+                      </a>
+                    ) : (
+                      "N/A"
+                    )}
+                  </td>  
                   </tr>
                   <tr>
                     <th>Total Sale</th>
-                    <td>{vendorInfo.total_sales || "N/A"}</td>
+                    <td>                  
+                      {vendorInfo.instagram ? (
+                        <a href={vendorInfo.instagram} target="_blank" rel="noopener noreferrer">
+                         Instagram
+                        </a>
+                      ) : (
+                        "N/A"
+                      )}
+                    </td>
                   </tr>
                   <tr>
                     <th>Join Date</th>
@@ -79,27 +95,13 @@ const VendorProfile = () => {
             <div className="col-md-6">
               <div className="mt-4">
                 <h5>Contact</h5>
-                <p>{vendorInfo.user ? vendorInfo.user.email : "N/A"}  {vendorInfo.contact_number || "N/A"}</p>
                 <p>Address: {vendorInfo.address || "N/A"}</p>
                 <p>Division: {vendorInfo.division || "N/A"}</p>
                 <p>District: {vendorInfo.district || "N/A"}</p>
                 <p>State: {vendorInfo.state || "N/A"}</p>
                 <p>
-                  {vendorInfo.facebook ? (
-                    <a href={vendorInfo.facebook} target="_blank" rel="noopener noreferrer">
-                      Facebook |
-                    </a>
-                  ) : (
-                    "N/A"
-                  )}
 
-                  {vendorInfo.instagram ? (
-                    <a href={vendorInfo.instagram} target="_blank" rel="noopener noreferrer">
-                     | Instagram
-                    </a>
-                  ) : (
-                    "N/A"
-                  )}
+
                 </p>
               </div>
             </div>

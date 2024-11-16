@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="page-inner">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card p-3">
+                    <div class="page-header d-flex justify-content-between p-1">
+                        <h3 class="fw-bold mb-3">{{ logo.title }}</h3>
+                        <a href="{% url 'logo-main-list' %}" class="btn btn-secondary btn-round ms-auto text-white" style="text-decoration: none;">
+                            Back to List
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <h5>Details</h5>
+                        <p><strong>ID:</strong> {{ logo.id }}</p>
+                        <p><strong>Title:</strong> {{ logo.title }}</p>
+                        <p><strong>Logo:</strong></p>
+                        {% if logo.logo %}
+                            <img src="{{ logo.logo.url }}" alt="{{ logo.title }}" class="img-fluid">
+                        {% else %}
+                            <p>No logo available.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

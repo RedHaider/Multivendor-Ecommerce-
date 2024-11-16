@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="page-inner">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card p-3">
+                    <div class="page-header d-flex justify-content-between p-1">
+                        <h3 class="fw-bold mb-3">{{ faq.title }}</h3>
+                        <a href="{% url 'contactus-faq-list' %}" class="btn btn-secondary btn-round ms-auto text-white" style="text-decoration: none;">
+                            Back to List
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <h5>Details</h5>
+                        <p><strong>ID:</strong> {{ faq.id }}</p>
+                        <p><strong>Title:</strong> {{ faq.title }}</p>
+                        <p><strong>Description:</strong></p>
+                        <p>{{ faq.description }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
