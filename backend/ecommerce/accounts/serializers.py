@@ -21,7 +21,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             'email', 'password', 'first_name', 'last_name', 'phone', 'address', 
-            'division', 'district', 'state', 'Thana', 'postal_code', 'photo'
+            'division', 'district', 'state', 'Thana', 'postal_code', 'photo','gender'
         ]
 
     def validate(self, data):
@@ -50,8 +50,10 @@ class RegisterSerializer(serializers.ModelSerializer):
             role='customer',
             phone=validated_data.get('phone', ''),
             address=validated_data.get('address', ''),
-            photo=photo  # Assign photo to the user model if provided
+            photo=photo , # Assign photo to the user model if provided
+            is_active = False,
         )
+        
 
         # Create the Customer associated with the user
         Customer.objects.create(
@@ -63,7 +65,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             state=validated_data.get('state', ''),
             Thana=validated_data.get('Thana', ''),
             postal_code=validated_data.get('postal_code', ''),
-            gender=gender  # Pass the gender value to the Customer instance
+            gender=validated_data.get('gender', ''),  # Pass the gender value to the Customer instance
         )
 
         return user

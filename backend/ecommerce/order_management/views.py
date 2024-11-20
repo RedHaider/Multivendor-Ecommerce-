@@ -439,8 +439,6 @@ def process_order(request):
         'shipping_city': request.data.get('shipping_city'),
         'shipping_postal_code': request.data.get('shipping_postal_code'),
         'order_note': request.data.get('order_note'),
-        'total_amount': request.data.get('total_amount'),
-        'sub_total': request.data.get('sub_total'),
     }
 
     print("Extracted Order Data:", order_data)
@@ -472,8 +470,11 @@ def process_order(request):
                 vendor = Vendor.objects.filter(user_id=vendor_id).first()
                 if not vendor:
                     return Response({"error": f"Vendor with ID {vendor_id} not found"}, status=status.HTTP_400_BAD_REQUEST)
+                
+                total_amount = 0
+                sub_total = 0
 
-                # Create the order for each vendor
+                # Create the order for the vendor
                 vendor_order_instance = Order.objects.create(
                     customer_id=customer_user,
                     payment_type=order_data['payment_type'],
@@ -481,8 +482,8 @@ def process_order(request):
                     shipping_city=order_data['shipping_city'],
                     shipping_postal_code=order_data['shipping_postal_code'],
                     order_note=order_data['order_note'],
-                    total_amount=order_data['total_amount'],
-                    sub_total=order_data['sub_total'],
+                    total_amount=0,  # Placeholder, will update later
+                    sub_total=0,  # Placeholder, will update later
                     coupon_id=coupon if coupon and vendor.user == coupon.user else None,  # Use coupon_id, pass the Coupon instance
                     vendor=vendor
                 )
@@ -507,6 +508,21 @@ def process_order(request):
                     if not product_attribute:
                         return Response({"error": f"Product variant with ID {product_variant_id} not found"}, status=status.HTTP_400_BAD_REQUEST)
 
+                    # Check stock availability
+                    if product_attribute.quantity < quantity:
+                        return Response({"error": f"Insufficient stock for product variant ID {product_variant_id}"}, status=status.HTTP_400_BAD_REQUEST)
+                    
+                    product.stock_level = product.stock_level - quantity
+                    product.save()
+
+                    # Decrement the stock
+                    product_attribute.quantity = product_attribute.quantity - quantity
+                    product_attribute.save()
+
+                    item_subtotal = quantity * price
+                    sub_total += item_subtotal
+                    total_amount += item_subtotal
+
                     # Create order items
                     order_item = OrderItems.objects.create(
                         order=vendor_order_instance,
@@ -514,10 +530,15 @@ def process_order(request):
                         product_variant_id=product_attribute,
                         quantity=quantity,
                         price=price,
-                        subtotal=quantity * price
+                        subtotal=item_subtotal  # Correct subtotal for each item
                     )
 
                     print("Created Order Item for Vendor:", order_item)
+
+                # Update the vendor order totals after processing items
+                vendor_order_instance.total_amount = total_amount
+                vendor_order_instance.sub_total = sub_total
+                vendor_order_instance.save()
 
                 created_order_ids.append(vendor_order_instance.order_id)
             

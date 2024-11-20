@@ -50,7 +50,11 @@
                     <div class="alert alert-danger">{{ message }}</div>
                 {% endfor %}
             </div>
+            <div class="text-center mt-3">
+                <a href="{% url 'password_reset' %}" class="text-muted">Forgot Password?</a>
+            </div>
         {% endif %}
+
     </div>
 </div>
 </body>

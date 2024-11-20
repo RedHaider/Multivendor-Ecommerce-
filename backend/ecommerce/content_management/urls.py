@@ -52,5 +52,8 @@ urlpatterns = [
     path('contactus_form/<int:pk>/', views.ContactUsFormDetailView.as_view(), name='contactus-form-detail'),
     path('contactus_form/<int:pk>/delete/', views.ContactUsFormDeleteView.as_view(), name='contactus-form-delete'),
 
+    #blog
+    
+
 
 ]

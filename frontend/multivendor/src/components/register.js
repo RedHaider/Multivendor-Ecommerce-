@@ -45,7 +45,7 @@ const Register = () => {
     setError('');
     setSuccess('');
 
-    const data = new FormData(); // Use FormData to handle file upload
+    const data = new FormData();
     for (const key in formData) {
       data.append(key, formData[key]);
     }
@@ -57,12 +57,17 @@ const Register = () => {
         },
       });
       setSuccess(response.data.message);
-      navigate('/login'); // Redirect to login after successful registration
+      navigate('/login');
     } catch (err) {
       if (err.response && err.response.data) {
-        setError(err.response.data);
+        const errors = err.response.data;
+        const errorMessages = [];
+        for (const key in errors) {
+          errorMessages.push(`${key}: ${errors[key]}`);
+        }
+        setError(errorMessages);
       } else {
-        setError('An error occurred, please try again');
+        setError(['An error occurred, please try again']);
       }
     }
   };

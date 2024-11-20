@@ -28,6 +28,7 @@ class User(AbstractUser):
     remember_token = models.CharField(max_length=100, null=True, blank=True)  # Custom remember me token
     created_at = models.DateTimeField(auto_now_add=True)  # Automatically set at creation
     updated_at = models.DateTimeField(auto_now=True)  # Automatically updated when saved
+    email_verified = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'  # Use email instead of username for login
     REQUIRED_FIELDS = ['username']  # Username is required for creating a superuser

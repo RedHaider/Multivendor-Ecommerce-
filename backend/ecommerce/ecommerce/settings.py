@@ -181,3 +181,17 @@ SESSION_COOKIE_AGE = 1209600  # 2 weeks, adjust as needed
 SESSION_SAVE_EVERY_REQUEST = True  # This will update the session expiration time every time the user makes a request.
 
 # ALLOWED_HOSTS = ['haiderpupil.pythonanywhere.com', 'rongberong.eitrobotics.com']
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587  # Fixed from EMAIL_POST
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'syedaliredwanulhaider13@gmail.com'
+EMAIL_HOST_PASSWORD = 'brvlfwfxwnqhidox'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
+USE_I18N = True
+
+FRONTEND_BASE_URL = "http://127.0.0.1:3000"

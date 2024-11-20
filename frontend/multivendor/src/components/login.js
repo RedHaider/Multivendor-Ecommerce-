@@ -44,7 +44,7 @@ const Login = () => {
       }
     } catch (err) {
       if (err.response && err.response.data) {
-        setError(err.response.data.detail || 'Invalid credentials or server error');
+        setError(err.response.data.detail || 'Invalid credentials or server error, Check your email if not varified');
       } else {
         setError('Something went wrong. Please try again later.');
       }
@@ -102,6 +102,12 @@ const Login = () => {
 
           <button type="submit">Login</button>
         </form>
+          {/* Forgot Password Link */}
+                <div className="text-center mt-3">
+          <Link to="/reset-password" className="forgot-password-link">
+            Forgot Password?
+          </Link>
+        </div>
       </div>
     </div>
   );

@@ -37,6 +37,9 @@ import ReturnAndRefund from './components/ReturnAndRefund';
 import VendorProfile from './components/VendorProfile';
 import MyProfile from './components/MyProfile';
 import Address from './components/address';
+import VerifyEmail from './components/VerifyEmail';
+import PasswordReset from './components/PasswordReset';
+import PasswordResetRequest from './components/PasswordResetRequest';
 
 
 function App() {
@@ -58,6 +61,9 @@ function App() {
         <Route path='/register' element={<Register/>}/>
         <Route path='/termsandcondition' element={<TermsAndCondition/>}/>
         <Route path='/returnpolicy' element={<ReturnAndRefund/>}/>
+        <Route path='/verify-email/:uidb64/:token' element={<VerifyEmail />} /> 
+        <Route path="/reset-password" element={<PasswordResetRequest />} />
+        <Route path="/reset-password/:uidb64/:token" element={<PasswordReset />} />
         
         
       
