@@ -135,6 +135,11 @@ def login_view(request):
 
             if user is not None:
                 if user.role == role:
+                    # Additional check for vendor email verification
+                    if role == 'vendor' and not user.email_verified:
+                        messages.error(request, "Your email is not verified. Please verify your email to log in.")
+                        return redirect('login')  # Redirect back to login page
+
                     login(request, user)
 
                     if role == 'vendor':
@@ -142,17 +147,17 @@ def login_view(request):
                     elif role == 'admin':
                         return redirect('dashboard')
                     else: 
-                        return redirect('dashbaord')
+                        return redirect('dashboard')
                 else: 
                     messages.error(request, "Incorrect role selected")
             else:
-                messages.error(request, "Invalid username or Password")
+                messages.error(request, "Invalid username or password")
         else:
             messages.error(request, "Invalid form submission")
     else:
         form = CustomLoginForm()
     
-    return render(request, 'vendor_login.html', {"form":form})
+    return render(request, 'vendor_login.html', {"form": form})
 
 def logout_view(request):
     # Log out the user by clearing their session

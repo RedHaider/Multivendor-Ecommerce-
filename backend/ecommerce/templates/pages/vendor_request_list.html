@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <div class="page-inner">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="page-header d-flex justify-content-between p-1">
+            <h3 class="fw-bold mb-3">Unverified Vendor List</h3>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table id="vendor-table" class="display table table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th>Vendor ID</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                  </tr>
+                </thead>
+                <tfoot>
+                  <tr>
+                    <th>Vendor ID</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                  </tr>
+                </tfoot>
+                <tbody>
+                  {% for vendor in vendors %}
+                  <tr>
+                    <td><a href="{% url 'vendor_details' vendor.id %}" class="text-black">{{ vendor.vendorID }}</a></td>
+                    <td>{{ vendor.user.first_name }} {{ vendor.user.last_name }}</td>
+                    <td>{{ vendor.phone_number }}</td>
+                    <td>{{ vendor.user.email }}</td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td colspan="5" class="text-center">No unverified vendors found.</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+  $(document).ready(function () {
+    // Initialize DataTable with filter functionality
+    $("#vendor-table").DataTable({
+      pageLength: 5,
+      initComplete: function () {
+        this.api()
+          .columns()
+          .every(function () {
+            var column = this;
+            var select = $('<select class="form-select"><option value=""></option></select>')
+              .appendTo($(column.footer()).empty())
+              .on("change", function () {
+                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                column
+                  .search(val ? "^" + val + "$" : "", true, false)
+                  .draw();
+              });
+
+            column
+              .data()
+              .unique()
+              .sort()
+              .each(function (d, j) {
+                select.append('<option value="' + d + '">' + d + "</option>");
+              });
+          });
+      },
+    });
+  });
+</script>
+{% endblock %}

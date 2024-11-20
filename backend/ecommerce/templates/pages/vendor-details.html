@@ -7,9 +7,20 @@
     <div class="page-header d-flex justify-content-between">
       <h3 class="fw-bold mb-3">Vendor Details</h3>
       <div>
+        {% if not vendor.user.email_verified %}
+        <!-- Show Verify Button -->
+        <form action="{% url 'toggle-email-verification' vendor.user.id %}" method="POST" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary btn-sm">Verify</button>
+        </form>
+          {% else %}
+              <!-- Email Verified -->
+              <span class="text-success">Verified</span>
+          {% endif %}
         <a href="{% url 'vendor-list' %}" class="btn btn-danger btn-round ms-auto text-white" style="text-decoration: none;">
           Back
         </a>
+
       </div>
     </div>
     <div class="card">

@@ -195,3 +195,5 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 USE_I18N = True
 
 FRONTEND_BASE_URL = "http://127.0.0.1:3000"
+
+# FRONTEND_BASE_URL = "https://rongberong.eitrobotics.com"
