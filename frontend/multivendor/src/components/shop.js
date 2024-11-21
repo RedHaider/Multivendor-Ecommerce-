@@ -1,16 +1,18 @@
 import SearchBar from "../utils/SearchBar";
 import PriceRangeFilter from "../utils/pricerangefilter";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import config from "../config";
 import axios from "axios";
 import { useNavigate, useLocation, redirect } from 'react-router-dom';
 import { FaHeart, FaShoppingCart, FaStar } from 'react-icons/fa'; 
-
 import { ToastContainer, toast } from 'react-toastify';
+import { AuthContext } from "../utils/authContext";
 
 const Shop = () => {
 
   // store the states here
+  const { fetchCartCount, fetchWishlistCount } = useContext(AuthContext);
+
   const location = useLocation();
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -109,6 +111,7 @@ const Shop = () => {
         },
       });
       setWishList(response.data);
+      fetchWishlistCount();
     } catch (error) {
       console.error("Failed to fetch wishlist", error);
     }
@@ -141,6 +144,7 @@ const Shop = () => {
         ...prevWishlist,
         { product: { id: productId } },
       ]);
+      fetchWishlistCount();
     } catch (error) {
    
       console.error("Add to wishlist error", error);
@@ -164,8 +168,8 @@ const Shop = () => {
       setWishList((prevWishlist) =>
         prevWishlist.filter((item) => item.product.id !== productId)
       );
+      fetchWishlistCount();
     } catch (error) {
-      
       console.error("Remove from wishlist error", error);
     }
   };
@@ -198,6 +202,7 @@ const handleAddToCart = async (event, product, redirectToCheckout = false) => {
       quantity: 1, 
       customer_id: customerId 
     });
+    fetchCartCount();
     toast.success("Product added to cart successfully!");
 
     if (redirectToCheckout) {

@@ -1,10 +1,11 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import config from '../config';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../utils/authContext'; // Import AuthContext
 
 const Cart = () => {
-  
+  const { fetchCartCount } = useContext(AuthContext); // Access fetchCartCount from AuthContext
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -13,7 +14,6 @@ const Cart = () => {
   const [removedItems, setRemovedItems] = useState([]); // Track removed items
 
   useEffect(() => {
-
     const fetchCartItems = async () => {
       try {
         const token = localStorage.getItem('accessToken');
@@ -23,8 +23,8 @@ const Cart = () => {
 
         const response = await axios.get(`${config.API_BASE_URL}/order-management/api/cart-get/`, {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
 
         setCartItems(response.data.cartitems || response.data);
@@ -55,12 +55,12 @@ const Cart = () => {
 
   const handleRemoveItem = (itemId) => {
     console.log('Removing item with variant id:', itemId);
-    setRemovedItems([...removedItems, itemId]);  // Track removed items
-    setCartItems(cartItems.filter(item => item.variant_details.id !== itemId));  // Update UI
+    setRemovedItems([...removedItems, itemId]); // Track removed items
+    setCartItems(cartItems.filter((item) => item.variant_details.id !== itemId)); // Update UI
   };
 
   const handleClearCart = () => {
-    setRemovedItems(cartItems.map(item => item.variant_details.id)); // Track all removed items
+    setRemovedItems(cartItems.map((item) => item.variant_details.id)); // Track all removed items
     setCartItems([]); // Clear the cart UI
   };
 
@@ -69,16 +69,23 @@ const Cart = () => {
 
     try {
       const token = localStorage.getItem('accessToken');
-      await axios.post(`${config.API_BASE_URL}/order-management/api/cart-update/`, {
-        cartitems: cartItems,  // Send the updated cart items to the backend
-        removedItems: removedItems  // Send the removed items list
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`
+      await axios.post(
+        `${config.API_BASE_URL}/order-management/api/cart-update/`,
+        {
+          cartitems: cartItems, // Send the updated cart items to the backend
+          removedItems: removedItems, // Send the removed items list
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-      });
+      );
 
       calculateTotal(cartItems);
+
+      // Call fetchCartCount to update the global cart count
+      fetchCartCount();
 
       setNotification('Cart updated successfully!');
     } catch (err) {
@@ -96,7 +103,7 @@ const Cart = () => {
 
   return (
     <div>
-      <div className="row   no-gutters justify-content-center mb-2">
+      <div className="row no-gutters justify-content-center mb-2">
         <div className="col text-center">
           <div className="heading">
             <h1>Cart</h1>
@@ -131,12 +138,13 @@ const Cart = () => {
                             <div className="d-flex align-items-center">
                               <div className="row">
                                 <img src={`${config.API_BASE_URL}${item.variant_details.image}`} alt={item.variant_details.color} className="wishlist-items-pic" />
-                                <div className='pl-3'>
-                                <p className="wishlist-item-name p-1 " style={{ fontWeight: 'bold' }}>
-                                  {item.product_id.name || 'Product Name Unavailable'}</p>
-                                  <p>Size: {item.variant_details.size}</p> 
-                                  <p>Size: {item.variant_details.color}</p> 
-                                  </div>
+                                <div className="pl-3">
+                                  <p className="wishlist-item-name p-1" style={{ fontWeight: 'bold' }}>
+                                    {item.product_id.name || 'Product Name Unavailable'}
+                                  </p>
+                                  <p>Size: {item.variant_details.size}</p>
+                                  <p>Color: {item.variant_details.color}</p>
+                                </div>
                               </div>
                             </div>
                           </td>
@@ -146,7 +154,14 @@ const Cart = () => {
                           <td>
                             <span className="quantity-selector">
                               <button type="button" onClick={() => handleQuantityChange(index, Math.max(1, item.quantity - 1))}>-</button>
-                              <input type="number" value={item.quantity} min="1" max="100" className="quantity-input" onChange={(e) => handleQuantityChange(index, Number(e.target.value))} />
+                              <input
+                                type="number"
+                                value={item.quantity}
+                                min="1"
+                                max="100"
+                                className="quantity-input"
+                                onChange={(e) => handleQuantityChange(index, Number(e.target.value))}
+                              />
                               <button type="button" onClick={() => handleQuantityChange(index, item.quantity + 1)}>+</button>
                             </span>
                           </td>
@@ -171,8 +186,12 @@ const Cart = () => {
                 </button>
               </div>
               <div className="col-12 col-lg-6 d-flex justify-content-center justify-content-lg-end">
-                <button className="placeorder-cart card-update mx-2" onClick={handleClearCart}>Clear Cart</button>
-                <button className="placeorder-cart card-update" onClick={handleUpdateCart}>Update Cart</button>
+                <button className="placeorder-cart card-update mx-2" onClick={handleClearCart}>
+                  Clear Cart
+                </button>
+                <button className="placeorder-cart card-update" onClick={handleUpdateCart}>
+                  Update Cart
+                </button>
               </div>
             </div>
           </div>
@@ -197,6 +216,6 @@ const Cart = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Cart;

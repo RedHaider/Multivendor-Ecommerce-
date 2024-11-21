@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import config from '../../config';  
-import { FaHeart, FaShoppingCart, FaStar } from 'react-icons/fa'; 
+import config from '../../config';
+import { FaHeart, FaShoppingCart, FaStar } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { AuthContext } from '../../utils/authContext';
 
-const HomeProduct = () => {
+const HomeLatest = () => {
+  const { fetchCartCount, fetchWishlistCount } = useContext(AuthContext);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [wishlist, setWishList] = useState([]);
@@ -14,14 +16,13 @@ const HomeProduct = () => {
   const [visibleCount, setVisibleCount] = useState(4);
   const navigate = useNavigate();
 
-
+  // Fetch wishlist data
   const fetchWishlist = async () => {
     const token = localStorage.getItem('accessToken'); 
-  
     try {
       const response = await axios.get(`${config.API_BASE_URL}/order-management/api/wishlist/`, {
         headers: {
-          Authorization: `Bearer ${token}`, // Include token in the request header
+          Authorization: `Bearer ${token}`, 
         },
       });
       setWishList(response.data);
@@ -30,16 +31,16 @@ const HomeProduct = () => {
     }
   };
 
+  // Check if a product is in the wishlist
   const isInWishlist = (productId) => {
     return wishlist.some((item) => item.product.id === productId);
   };
 
+  // Add product to wishlist
   const addToWishlist = async (event, productId) => {
     event.stopPropagation();
     event.preventDefault();
-  
     const token = localStorage.getItem('accessToken'); 
-  
     try {
       await axios.post(
         `${config.API_BASE_URL}/order-management/api/wishlist/add/`,
@@ -50,79 +51,68 @@ const HomeProduct = () => {
           },
         }
       );
-   
-  
-      // Update wishlist state immediately for instant feedback
       setWishList((prevWishlist) => [
         ...prevWishlist,
         { product: { id: productId } },
       ]);
+      fetchWishlistCount(); // Update wishlist count in context
+      toast.success("Added to wishlist!");
     } catch (error) {
-   
       console.error("Add to wishlist error", error);
+      toast.error("Failed to add to wishlist.");
     }
   };
-  
+
+  // Remove product from wishlist
   const removeFromWishlist = async (event, productId) => {
     event.stopPropagation();
     event.preventDefault();
-  
     const token = localStorage.getItem('accessToken'); 
-  
     try {
       await axios.delete(`${config.API_BASE_URL}/order-management/api/wishlist/remove/${productId}/`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-
-  
       setWishList((prevWishlist) =>
         prevWishlist.filter((item) => item.product.id !== productId)
       );
+      fetchWishlistCount(); // Update wishlist count in context
+      toast.success("Removed from wishlist!");
     } catch (error) {
-      
       console.error("Remove from wishlist error", error);
+      toast.error("Failed to remove from wishlist.");
     }
   };
 
-
-
-  // Redirect to product details page
+  // Redirect to product details
   const handleProductClick = (productId) => {
     navigate(`/productdetails/${productId}`);
   };
 
-  // Function to add product to cart with optional redirection
+  // Add product to cart with optional redirection
   const handleAddToCart = async (event, product, redirectToCheckout = false) => {
-    event.stopPropagation(); // Prevent triggering the parent onClick
-    event.preventDefault();  // Prevent any default link behavior
-
-    const customerId = localStorage.getItem('userId'); // Retrieve the customer ID from localStorage
-
+    event.stopPropagation();
+    event.preventDefault();
+    const customerId = localStorage.getItem('userId'); 
     if (!customerId) {
       toast.error("You must be logged in to add items to the cart.");
       return;
     }
-
-    // Select a default variant if available
     const defaultVariant = product.attributes && product.attributes.length > 0 ? product.attributes[0] : null;
-
     if (!defaultVariant) {
       toast.error("This product has no available variants to add to the cart.");
       return;
     }
-
     try {
       await axios.post(`${config.API_BASE_URL}/order-management/api/add-to-cart/`, {
         product_id: product.id,
-        product_variant_id: defaultVariant.id, // Send the selected variant ID
-        quantity: 1, // Assuming a default quantity of 1 for now
-        customer_id: customerId // Pass the customer ID from localStorage
+        product_variant_id: defaultVariant.id,
+        quantity: 1,
+        customer_id: customerId,
       });
       toast.success("Product added to cart successfully!");
-
-      // If `redirectToCheckout` is true, navigate to the checkout page
+      fetchCartCount(); // Update cart count in context
       if (redirectToCheckout) {
         navigate('/checkout');
       }
@@ -137,10 +127,10 @@ const HomeProduct = () => {
     axios.get(`${config.API_BASE_URL}/product-management/api/products/`)
       .then((response) => {
         const sortedProducts = response.data.sort((a, b) => 
-          new Date(b.created_at) - new Date(a.created_at)  // Sort in descending order
+          new Date(b.created_at) - new Date(a.created_at)
         );
         setProducts(sortedProducts);
-        fetchWishlist(); 
+        fetchWishlist();
         setLoading(false);
       })
       .catch((error) => {
@@ -149,17 +139,17 @@ const HomeProduct = () => {
       });
   }, []);
 
+  // Load more products
   const loadMore = () => {
     setVisibleCount((prevCount) => prevCount + 4);
-  }
+  };
 
-  // Display loading or error messages
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
 
   return (
     <div className="container mt-5 mb-5">
-      <ToastContainer /> {/* Toast notifications for feedback */}
+      <ToastContainer />
       <div className="row justify-content-center">
         <div className="col text-center">
           <div className="heading">
@@ -173,34 +163,30 @@ const HomeProduct = () => {
           <div className="col-md-3 col-sm-6" key={product.id}>
             <div 
               className="product-card"
-              onClick={() => handleProductClick(product.id)} // Redirect to product details on click
-              style={{ cursor: 'pointer' }} // Makes the card look clickable
+              onClick={() => handleProductClick(product.id)}
+              style={{ cursor: 'pointer' }}
             >
-            <div
-              className="wishlist-icon"
-              onClick={(event) =>
-                isInWishlist(product.id)
-                  ? removeFromWishlist(event, product.id)
-                  : addToWishlist(event, product.id)
-              }
-            >
-              <FaHeart color={isInWishlist(product.id) ? "red" : "grey"} />
-            </div>
-              {/* Display main product image */}
+              <div
+                className="wishlist-icon"
+                onClick={(event) =>
+                  isInWishlist(product.id)
+                    ? removeFromWishlist(event, product.id)
+                    : addToWishlist(event, product.id)
+                }
+              >
+                <FaHeart color={isInWishlist(product.id) ? "red" : "grey"} />
+              </div>
               <img 
                 src={`${config.API_BASE_URL}${product.image}`} 
                 alt={product.name} 
                 className="product-image" 
               />
-              
-              {/* Product details */}
               <h5>
                 {product.name && product.name.length > 20
-                  ? `${product.name.slice(0, 20)}...` 
+                  ? `${product.name.slice(0, 20)}...`
                   : product.name}
               </h5>
               <p>Price: ${product.price}</p>
-              
               <p className="product-review">
                 Review 
                 <span className="product-rating">
@@ -209,17 +195,16 @@ const HomeProduct = () => {
                   ))}
                 </span>
               </p>
-
               <div className="cart-order-container">
                 <div 
                   className="cart-icon"
-                  onClick={(event) => handleAddToCart(event, product)} // Add to cart without redirecting
+                  onClick={(event) => handleAddToCart(event, product)}
                 >
                   <FaShoppingCart />
                 </div>
                 <button 
                   className="product-add-to-cart-btn mr-4" 
-                  onClick={(event) => handleAddToCart(event, product, true)} // Add to cart and redirect to checkout
+                  onClick={(event) => handleAddToCart(event, product, true)}
                 >
                   Order Now
                 </button>
@@ -228,7 +213,6 @@ const HomeProduct = () => {
           </div>
         ))}
       </div>
-      {/* Load more products */}
       {visibleCount < products.length && (
         <button className="load-more-btn" onClick={loadMore}>Load More</button>
       )}
@@ -236,4 +220,4 @@ const HomeProduct = () => {
   );
 };
 
-export default HomeProduct;
+export default HomeLatest;
