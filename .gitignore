@@ -1,4 +1,8 @@
 __pycache__/
+frontend/
+backend/templates/
+backend/venv/
+
 
 
 *.db
