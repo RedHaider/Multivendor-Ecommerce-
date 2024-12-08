@@ -3,6 +3,13 @@ from accounts.models import Vendor, User
 from product_management.models import Product
 from order_management.models import Order
 from django.contrib import messages
+from .serializers import NotificationSerializer
+from .models import Notification ,VendorNotification
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
 # Create your views here.
 
 
@@ -45,3 +52,43 @@ def toggle_email_varification(request, pk):
         messages.error(request, f"Vendor {vendor.email} is already verified.")
 
     return redirect('vendor-request-list')
+
+
+class NotificationListView(APIView):
+    permission_classes = [IsAuthenticated]  # Optional, if you still want to verify the token
+
+    def get(self, request):
+        user_id = request.query_params.get('user_id')  # Get user_id from query params
+
+        if user_id:
+            # Fetch notifications by user_id
+            notifications = Notification.objects.filter(user_id=user_id)
+            
+            # Serialize the notifications queryset
+            serializer = NotificationSerializer(notifications, many=True)
+            
+            # Return the serialized data in the response
+            return Response(serializer.data)
+        else:
+            return Response({"error": "User ID not provided"}, status=400)
+    
+
+@api_view(['Post'])
+def mark_notification_as_read(request):
+    if request.user.is_authenticated:
+        unread_notification = Notification.objects.filter(user=request.user, is_read=False)
+        unread_notification.update(is_read=True)
+        return Response({"message":"All Notificaitons marked as read"}, status=200)
+    else:
+        return Response({"error":"Authentication Failed"}, status=401)
+    
+
+
+
+def notifications(request):
+    if request.user.is_authenticated:
+        notifications = VendorNotification.objects.filter(user=request.user, is_read=False)
+        notification_count = notifications.count()
+        return {'notifications': notifications, 'notification_count': notification_count}
+    return {}
+

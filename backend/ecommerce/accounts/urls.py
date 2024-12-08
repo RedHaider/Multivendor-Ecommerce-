@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import vendor_registration_view, login_view, logout_view, RegisterView, LoginView ,get_user_details , user_profile , vendor_details, verify_email, VerifyEmailView, PasswordResetConfirmView, PasswordResetRequestView
+from .views import vendor_registration_view, login_view, logout_view, RegisterView, LoginView ,get_user_details , user_profile , vendor_details, verify_email, VerifyEmailView, PasswordResetConfirmView, PasswordResetRequestView, VendorRegistrationView , VendorLoginView
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -23,6 +23,13 @@ urlpatterns = [
     path('api/vendors/<str:id>/', vendor_details, name='vendor-detail'),
     path('api/password-reset/', PasswordResetRequestView.as_view(), name='password_reset'),
     path('api/password-reset-confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+
+
+
+#flutter
+    path('api/vendor-registration/', VendorRegistrationView.as_view(), name='vendor-registration-api'),
+     path('api/vendor-login/', VendorLoginView.as_view(), name='login-vendor-api'),
+     
 
 ]
 

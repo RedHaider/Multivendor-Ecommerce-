@@ -36,6 +36,7 @@ urlpatterns = [
     path('vendor-management/', include('vendor_management.urls')),
     path('content-management/', include('content_management.urls')),
 
+
     #PASSOWRD REST URLS
     path('password-reset/', VendorPasswordResetView.as_view(), name='password_reset'),
     path('password-reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),

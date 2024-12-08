@@ -2,8 +2,27 @@ import HomeCategory from "./HomeComponenets.js/HomeCategory";
 import HomeLatest from "./HomeComponenets.js/HomeLatest";
 import HomeProduct from "./HomeComponenets.js/HomeProduct";
 import HomeCarousel from "./HomeComponenets.js/HomeCarousal";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import config from "../config";
 
 const Home = () => {
+
+    const [banners, setBanners] = useState([]);
+
+    useEffect(() => {
+        axios.get(`${config.API_BASE_URL}/content-management/api/home-banner/`)
+            .then((response) => {
+                setBanners(response.data);
+            })
+            .catch((error) => {
+                console.error("There was an error fetching the banners:", error);
+            });
+    }, []);
+
+
+
+
     return ( 
         <div>
     {/* sedond phase */}
@@ -13,12 +32,15 @@ const Home = () => {
 
     <div class="container-fixed mt-3">
     <div class="row justify-content-between">
-        <div class="col promo-section">
-        <img src="picture/daraz/banners_1.jpg" alt="Promo Image" />
-        </div>
-        <div class="col promo-section">
-        <img src="picture/daraz/banner_2.jpg"  alt="Promo Image" />
-        </div>
+              {banners.length > 0 ? (
+                banners.map((banner, index) => (
+                    <div key={index} class="col promo-section">
+                        <img src={`${config.API_BASE_URL}${banner.image}`} alt={banner.title} />
+                    </div>
+                ))
+            ) : (
+                <p>No banners available.</p>
+            )}
     </div>
     </div>
      

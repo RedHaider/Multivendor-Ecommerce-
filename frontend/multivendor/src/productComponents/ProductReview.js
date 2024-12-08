@@ -22,30 +22,14 @@ const ProductReview = ({ reviews }) => {
             <div className="review-stars">{"★".repeat(review.stars)}{"☆".repeat(5 - review.stars)}</div>
           </div>
 
-          <div className="review-body">
-            <p>{review.content}</p>
-            {review.image && <img src={review.image} alt="product review" className="review-image" />}
-            <div className="review-details">
-              <p>{review.color}</p>
+          <div className="review-body row">
+            <div className="review-image-container col-auto">
+              {review.image && <img src={review.image} alt="product review" className="review-image" />}
+            </div>
+            <div className="review-comment-container col d-flex align-items-center">
+              <p>{review.content}</p>
             </div>
           </div>
-
-          <div className="review-footer">
-            <div className="helpful-report">
-              <button>Helpful</button>
-              <button>Report</button>
-            </div>
-            <div className="likes-dislikes">
-              <span>👍 {review.likes}</span>
-              <span>👎 {review.dislikes}</span>
-            </div>
-          </div>
-
-          {review.sellerResponse && (
-            <div className="seller-response">
-              <p><strong>Seller Response - {review.sellerResponseDate}:</strong> {review.sellerResponse}</p>
-            </div>
-          )}
         </div>
       ))}
     </div>

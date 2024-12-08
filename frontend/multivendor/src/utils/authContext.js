@@ -14,6 +14,7 @@ export const AuthProvider = ({ children }) => {
             setIsLoggedIn(localStorage.getItem('accessToken') !== null);
         };
 
+
         // Listen for changes to localStorage (login/logout across multiple tabs)
         window.addEventListener('storage', handleStorageChange);
 

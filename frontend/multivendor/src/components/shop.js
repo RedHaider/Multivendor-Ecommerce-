@@ -1,9 +1,9 @@
-import SearchBar from "../utils/SearchBar";
+
 import PriceRangeFilter from "../utils/pricerangefilter";
 import React, { useState, useEffect, useContext } from "react";
 import config from "../config";
 import axios from "axios";
-import { useNavigate, useLocation, redirect } from 'react-router-dom';
+import { useNavigate, useLocation, useNavigat } from 'react-router-dom';
 import { FaHeart, FaShoppingCart, FaStar } from 'react-icons/fa'; 
 import { ToastContainer, toast } from 'react-toastify';
 import { AuthContext } from "../utils/authContext";
@@ -14,6 +14,10 @@ const Shop = () => {
   const { fetchCartCount, fetchWishlistCount } = useContext(AuthContext);
 
   const location = useLocation();
+  const navigate = useNavigate();
+  const searchParams = new URLSearchParams(location.search);
+  const searchQuery = new URLSearchParams(location.search).get("search") || "";
+
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
@@ -31,8 +35,6 @@ const Shop = () => {
   const [selectSubCategory, setSelectSubCategory] = useState([]);
   const [priceRange, setPriceRange] = useState({ min: 0, max: 10000 });
 
-  //new added
-  const [searchQuery, setSearchQuery] = useState("");
   const [wishlist, setWishList] = useState([]);
 
   //extracting the category id from URL
@@ -215,7 +217,7 @@ const handleAddToCart = async (event, product, redirectToCheckout = false) => {
 };
 
 
-  const navigate = useNavigate(); 
+
   const handleProductClick = (productId) => {
     navigate(`/productdetails/${productId}`);
   };
@@ -257,9 +259,7 @@ const handleCategoryChange = (e) => {
   };
 
   //Handle search input change
-  const  handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
-  }; 
+
 
  //filter sections
   const filteredProducts = products
@@ -270,12 +270,13 @@ const handleCategoryChange = (e) => {
       const matchesSubCategory = selectSubCategory.length === 0 || selectSubCategory.includes(product.subcategory);
       const matchesPrice = product.price >= priceRange.min && product.price <= priceRange.max;
 
-      const matchesSearch = 
-             product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-             product.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
-             product.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-             product.subcategory.toLowerCase().includes(searchQuery.toLowerCase()) ||
-             product.product_type.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesSearch = searchQuery
+            ? product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              product.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              product.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              product.subcategory.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              product.product_type.toLowerCase().includes(searchQuery.toLowerCase())
+            : true;
 
       return matchesCategory && matchesBrand && matchesPrice && matchesSearch && matchesSubCategory && matchesProductType;
     })
@@ -291,7 +292,7 @@ const handleCategoryChange = (e) => {
     setSelectProductType([]);
     setSelectSubCategory([]);
     setPriceRange({ min: 0, max: 10000 });
-    setSearchQuery("");
+    navigate("/shop");
   };
 
   if (loading) return <div>Loading...</div>;
@@ -399,9 +400,6 @@ const handleCategoryChange = (e) => {
             </div>
           </div>
           <div className="col-lg-9 m-0 p-0">
-            <div className="row mb-5 justify-content-center">
-              <SearchBar searchQuery={searchQuery} onSearchChange={handleSearchChange} />
-            </div>
             <ToastContainer />
             <div className="row">
               {filteredProducts.map((product) => (

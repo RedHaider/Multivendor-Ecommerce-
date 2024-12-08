@@ -191,7 +191,7 @@ def user_profile(request):
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from .serializers import UserSerializer, VendorSerializer
+from .serializers import UserSerializer, VendorSerializer , VendorRegistrationSerializer 
 from django.conf import settings 
 
 class RegisterView(APIView):
@@ -343,3 +343,75 @@ class PasswordResetConfirmView(APIView):
         user.save()
 
         return Response({"message": "Password has been reset successfully"}, status=status.HTTP_200_OK)
+    
+
+import logging
+logger = logging.getLogger(__name__)
+
+class VendorRegistrationView(APIView):
+    def post(self, request):
+        serializer = VendorRegistrationSerializer(data=request.data)  # Just pass request.data
+        
+        if serializer.is_valid():
+            user = serializer.save(is_active=False)  # Set the user as inactive for verification
+            
+            # Generate email verification token and link
+            token = default_token_generator.make_token(user)
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            verification_link = f"{settings.FRONTEND_BASE_URL}/verify-email/{uid}/{token}"
+            
+            # Send verification email
+            send_mail(
+                subject="Verify Your Email",
+                message=f"Click the link to verify your email: {verification_link}",
+                from_email=None,  # Use default email from settings
+                recipient_list=[user.email],
+            )
+
+            return Response(
+                {"message": "Vendor registered successfully. Check your email to verify your account."},
+                status=status.HTTP_201_CREATED
+            )
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+from rest_framework.permissions import AllowAny
+
+class VendorLoginView(APIView):
+    permission_classes = [AllowAny]  # Allow unauthenticated access for login
+
+    def post(self, request):
+        # Get username and password from the request body
+        email = request.data.get("email")
+        password = request.data.get("password")
+
+        # Authenticate the user
+        user = authenticate(email=email, password=password)
+
+        if user is not None:
+            # Check if user is active
+            if not user.is_active:
+                return Response(
+                    {"detail": "Account not active."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            # Check if the user has a customer role
+            if user.role == 'vendor':
+                # Generate refresh and access tokens
+                refresh = RefreshToken.for_user(user)
+                return Response({
+                    'refresh': str(refresh),
+                    'access': str(refresh.access_token),
+                    'role': user.role,
+                    'user_id': user.id,
+                    'status': True,
+                }, status=status.HTTP_200_OK)
+            # Return an error if the role is not customer
+            return Response({"error": "User is not a Vendor"}, status=status.HTTP_403_FORBIDDEN)
+            
+
+        return Response(
+            {"detail": "Invalid credentials."},
+            status=status.HTTP_400_BAD_REQUEST,
+        )

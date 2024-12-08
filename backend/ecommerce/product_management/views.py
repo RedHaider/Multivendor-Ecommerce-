@@ -1,12 +1,14 @@
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from .models import Vendor, Banner, Slider, Size, Color, Brand, Category, SubCategory, Product, ProductImage, ProductAttribute , Review , ProductType
+from .models import Vendor, Banner, Slider, Size, Color, Brand, Category, SubCategory, Product, ProductImage, ProductAttribute , Review , ProductType , VendorReview
 from .forms import BannerForm, SliderForm ,SizeForm , BrandForm , CategoryForm , SubCategoryForm, ReviewForm , ColorForm , ProductForm, ProductAttributeFormSet, ProductImageFormSet , ProductTypeForm
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
+from rest_framework.generics import ListAPIView
 
 
 #Banner Crud Operations done
@@ -454,7 +456,7 @@ def load_subcategories(request):
 ############################################################################
 ############################################################################
 
-from .serializers import ProductSerializer , CategorySerializer , ProductTypeSerializer , BrandSerializer, SubCategorySerializer
+from .serializers import ProductSerializer , CategorySerializer , ProductTypeSerializer , BrandSerializer, SubCategorySerializer, ReviewSerializer, VendorReviewSerializer
 from django.db.models import Q
 
 @api_view(['GET', 'POST'])  # Handles both GET and POST requests
@@ -626,3 +628,64 @@ def SearchProducts(request):
 
     # Return a message if no results or suggestions are found
     return Response({"message": "No results found"}, status=404)
+
+class ReviewView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, product_id):
+        try:
+            product = Product.objects.get(id=product_id)
+        except Product.DoesNotExist:
+            return Response({"error": "Product not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        # Pass product to the serializer context
+        serializer = ReviewSerializer(data=request.data, context={'request': request, 'product': product})
+
+        if serializer.is_valid():
+            # Save review with additional fields
+            serializer.save(user=request.user, product=product, vendor=product.vendor)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ReviewListReview(ListAPIView):
+    serializer_class = ReviewSerializer
+
+    def get_queryset(self):
+        product_id = self.kwargs['product_id']
+        try:
+            product = Product.objects.get(id=product_id)
+        except Product.DoesNotExist:
+            return Review.objects.none()
+        
+        return Review.objects.filter(product=product)
+
+
+class VendorReviewCreateView(APIView):
+    permission_classes = [IsAuthenticated]  # Only authenticated users can submit reviews
+
+    def post(self, request, *args, **kwargs):
+        # Initialize the serializer with request data and context for the user
+        serializer = VendorReviewSerializer(data=request.data, context={'request': request})
+
+        # Validate and save the data if it's correct
+        if serializer.is_valid():
+            # Save the validated data
+            serializer.save()
+            return Response(
+                {"detail": "Review submitted successfully."},
+                status=status.HTTP_201_CREATED
+            )
+        
+        # If validation fails, return the errors
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+@api_view(['GET'])
+def get_vendor_review(request, vendor_id):
+    reviews = VendorReview.objects.filter(vendor__id = vendor_id)
+    serializer = VendorReviewSerializer(reviews, many=True)
+    return Response(serializer.data, status= status.HTTP_200_OK)

@@ -1,4 +1,68 @@
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import config from '../config'; 
+
+
+
 const ContactUs = () => {
+  const [faqs, setFaqs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const [formData, setFormData] = useState({
+    name:'',
+    email:'',
+    description:''
+  }); 
+
+  const [successMessage, setSuccessMessage] = useState('');
+
+  const handleChange = (e) => {
+    setFormData({
+        ...formData,
+        [e.target.name]: e.target.value
+    });
+};
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+  axios.post(`${config.API_BASE_URL}/content-management/api/contactus-form/`, formData)
+      .then(response => {
+          setSuccessMessage("Your message has been sent successfully!");
+          setError(null); 
+          setFormData({
+              name: '',
+              email: '',
+              description: ''
+          });
+      })
+      .catch(error => {
+          setError("There was an error submitting the form. Please try again.");
+          setSuccessMessage('');
+      });
+};
+
+      // Fetch FAQ data from the API on component mount
+      useEffect(() => {
+        axios.get(`${config.API_BASE_URL}/content-management/api/contactus-faq/`)
+            .then(response => {
+                setFaqs(response.data);
+                setLoading(false);
+            })
+            .catch(error => {
+                setError("Error fetching FAQ data.");
+                setLoading(false);
+            });
+    }, []); // Empty dependency array means it runs only once when the component mounts
+  
+    if (loading) {
+        return <div>Loading FAQs...</div>;
+    }
+  
+    if (error) {
+        return <div>{error}</div>;
+    }
+
     return ( 
     <div>
         <div className="row  no-gutters justify-content-center mb-2">
@@ -14,19 +78,43 @@ const ContactUs = () => {
             <div className="col-md-6">
                 <h1 className="contactush">Stay in touch</h1>
                 <p className="contactust">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean finibus.</p>
-                <form>
+                <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                      <input type="text" className="form-control" id="exampleInputName"  placeholder="Your Name"/>
+                      <input                         
+                        type="text"
+                        id="name"
+                        name="name"
+                        className="form-control"
+                        value={formData.name}
+                        onChange={handleChange}
+                        placeholder="Your Name"/>
                     </div>
                     <div className="form-group">
-                      <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Your Email"/>
+                      <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      className="form-control"
+                      value={formData.email}
+                      onChange={handleChange} 
+                      placeholder="Your Email"
+                      />
                     </div>
                     <div className="form-group">
                         <label for="exampleFormControlTextarea1">Example textarea</label>
-                        <textarea className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        <textarea                         
+                        id="description"
+                        name="description"
+                        className="form-control"
+                        rows="4"
+                        value={formData.description}
+                        onChange={handleChange}
+                         ></textarea>
                       </div>
                     <button type="submit" className="btn btn-primary contactusbtn">Send message</button>
                   </form>
+                  {successMessage && <div className="alert alert-success mt-3">{successMessage}</div>}
+                  {error && <div className="alert alert-danger mt-3">{error}</div>}
             </div>
             <div className="col-md-6">
                 <h1 className="contactush">Contact Info</h1>
@@ -84,80 +172,42 @@ const ContactUs = () => {
     </div>
     </div>
     <div>
-    <div class="container mt-5 pb-5">
-      <h1 class="pricing-two-header pb-3 text-center">FAQs</h1>
+    <div className="container mt-5 pb-5">
+            <h1 className="pricing-two-header pb-3 text-center">FAQs</h1>
 
-      <div class="pricing-three-card pr-5 pl-5">
-        <div id="accordion" class="custom-accordion">
-          <div class="card">
-            <div class="card-header " id="headingOne">
-              <h5 class="mb-0">
-                <button class="btn btn-link pricing-two-button" style={{color: "#000062;"}} data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                What types of products do you offer?
-                </button>
-              </h5>
+            <div className="pricing-three-card pr-5 pl-5">
+                <div id="accordion" className="custom-accordion">
+                    {faqs.map((faq, index) => (
+                        <div key={faq.id} className="card">
+                            <div className="card-header" id={`heading${index + 1}`}>
+                                <h5 className="mb-0">
+                                    <button
+                                        className={`btn btn-link ${index === 0 ? '' : 'collapsed'} pricing-two-button`}
+                                        style={{ color: "#000062;" }}
+                                        data-toggle="collapse"
+                                        data-target={`#collapse${index + 1}`}
+                                        aria-expanded={index === 0 ? "true" : "false"}
+                                        aria-controls={`collapse${index + 1}`}
+                                    >
+                                        {faq.title}
+                                    </button>
+                                </h5>
+                            </div>
+                            <div
+                                id={`collapse${index + 1}`}
+                                className={`collapse ${index === 0 ? 'show' : ''} text-left`}
+                                aria-labelledby={`heading${index + 1}`}
+                                data-parent="#accordion"
+                            >
+                                <div className="card-body p-5">
+                                    {faq.description}
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
-        
-            <div id="collapseOne" class="collapse show text-left " aria-labelledby="headingOne" data-parent="#accordion">
-              <div class="card-body p-5">
-                We do! There are two ways:
-                <ol>
-                  <li>Purchase the biggest package of Path credits.</li>
-                  <li>If you have tons of product photos you need edited all the time, you can get photo-editing services at a reduced rate.</li>
-                </ol>
-                Use the contact page to get in touch and let us know more details about your needs.
-              </div>
-            </div>
-          </div>
-        
-          <div class="card">
-            <div class="card-header" id="headingTwo">
-              <h5 class="mb-0">
-                <button class="btn btn-link collapsed pricing-two-button" style={{color: "#000062;"}} data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                  Is there a free trial?
-                </button>
-              </h5>
-            </div>
-            <div id="collapseTwo" class="collapse text-left" aria-labelledby="headingTwo" data-parent="#accordion">
-              <div class="card-body p-5">
-                Yes! We offer a free trial so you can test our service before making a commitment. Contact us to learn more.
-              </div>
-            </div>
-          </div>
-        
-          <div class="card">
-            <div class="card-header" id="headingThree">
-              <h5 class="mb-0">
-                <button class="btn btn-link collapsed pricing-two-button" style={{color: "#000062;"}} data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                  How do I request a quote?
-                </button>
-              </h5>
-            </div>
-            <div id="collapseThree" class="collapse text-left" aria-labelledby="headingThree" data-parent="#accordion">
-              <div class="card-body p-5">
-                To request a quote, please visit our pricing page and fill out the form with details about your project.
-              </div>
-            </div>
-          </div>
-        
-          <div class="card">
-            <div class="card-header" id="headingFour">
-              <h5 class="mb-0">
-                <button class="btn btn-link collapsed pricing-two-button" style={{color: "#000062;"}} data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                  How does turnaround time affect the price of my order?
-                </button>
-              </h5>
-            </div>
-            <div id="collapseFour" class="collapse text-left" aria-labelledby="headingFour" data-parent="#accordion">
-              <div class="card-body p-5">
-                The turnaround time can affect the price of your order. Faster delivery times may incur additional charges.
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
-
-    </div>
     </div>
         </div>
      );

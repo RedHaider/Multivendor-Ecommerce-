@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from .models import Product, Category, ProductType, ProductAttribute, ProductImage , Brand , ProductType, SubCategory 
-from accounts.serializers import UserSerializer , VendorSerializer
+from .models import Product, Category, ProductType, ProductAttribute, ProductImage , Brand , ProductType, SubCategory , Review, VendorReview
+from accounts.serializers import UserSerializer , VendorSerializer 
 
 
 
@@ -59,5 +59,43 @@ class ProductSerializer(serializers.ModelSerializer):
             'user', 'image', 'sku','product_details', 'in_stock', 'attributes', 'images',
             'created_at', 'updated_at'
             ]
-        
 
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    user = UserSerializer()  # Here, you don't need a queryset because it's read-only
+    
+    class Meta:
+        model = Review
+        fields = ['product', 'user', 'comment', 'rating', 'status', 'vendor', 'created_at', 'updated_at']
+        read_only_fields = ['status', 'created_at', 'updated_at', 'user', 'vendor']
+
+    def validate(self, data):
+        return data
+
+    def create(self, validated_data):
+        validated_data['user'] = self.context['request'].user
+        validated_data['vendor'] = validated_data['product'].vendor
+        return super().create(validated_data)
+
+class VendorReviewSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)  
+
+    class Meta:
+        model = VendorReview
+        fields = ['user', 'comment', 'rating', 'vendor']  
+    
+    def validate(self, data):
+        rating = data.get('rating')
+        if rating < 1 or rating > 5:
+            raise serializers.ValidationError("Rating must be between 1 and 5.")
+        comment = data.get('comment')
+        if len(comment) < 10:
+            raise serializers.ValidationError("Comment must be at least 10 characters long.")
+        
+        return data
+    
+    def create(self, validated_data):
+        # Assign the logged-in user automatically to the review
+        validated_data['user'] = self.context['request'].user
+        return super().create(validated_data)

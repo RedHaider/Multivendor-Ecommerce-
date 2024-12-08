@@ -3,7 +3,7 @@ from .models import aboutus_dropdown, aboutus_ourteam, aboutus_mv , home_banner,
 from .forms import AboutUsDropdownForm, AboutUsOurTeamForm, AboutUsMVForm
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.urls import reverse_lazy
-
+from rest_framework.decorators import api_view
 
 # Dropdown Content Views
 def aboutus_dropdown_list(request):
@@ -60,6 +60,26 @@ def aboutus_ourteam_create(request):
     else:
         form = AboutUsOurTeamForm()
     return render(request, 'content_management/aboutus_ourteam_form.html', {'form': form})
+
+def aboutus_ourteam_edit(request, pk):
+    team_member = get_object_or_404(aboutus_ourteam, pk=pk)
+    if request.method == 'POST':
+        form = AboutUsOurTeamForm(request.POST, request.FILES, instance=team_member)
+        if form.is_valid():
+            form.save()  
+            return redirect('aboutus_ourteam_list')  
+    else:
+        form = AboutUsOurTeamForm(instance=team_member)  
+
+    return render(request, 'content_management/aboutus_ourteam_edit.html', {'form': form, 'team_member': team_member})
+
+def aboutus_ourteam_delete(request, pk):
+    team_member = get_object_or_404(aboutus_ourteam, pk=pk)
+    if request.method == 'POST':
+        team_member.delete()  
+        return redirect('aboutus_ourteam_list')  
+
+    return render(request, 'content_management/aboutus_ourteam_list.html', {'team_member': team_member})
 
 
 
@@ -268,3 +288,66 @@ class ContactUsFormDeleteView(DeleteView):
     # Skip confirmation page
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
+    
+
+##########################################################
+##########################################################
+####################  API  ###############################
+##########################################################
+##########################################################
+    
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .models import home_carousal
+from .serializers import HomeCarouselSerializer , ContactUsFAQSerializer , ContactUsFormSerializer, HomeBannerSerializer , AboutUsDropdownSerializer ,AboutUsMVSerializer ,AboutUsOurTeamSerializer
+
+class HomeCarouselListView(APIView):
+    def get(self, request, *args, **kwargs):
+        carousels = home_carousal.objects.all()
+        serializer = HomeCarouselSerializer(carousels, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class ContactUsFAQView(APIView):
+    def get(self, request):
+        # Fetch all FAQ entries from the database
+        faqs = contactus_faq.objects.all()
+        serializer = ContactUsFAQSerializer(faqs, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def contact_us_form(request):
+    if request.method == 'POST':
+        serializer = ContactUsFormSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class HomeBannerListViewAPI(APIView):
+    def get(self, request):
+        banners = home_banner.objects.all()  # Fetch all home banner entries
+        serializer = HomeBannerSerializer(banners, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+# View for aboutus_dropdown model
+class AboutUsDropdownListView(APIView):
+    def get(self, request):
+        dropdowns = aboutus_dropdown.objects.all()
+        serializer = AboutUsDropdownSerializer(dropdowns, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+# View for aboutus_ourteam model
+class AboutUsOurTeamListView(APIView):
+    def get(self, request):
+        team_members = aboutus_ourteam.objects.all()
+        serializer = AboutUsOurTeamSerializer(team_members, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+# View for aboutus_mv model
+class AboutUsMVListView(APIView):
+    def get(self, request):
+        mv_items = aboutus_mv.objects.all()
+        serializer = AboutUsMVSerializer(mv_items, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import order_list, coupon_list, coupon_edit, coupon_form, coupon_delete, order_form ,order_delete ,order_edit, cart_list ,cart_delete ,cart_form , cart_edit, cart_detail , add_to_cart ,get_cart ,update_cart, order_detail_view, process_order ,validate_coupon, get_customer_orders, get_order_detail, add_to_wishlist, remove_from_wishlist, view_wishlist
+from .views import order_list, coupon_list, coupon_edit, coupon_form, coupon_delete, order_form ,order_delete ,order_edit, cart_list ,cart_delete ,cart_form , cart_edit, cart_detail , add_to_cart ,get_cart ,update_cart, order_detail_view, process_order ,validate_coupon, get_customer_orders, get_order_detail, add_to_wishlist, remove_from_wishlist, view_wishlist,has_user_purchased_product , can_post_review
 
 urlpatterns = [
 
@@ -38,5 +38,7 @@ urlpatterns = [
     path('api/wishlist/', view_wishlist, name='view-wishlist'),
     path('api/wishlist/add/', add_to_wishlist, name='add-wishlist'),
     path('api/wishlist/remove/<int:product_id>/', remove_from_wishlist, name='remove-wishlist'),
+    path('has-purchased/<int:user_id>/<int:product_id>/', has_user_purchased_product, name='has_purchased_product'),
+    path('api/can_post_review/<int:vendor_id>/', can_post_review, name='can_post_review'),
 
 ]

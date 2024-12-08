@@ -174,3 +174,14 @@ class Banner(models.Model):
 
     def __str__(self):
         return self.banner_title
+
+class VendorReview(models.Model):
+    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, related_name='vendor_profile')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    comment = models.TextField()
+    rating = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    
+

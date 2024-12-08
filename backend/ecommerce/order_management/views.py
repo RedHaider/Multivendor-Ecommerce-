@@ -3,8 +3,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .forms import CouponForm ,OrderForm  , OrderItemForm , OrderFormset ,Cart ,CartForm, CartFormset , OrderStatusForm
 from .models import Order, OrderItems, Cart ,CartItems ,Coupon, Payment ,Wishlist
+from vendor_management.models import Notification , VendorNotification
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.http import JsonResponse
 # Create your views here.
 
 def order_list(request):
@@ -265,7 +267,22 @@ def order_detail_view(request, order_id):
     if request.method == 'POST':
         form = OrderStatusForm(request.POST , instance=order)
         if form.is_valid():
-            form.save()
+            updated_order = form.save()
+
+            notification_title = f"Order {updated_order.order_id} Status Updated"
+            notification_message = f"Your  order {updated_order.order_id} status is now '{updated_order.get_status_display()}"
+
+            # Create the notification
+            Notification.objects.create(
+                user=updated_order.customer_id,  # Send the notification to the customer
+                title=notification_title,
+                message=notification_message,
+                notification_type='order',  # Or whatever type you are using
+                related_object_id=updated_order.id  # This links to the order
+            )
+
+            messages.success(request, "Order status updated successfully and notification sent!")
+
             return HttpResponseRedirect(reverse('order-detail', args=[order_id]))
     else:
         form = OrderStatusForm(instance=order)
@@ -542,15 +559,24 @@ def process_order(request):
 
                 created_order_ids.append(vendor_order_instance.order_id)
             
-            # Correct the field name from 'user' to 'customer' in the CartItems deletion
-                        # Locate the active cart and delete associated CartItems
+                # Create a Notification for the Vendor
+                VendorNotification.objects.create(
+                    user=vendor.user,
+                    title="New Order Placed",
+                    message=f"A new order ({vendor_order_instance.order_id}) has been placed for your products.",
+                    notification_type="order",
+                    related_object_id=vendor_order_instance.id
+                )
+                print(f"Notification Created for Vendor: {vendor.user.username}")
+
+
             active_cart = Cart.objects.filter(customer_id=customer_user).first()
             if active_cart:
                 CartItems.objects.filter(cart=active_cart).delete()
                 active_cart.save()
                 print('###############################################33')
 
-            # Return the list of order IDs for each vendor after successful creation
+
             return Response({"order_ids": created_order_ids}, status=status.HTTP_201_CREATED)
         
     except Exception as e:
@@ -619,3 +645,35 @@ def view_wishlist(request):
     wishlist_items = Wishlist.objects.filter(customer=customer)
     serializer = WishlistSerializer(wishlist_items, many=True)
     return Response(serializer.data)
+
+@api_view(['GET'])
+def has_user_purchased_product(request, user_id, product_id):
+    try:
+        # Check if the user has completed orders
+        orders = Order.objects.filter(customer_id=user_id, status='complete')
+        print(f"User {user_id} completed orders: {orders}")
+
+        # Check if the product exists in those orders
+        product_in_order = OrderItems.objects.filter(order__in=orders, product_id=product_id).exists()
+        print(f"Is product {product_id} in orders: {product_in_order}")
+
+        # Return a boolean response indicating whether the product was ordered
+        return JsonResponse({'has_purchased': product_in_order})
+
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return JsonResponse({'error': str(e)}, status=400)
+    
+@api_view(['GET'])
+def can_post_review(request, vendor_id):
+
+    if not request.user.is_authenticated:  
+        return Response({'error': 'Authentication required'}, status=status.HTTP_401_UNAUTHORIZED)
+
+    user = request.user  
+    orders = Order.objects.filter(customer_id=user, vendor__id=vendor_id, status='complete')
+
+    if orders.exists():
+        return Response({'can_post_review': True}, status=status.HTTP_200_OK)
+    else:
+        return Response({'can_post_review': False}, status=status.HTTP_200_OK)

@@ -1,90 +1,66 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import config from '../../config'; 
 
 const HomeCarousel = () => {
+    const [carousels, setCarousels] = useState([]);
+    
+    useEffect(() => {
+        // Fetch the carousels data from Django API
+        axios.get(`${config.API_BASE_URL}/content-management/api/carousels/`)  
+            .then(response => {
+                setCarousels(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching carousels:', error);
+            });
+    }, []);
+
     return (
         <div className="container-fluid container-fixed p-0">
             <div className="row justify-content-center">
                 <div className='col-10 p-0 m-0'>
-                <div id="carouselExampleIndicators" className="carousel slide" data-ride="carousel">
+                    <div id="carouselExampleIndicators" className="carousel slide" data-ride="carousel">
                     
-                    {/* Carousel Indicators */}
-                    <ol className="carousel-indicators">
-                        <li data-target="#carouselExampleIndicators" data-slide-to="0" className="active"></li>
-                        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                        <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
-                        <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
-                        <li data-target="#carouselExampleIndicators" data-slide-to="5"></li>
-                    </ol>
+                        {/* Carousel Indicators */}
+                        <ol className="carousel-indicators">
+                            {carousels.map((carousel, index) => (
+                                <li
+                                    key={index}
+                                    data-target="#carouselExampleIndicators"
+                                    data-slide-to={index}
+                                    className={index === 0 ? "active" : ""}
+                                ></li>
+                            ))}
+                        </ol>
 
-                    {/* Carousel Inner */}
-                    <div className="carousel-inner">
-                        
-                        {/* Slide 1 */}
-                        <div className="carousel-item active">
-                            <img src="picture/daraz/daraz_1.jpg" className="d-block w-100" alt="Product 1" />
-                            <div className="carousel-caption d-none d-md-block">
-                                <h5>Product 1</h5>
-                                <p>Description of Product 1.</p>
-                            </div>
+                        {/* Carousel Inner */}
+                        <div className="carousel-inner">
+                            {carousels.length > 0 ? (
+                                carousels.map((carousel, index) => (
+                                    <div key={index} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
+                                        <img src={`${config.API_BASE_URL}${carousel.image}`} className="d-block w-100" alt={carousel.title} />
+                                        <div className="carousel-caption d-none d-md-block">
+                                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="carousel-item active">
+                                    <p>Loading...</p>
+                                </div>
+                            )}
                         </div>
-                        
-                        {/* Slide 2 */}
-                        <div className="carousel-item">
-                            <img src="picture/daraz/daraz_2.jpg" className="d-block w-100" alt="Product 2" />
-                            <div className="carousel-caption d-none d-md-block">
-                                <h5>Product 2</h5>
-                                <p>Description of Product 2.</p>
-                            </div>
-                        </div>
-                        
-                        {/* Slide 3 */}
-                        <div className="carousel-item">
-                            <img src="picture/daraz/daraz_3.jpg" className="d-block w-100" alt="Product 3" />
-                            <div className="carousel-caption d-none d-md-block">
-                                <h5>Product 3</h5>
-                                <p>Description of Product 3.</p>
-                            </div>
-                        </div>
-
-                        {/* Slide 4 */}
-                        <div className="carousel-item">
-                            <img src="picture/daraz/daraz_4.jpg" className="d-block w-100" alt="Product 4" />
-                            <div className="carousel-caption d-md-block">
-                                <h5>Product 4</h5>
-                                <p>Description of Product 4.</p>
-                            </div>
-                        </div>
-
-                        {/* Slide 5 */}
-                        <div className="carousel-item">
-                            <img src="picture/daraz/daraz_5.jpg" className="d-block w-100" alt="Product 5" />
-                            <div className="carousel-caption d-none d-md-block">
-                                <h5>Product 5</h5>
-                                <p>Description of Product 5.</p>
-                            </div>
-                        </div>
-
-                        {/* Slide 6 */}
-                        <div className="carousel-item">
-                            <img src="picture/daraz/daraz_6.jpg" className="d-block w-100" alt="Product 6" />
-                            <div className="carousel-caption d-none d-md-block">
-                                <h5>Product 6</h5>
-                                <p>Description of Product 6.</p>
-                            </div>
-                        </div>
+                    
+                        {/* Carousel Controls */}
+                        <a className="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span className="sr-only">Previous</span>
+                        </a>
+                        <a className="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                            <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span className="sr-only">Next</span>
+                        </a>
                     </div>
-                    
-                    {/* Carousel Controls */}
-                    <a className="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span className="sr-only">Previous</span>
-                    </a>
-                    <a className="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span className="sr-only">Next</span>
-                    </a>
-                </div>
                 </div>
                 <div className='col-2 p-0 m-0'>
                     <img src="picture/daraz/vednor.jpeg" className="w-100" alt="go" />

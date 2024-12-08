@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { useParams, Link  } from 'react-router-dom';
 import axios from 'axios';
 import ProductCarousel from "../utils/ProductCarousel";
@@ -6,26 +6,115 @@ import RatingBreakdown from "../productComponents/RatingBreakdown";
 import ProductReview from "../productComponents/ProductReview";
 import config from '../config';
 import '../style/productdetails.css'
+import '../style/reviewstyle.css'
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from '../utils/authContext';
+
 
 //notification
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 const ProductDetails = () => {
+  const userId = localStorage.getItem('userId');
+  const navigate = useNavigate(); // Initialize navigate
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [brands, setBrands] = useState([]);
+  const [productTypes, setProductTypes] = useState([]);
+  const [subCategories, setSubCategories] = useState([]);
+  const [relatedProducts, setRelatedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [ error, setError] = useState(null); 
-  const [quantity, setQuantity] = useState(1); // State for quantity
-  const [selectedColor, setSelectedColor] = useState(null); // State for selected color
-  const [selectedSize, setSelectedSize] = useState(null); // State for selected size
-  const [selectedVariant, setSelectedVariant] = useState(null); // State for selected variant object
-  const [cartMessage, setCartMessage] = useState(null); // Message to show after adding to cart
+  const [quantity, setQuantity] = useState(1); 
+  const [selectedColor, setSelectedColor] = useState(null); 
+  const [selectedSize, setSelectedSize] = useState(null); 
+  const [selectedVariant, setSelectedVariant] = useState(null); 
+  const [cartMessage, setCartMessage] = useState(null); 
+  const [hasPurchased, setHasPurchased] = useState(false);
+  const [newReview, setNewReview] = useState({ rating: 0, comment: '' });
+  const [review, setReviews] = useState([]);
+
+  const fetchReviews = async (productId) => {
+    try {
+        const response = await axios.get(
+            `${config.API_BASE_URL}/product-management/api/reviews/${productId}/`, 
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+                }
+            }
+        );
+        console.log('Reviews:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching reviews:', error);
+        return [];
+    }
+};
+
+useEffect(() => {
+  const getReviews = async () => {
+      const fetchedReviews = await fetchReviews(productId);
+      setReviews(fetchedReviews);
+  };
+
+  getReviews();
+}, [productId]);
+
+  const handleReviewSubmit = async (e) => {
+    e.preventDefault();
+
+    const reviewData = {
+        product: productId,  // Include the product ID in the data
+        comment: newReview.comment,
+        rating: newReview.rating,
+    };
+
+    try {
+        const response = await axios.post(
+            `${config.API_BASE_URL}/product-management/reviews/${productId}/`,
+            reviewData,
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                },
+            }
+        );
+        toast.success('Review submitted successfully!');
+        setReviews([...reviews, response.data]); // Update reviews list
+        setNewReview({ rating: 0, comment: '' }); // Reset form
+    } catch (error) {
+        toast.error('Failed to submit review.');
+        console.error('Review submission error:', error);
+    }
+};
 
 
+
+
+  useEffect(() => {
+    const checkHasPurchased = async () => {
+        try {
+            const response = await axios.get(
+                `${config.API_BASE_URL}/order-management/has-purchased/${userId}/${productId}/`
+            );
+            setHasPurchased(response.data.has_purchased);
+        } catch (error) {
+            console.error('Error checking purchase status:', error);
+        }
+    };
+
+    if (userId && productId) {
+        checkHasPurchased();
+        }
+    }, [userId, productId]);
 
   useEffect(()=> {
     const fetchProductDetails = async () => {
+      setProduct(null); // Clear existing product details
+      setLoading(true); // Set loading state
       try {
         const response = await axios.get(`${config.API_BASE_URL}/product-management/api/products/${productId}`);
         setProduct(response.data);
@@ -45,6 +134,65 @@ const ProductDetails = () => {
     fetchProductDetails();
   },[productId])
 
+  // Fetch category, brand, product type, and sub-category data
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [categoryRes, brandRes, productTypeRes, subCategoryRes] = await Promise.all([
+          axios.get(`${config.API_BASE_URL}/product-management/api/category/`),
+          axios.get(`${config.API_BASE_URL}/product-management/api/brand/`),
+          axios.get(`${config.API_BASE_URL}/product-management/api/product-type/`),
+          axios.get(`${config.API_BASE_URL}/product-management/api/sub-category/`),
+        ]);
+
+        setCategories(categoryRes.data);
+        setBrands(brandRes.data);
+        setProductTypes(productTypeRes.data);
+        setSubCategories(subCategoryRes.data);
+      } catch (error) {
+        console.error("Failed to fetch supporting data", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+    // Fetch related products based on matching filters
+    useEffect(() => {
+      const fetchRelatedProducts = async () => {
+        if (!product) return;
+    
+        try {
+          // Fetch all products once
+          const response = await axios.get(`${config.API_BASE_URL}/product-management/api/products/`);
+          const allProducts = response.data;
+    
+          // Filter related products locally: Match by brand, product type, or category
+          const filteredProducts = allProducts.filter((item) => {
+            return (
+              item.id !== product.id && // Exclude the current product
+              (
+                item.brand === product.brand || // Match brand
+                item.product_type === product.product_type || // Match product type
+                item.category === product.category // Match category
+              )
+            );
+          });
+    
+          // Limit to top 4
+          setRelatedProducts(filteredProducts.slice(0, 4));
+        } catch (error) {
+          console.error("Failed to fetch related products:", error);
+        }
+      };
+    
+      fetchRelatedProducts();
+    }, [product]);
+    
+    
+    useEffect(() => {
+      window.scrollTo(0, 0); // Scroll to the top of the page
+    }, [productId]);
 
   // selected variant based on the chosen color and size
   useEffect(() => {
@@ -102,42 +250,32 @@ const ProductDetails = () => {
   if (loading) return <div>Loading...</div>
   if (error) return <div>{error}</div>
 
-  const reviews = [
-    {
-      name: 'Sayeed',
-      date: '31 August 2024',
-      stars: 5,
-      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean porta fringilla elit ac finibus.',
-      image: 'picture/product-details-image.png',
-      color: 'Color: Black, Ash, Size: L',
-      likes: 28,
-      dislikes: 0,
-      sellerResponse: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean porta fringilla elit ac finibus.',
-      sellerResponseDate: '1 Month Ago',
-    },
-    {
-      name: 'Sayeed',
-      date: '31 August 2024',
-      stars: 5,
-      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean porta fringilla elit ac finibus.',
-      image: 'picture/product-details-image.png',
-      color: 'Color: Black, Ash, Size: XL',
-      likes: 10,
-      dislikes: 0,
-      sellerResponse: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean porta fringilla elit ac finibus.',
-      sellerResponseDate: '1 Month Ago',
-    },
-  ];
-  const averageRating = 4.7;
-  const totalRatings = 50;
-  const ratingCounts = {
-    5: 40,
-    4: 3,
-    3: 2,
-    2: 1,
-    1: 1,
-  };
+const reviews = review.map(review => ({
+   name : `${review.user.first_name} ${review.user.last_name}`,
+   date : new Date(review.created_at).toLocaleDateString(),
+   stars : review.rating,
+   content : review.comment,
+   image : review.user.photo,
+   color: 'null',
+   likes : 'null',
+   dislikes : 'null',
+   sellerResponse :'null',
+   sellerResponse: 'null'
+}))
+console.log('something different')
+console.log(reviews);
+  // Calculate the average rating, total ratings, and rating counts
+  const totalRatings = review.length;
+  
+  const ratingCounts = review.reduce((acc, review) => {
+    const rating = review.rating;
+    acc[rating] = (acc[rating] || 0) + 1;
+    return acc;
+  }, {});
 
+  const averageRating = totalRatings
+    ? (review.reduce((sum, review) => sum + review.rating, 0) / totalRatings)
+    : 0;
 
 
   const allImages = [
@@ -162,27 +300,27 @@ const ProductDetails = () => {
         </div>
 
       {/* product details */}
-      <div class="container">
-        <div class="row">
-        <div class="col-md-6">
-          <div class="row">
-              <div class="col-12  thumbnail-images-container">
+      <div className="container">
+        <div className="row">
+        <div className="col-md-6">
+          <div className="row">
+              <div className="col-12  thumbnail-images-container">
                 <ProductCarousel images={allImages}/>
               </div>
           </div>
       </div>
 
-            <div class="col-md-6 text-left">
-                <h1 class="product-details-info-h">{product.name}</h1>
-                <div class=" text-left ">
-                  <i class="fa fa-star stars" ></i>
-                  <i class="fa fa-star stars" ></i>
-                  <i class="fa fa-star stars" ></i>
-                  <i class="rating">(ratings)</i>
+            <div className="col-md-6 text-left">
+                <h1 className="product-details-info-h">{product.name}</h1>
+                <div className=" text-left ">
+                  <i className="fa fa-star stars" ></i>
+                  <i className="fa fa-star stars" ></i>
+                  <i className="fa fa-star stars" ></i>
+                  <i className="rating">(ratings)</i>
                 </div>
-                <p class="text-danger font-weight-bold mt-1">{product.price}</p>
-                <p class="product-details-info-description">{product.description}</p>
-                <p class="product-details-info-description">Vendor: <Link to={`/vendorprofile/${product.vendor.id}`}>{product.vendor.business_name}</Link></p>
+                <p className="text-danger font-weight-bold mt-1">{product.price}</p>
+                <p className="product-details-info-description">{product.description}</p>
+                <p className="product-details-info-description">Vendor: <Link to={`/vendorprofile/${product.vendor.id}`}>{product.vendor.business_name}</Link></p>
                 <p className="product-details-info-attribute">Category: <span className="product-details-info-attribute-span">{product.category}</span></p>
 
 
@@ -281,7 +419,7 @@ const ProductDetails = () => {
               <div class="row text-left mt-4 ml-2"> 
                   <div dangerouslySetInnerHTML={{ __html: product.product_details }}></div>
               </div>
-      </div>
+           </div>
       <div class="container mt-5 mb-5 ">
       <RatingBreakdown
         averageRating={averageRating}
@@ -292,56 +430,73 @@ const ProductDetails = () => {
       <div class="container mt-5 mb-5 ">
       <ProductReview reviews={reviews} />
       </div>
-      {/* Latest PRoducts*/}
       <div>
+      {hasPurchased && (
+            <div className="review-form">
+                <h3>Leave a Review</h3>
+                <form onSubmit={handleReviewSubmit} className="review-form">
+                <div className="form-group">
+                    <label htmlFor="rating">Rating:</label>
+                    <select 
+                        id="rating" 
+                        value={newReview.rating} 
+                        onChange={(e) => setNewReview({ ...newReview, rating: e.target.value })} 
+                        required
+                        className="form-control"
+                    >
+                        <option value="">Select</option>
+                        {[1, 2, 3, 4, 5].map((star) => (
+                            <option key={star} value={star}>{star} Star</option>
+                        ))}
+                    </select>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="comment">Comment:</label>
+                    <textarea 
+                        id="comment" 
+                        value={newReview.comment} 
+                        onChange={(e) => setNewReview({ ...newReview, comment: e.target.value })} 
+                        required 
+                        className="form-control"
+                    ></textarea>
+                </div>
+                <button type="submit" className="btn btn-primary">Submit Review</button>
+            </form>
+            </div>
+        )}
+
       <div className="container mt-5 mb-5">
-              <div className="row justify-content-center">
-              <div className="col text-center">
-                <h1>Related Products</h1>
+        <h2>Related Products</h2>
+        <div className="row">
+          {relatedProducts.length > 0 ? (
+            relatedProducts.map((relatedProduct) => (
+              <div className="col-md-3 col-sm-6" key={relatedProduct.id}>
+                <div
+                  className="product-card"
+                  onClick={() => navigate(`/productdetails/${relatedProduct.id}`)} // Navigate on click
+                >
+                  <img
+                    src={`${config.API_BASE_URL}${relatedProduct.image}`}
+                    alt={relatedProduct.name}
+                    className="img-fluid"
+                  />
+                  <h5>
+                  {product.name && product.name.length > 20
+                  ? `${product.name.slice(0, 20)}...` 
+                  : product.name}
+                  </h5>
+                  <p>${relatedProduct.price}</p>
+                  <button className="btn btn-primary">View Details</button>
+                </div>
               </div>
-              </div>
-              <div class="row">
-                <div class="col-md-3 col-sm-6">
-                    <div class="product-card">
-                        <span class="product-discount-badge">30% OFF</span>
-                        <img src="https://via.placeholder.com/200x200" alt="Stylish leather jacket"/>
-                        <h5>Stylish leather jacket</h5>
-                        <p>$34</p>
-                        <button class="product-add-to-cart-btn">Add to Cart</button>
-                        <p><span class="text-warning">&#9733;&#9733;&#9733;&#9733;&#9734;</span> (6 Ratings)</p>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <div class="product-card">
-                        <img src="https://via.placeholder.com/200x200" alt="Premium Perfume"/>
-                        <h5>Premium Perfume</h5>
-                        <p>$34</p>
-                        <button class="product-add-to-cart-btn">Add to Cart</button>
-                        <p><span class="text-warning">&#9733;&#9733;&#9733;&#9733;&#9734;</span> (8 Ratings)</p>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <div class="product-card">
-                        <img src="https://via.placeholder.com/200x200" alt="Leather Handbag"/>
-                        <h5>Leather Handbag</h5>
-                        <p>$34</p>
-                        <button class="product-add-to-cart-btn">Add to Cart</button>
-                        <p><span class="text-warning">&#9733;&#9733;&#9733;&#9733;&#9734;</span> (10 Ratings)</p>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <div class="product-card">
-                        <img src="https://via.placeholder.com/200x200" alt="Luxury White Sweater"/>
-                        <h5>Luxury White Sweater</h5>
-                        <p>$34</p>
-                        <button class="product-add-to-cart-btn">Add to Cart</button>
-                        <p><span class="text-warning">&#9733;&#9733;&#9733;&#9734;&#9734;</span> (4 Ratings)</p>
-                    </div>
-                </div>
-                </div>
-                <button class="load-more-btn">Load More</button>
-                </div>
+            ))
+          ) : (
+            <p>No related products found.</p>
+          )}
+        </div>
       </div>
+</div>
+
         </div>
      );
 }

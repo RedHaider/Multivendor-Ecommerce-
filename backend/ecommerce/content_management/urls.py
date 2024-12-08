@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .views import HomeCarouselListView , ContactUsFAQView , HomeBannerListViewAPI , AboutUsDropdownListView , AboutUsOurTeamListView , AboutUsMVListView
 
 urlpatterns = [
     #Aboutus dropdown
@@ -12,6 +13,8 @@ urlpatterns = [
 
     path('aboutus/ourteam/', views.aboutus_ourteam_list, name='aboutus_ourteam_list'),
     path('aboutus/ourteam/create/', views.aboutus_ourteam_create, name='aboutus_ourteam_create'),
+    path('aboutus_ourteam/edit/<int:pk>/', views.aboutus_ourteam_edit, name='aboutus_ourteam_edit'),
+    path('aboutus_ourteam/delete/<int:pk>/', views.aboutus_ourteam_delete, name='aboutus_ourteam_delete'),
 
     #about us Mission and Vision
     path('aboutus/mv/', views.aboutus_mv_list, name='aboutus_mv_list'),
@@ -53,7 +56,14 @@ urlpatterns = [
     path('contactus_form/<int:pk>/delete/', views.ContactUsFormDeleteView.as_view(), name='contactus-form-delete'),
 
     #blog
-    
 
+    #API
+    path('api/carousels/', HomeCarouselListView.as_view(), name='home_carousel_list'),
+    path('api/contactus-faq/', ContactUsFAQView.as_view(), name='contactus-faq'),
+    path('api/contactus-form/', views.contact_us_form, name='contact-us-form'),
+    path('api/home-banner/', HomeBannerListViewAPI.as_view(), name='home-banner-list-api'),
+    path('api/aboutus-dropdown/', AboutUsDropdownListView.as_view(), name='aboutus-dropdown-list'),
+    path('api/aboutus-ourteam/', AboutUsOurTeamListView.as_view(), name='aboutus-ourteam-list'),
+    path('api/aboutus-mv/', AboutUsMVListView.as_view(), name='aboutus-mv-list'),
 
 ]
